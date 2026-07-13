@@ -117,15 +117,35 @@ async def main():
     results = await asyncio.gather(*tasks)
     
     valid_configs = []
-    hosts_to_resolve = []
-
+    
     for uri, host, latency in results:
         if latency is not None and latency < limit:
             valid_configs.append({"uri": uri, "host": host, "ping": latency})
-            if re.match(r"^\d{1,3}(\.\d{1,3}){3}$", host):
-                hosts_to_resolve.append(host)
 
-    print("Resolving IP locations...")
+    valid_count = len(valid_configs)
+    
+    if valid_count > 100:
+        print(f"\nFound {valid_count} working configurations.")
+        user_input = input(f"How many do you want to export? (Enter a number up to {valid_count}, or press Enter for all): ").strip()
+        if user_input.isdigit():
+            export_limit = int(user_input)
+            if 1 <= export_limit <= valid_count:
+                valid_configs = valid_configs[:export_limit]
+            else:
+                print("Out of bounds. Exporting all.")
+        else:
+            print("Invalid input or empty. Exporting all.")
+
+    if not valid_configs:
+        print("No configurations met the latency criteria.")
+        return
+
+    hosts_to_resolve = []
+    for item in valid_configs:
+        if re.match(r"^\d{1,3}(\.\d{1,3}){3}$", item["host"]):
+            hosts_to_resolve.append(item["host"])
+
+    print("\nResolving IP locations...")
     locations = fetch_locations(hosts_to_resolve)
 
     table_data = []
@@ -142,14 +162,12 @@ async def main():
     
     output_text = "\n".join(output_uris)
     
-    if output_text:
-        with open(filename, "w", encoding="utf-8") as f:
-            f.write(output_text)
-        pyperclip.copy(output_text)
-        print(f"\nSaved {len(output_uris)} working configs to {filename} and copied to clipboard.")
-        print(tabulate(table_data, headers=["Config/Proxy (Truncated)", "Ping (ms)", "Location"], tablefmt="grid"))
-    else:
-        print("No configurations met the latency criteria.")
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(output_text)
+    pyperclip.copy(output_text)
+    
+    print(f"\nSaved {len(output_uris)} working configs to {filename} and copied to clipboard.")
+    print(tabulate(table_data, headers=["Config/Proxy (Truncated)", "Ping (ms)", "Location"], tablefmt="grid"))
 
 if __name__ == "__main__":
     asyncio.run(main())
