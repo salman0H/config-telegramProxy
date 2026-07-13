@@ -3,6 +3,7 @@ import base64
 import json
 import os
 import re
+import shutil
 import time
 import urllib.request
 from datetime import datetime
@@ -157,16 +158,28 @@ async def main():
         output_uris.append(item["uri"])
 
     folder = "config" if mode == "1" else "proxy"
+    
+    # Empty directory prior to saving
+    if os.path.exists(folder):
+        shutil.rmtree(folder)
     os.makedirs(folder, exist_ok=True)
+
     filename = f"{folder}/{datetime.now().strftime('%Y-%m-%d')}_{folder}.txt"
+    readme_filename = f"{folder}/README.md"
     
     output_text = "\n".join(output_uris)
     
+    # Save text output
     with open(filename, "w", encoding="utf-8") as f:
         f.write(output_text)
     pyperclip.copy(output_text)
+
+    # Save README.md table output
+    markdown_table = tabulate(table_data, headers=["Config/Proxy (Truncated)", "Ping (ms)", "Location"], tablefmt="github")
+    with open(readme_filename, "w", encoding="utf-8") as f:
+        f.write(f"# Benchmark Results - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n{markdown_table}\n")
     
-    print(f"\nSaved {len(output_uris)} working configs to {filename} and copied to clipboard.")
+    print(f"\nSaved {len(output_uris)} working configs to {filename}, updated {readme_filename}, and copied to clipboard.")
     print(tabulate(table_data, headers=["Config/Proxy (Truncated)", "Ping (ms)", "Location"], tablefmt="grid"))
 
 if __name__ == "__main__":
