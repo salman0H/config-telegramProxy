@@ -121,7 +121,8 @@ def send_document(chat_id, file_path, caption):
     return _post("sendDocument", payload, headers, 30)
 
 
-def notify(kind, folder, suffix):
+# <<< تغییر اول: اضافه شدن پارامتر limit برای محدود کردن تعداد خطوط
+def notify(kind, folder, suffix, limit=None):
     file_path = latest_file(folder, suffix)
     if not file_path:
         print(f"[notify_telegram] no {suffix} file found in {folder}, skipping.")
@@ -129,6 +130,10 @@ def notify(kind, folder, suffix):
 
     with open(file_path, "r", encoding="utf-8") as f:
         uris = [line.strip() for line in f if line.strip()]
+
+    # <<< تغییر دوم: جدا کردن تعداد مشخص (پنجاه تای اول)
+    if limit is not None:
+        uris = uris[:limit]
 
     if not uris:
         print(f"[notify_telegram] {file_path} is empty, skipping.")
@@ -179,6 +184,7 @@ def notify(kind, folder, suffix):
 if __name__ == "__main__":
     target = sys.argv[1] if len(sys.argv) > 1 else "both"
     if target in ("config", "both"):
-        notify("Config", "config", "config")
+        # <<< تغییر سوم: مقدار limit=50 فقط برای کانفیگ‌ها ارسال می‌شود
+        notify("Config", "config", "config", limit=50)
     if target in ("proxy", "both"):
         notify("Proxy", "proxy", "proxy")
