@@ -1,3 +1,4 @@
+import argparse
 import asyncio
 import base64
 import json
@@ -126,21 +127,41 @@ def fetch_locations(hosts):
 
     return locations
 
+def safe_clipboard_copy(text):
+    try:
+        pyperclip.copy(text)
+    except Exception as e:
+        print(f"[clipboard] skipped (no clipboard available in this environment): {e}")
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Config/proxy latency tester")
+    parser.add_argument("--mode", choices=["1", "2"], help="1=Configs, 2=MTProto")
+    parser.add_argument("--source", choices=["1", "2", "3"], help="1=File, 2=Clipboard, 3=Repo")
+    parser.add_argument("--input", default="", help="Path or URL (used with --source 1 or 3)")
+    parser.add_argument("--export", default="", help="Number of results to export, or 'all'")
+    return parser.parse_args()
+
 async def main():
-    mode = input("Select mode: 1 for Configs, 2 for MTProto: ").strip()
+    args = parse_args()
+    headless = args.mode is not None and args.source is not None
+
+    mode = args.mode if args.mode else input("Select mode: 1 for Configs, 2 for MTProto: ").strip()
     if mode not in ["1", "2"]:
         print("Invalid mode.")
         return
 
-    src = input("Select source: 1 for File, 2 for Clipboard, 3 for Repo: ").strip()
+    src = args.source if args.source else input("Select source: 1 for File, 2 for Clipboard, 3 for Repo: ").strip()
     if src not in ["1", "2", "3"]:
         print("Invalid source.")
         return
 
     url = CONFIG_URL if mode == "1" else PROXY_URL
-    input_val = input("Enter path/url (Press Enter for default Repo): ").strip() if src != "2" else url
-    if src == "3" and not input_val:
-        input_val = url
+    if headless:
+        input_val = args.input.strip() if args.input else url
+    else:
+        input_val = input("Enter path/url (Press Enter for default Repo): ").strip() if src != "2" else url
+        if src == "3" and not input_val:
+            input_val = url
 
     print("Fetching data...")
     try:
@@ -180,15 +201,26 @@ async def main():
 
     if valid_count > 100:
         print(f"\nFound {valid_count} working configurations.")
-        user_input = input(f"How many do you want to export? (Enter a number up to {valid_count}, or press Enter for all): ").strip()
-        if user_input.isdigit():
-            export_limit = int(user_input)
-            if 1 <= export_limit <= valid_count:
-                valid_configs = valid_configs[:export_limit]
+        if headless:
+            export_arg = args.export.strip()
+            if export_arg.isdigit():
+                export_limit = int(export_arg)
+                if 1 <= export_limit <= valid_count:
+                    valid_configs = valid_configs[:export_limit]
+                else:
+                    print("--export out of bounds. Exporting all.")
             else:
-                print("Out of bounds. Exporting all.")
+                print("Exporting all (headless mode, no --export limit given).")
         else:
-            print("Invalid input or empty. Exporting all.")
+            user_input = input(f"How many do you want to export? (Enter a number up to {valid_count}, or press Enter for all): ").strip()
+            if user_input.isdigit():
+                export_limit = int(user_input)
+                if 1 <= export_limit <= valid_count:
+                    valid_configs = valid_configs[:export_limit]
+                else:
+                    print("Out of bounds. Exporting all.")
+            else:
+                print("Invalid input or empty. Exporting all.")
 
     if not valid_configs:
         print("No configurations met the latency criteria.")
@@ -222,7 +254,7 @@ async def main():
     # Save text output
     with open(filename, "w", encoding="utf-8") as f:
         f.write(output_text)
-    pyperclip.copy(output_text)
+    safe_clipboard_copy(output_text)
 
     # Save README.md table output
     markdown_table = tabulate(table_data, headers=["Config/Proxy (Truncated)", "Ping (ms)", "Location"], tablefmt="github")

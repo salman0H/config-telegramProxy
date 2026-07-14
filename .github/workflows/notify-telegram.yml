@@ -1,42 +1,46 @@
-name: Notify Telegram on config/proxy update
+name: Scheduled config/proxy refresh
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "config/**"
-      - "proxy/**"
+  schedule:
+    - cron: "0 */12 * * *"   # every 12 hours, UTC
+  workflow_dispatch: {}       # lets you trigger it manually from the Actions tab
+
+permissions:
+  contents: write
 
 jobs:
-  notify:
+  run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Detect which folder changed
-        id: changed
+      - name: Install dependencies
+        run: pip install pyperclip tabulate
+
+      - name: Test configs
+        run: python3 main.py --mode 1 --source 3 --export all
+
+      - name: Test MTProto proxies
+        run: python3 main.py --mode 2 --source 3 --export all
+
+      - name: Commit and push results
         run: |
-          CHANGED_CONFIG=$(git diff --name-only HEAD^ HEAD -- config/ | wc -l)
-          CHANGED_PROXY=$(git diff --name-only HEAD^ HEAD -- proxy/ | wc -l)
-          if [ "$CHANGED_CONFIG" -gt 0 ] && [ "$CHANGED_PROXY" -gt 0 ]; then
-            echo "target=both" >> "$GITHUB_OUTPUT"
-          elif [ "$CHANGED_CONFIG" -gt 0 ]; then
-            echo "target=config" >> "$GITHUB_OUTPUT"
-          elif [ "$CHANGED_PROXY" -gt 0 ]; then
-            echo "target=proxy" >> "$GITHUB_OUTPUT"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config/ proxy/
+          if ! git diff --cached --quiet; then
+            git commit -m "Scheduled auto-update configs/proxies"
+            git push
           else
-            echo "target=none" >> "$GITHUB_OUTPUT"
+            echo "No changes to commit."
           fi
 
-      - name: Send Telegram notification
-        if: steps.changed.outputs.target != 'none'
+      - name: Notify Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python3 scripts/notify_telegram.py ${{ steps.changed.outputs.target }}
+          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
+        run: python3 scripts/notify_telegram.py both

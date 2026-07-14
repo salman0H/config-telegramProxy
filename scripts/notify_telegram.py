@@ -2,21 +2,26 @@ import os
 import sys
 import glob
 import json
+import time
 import urllib.request
+import urllib.error
 
 TELEGRAM_BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
-TELEGRAM_CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
+
+# Multiple recipients: set TELEGRAM_CHAT_IDS="111,222,333" (comma-separated).
+# Falls back to the single TELEGRAM_CHAT_ID if TELEGRAM_CHAT_IDS isn't set.
+_raw_ids = os.environ.get("TELEGRAM_CHAT_IDS") or os.environ.get("TELEGRAM_CHAT_ID", "")
+TELEGRAM_CHAT_IDS = [c.strip() for c in _raw_ids.split(",") if c.strip()]
+if not TELEGRAM_CHAT_IDS:
+    raise RuntimeError("No TELEGRAM_CHAT_ID or TELEGRAM_CHAT_IDS set in environment.")
+
 API_BASE = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 
 TELEGRAM_MESSAGE_LIMIT = 4096
-
-# ---------------------------------------------------------------------------
-# Customize this. {index}, {uri}, {ping}, {location} are available.
-# ping/location come from README.md's markdown table; if a URI isn't found
-# there, ping/location fall back to "?".
-# ---------------------------------------------------------------------------
-ENTRY_FORMAT = "{index}. `{uri}`\n   ping: {ping}ms | {location}\n"
-HEADER_FORMAT = "*{kind} update* — {count} entries\n\n"
+# If the raw list would need more than this many messages, send it as a file
+# attachment instead, to avoid hammering Telegram's per-chat flood limits.
+MAX_TEXT_CHUNKS = 5
+SEND_DELAY_SECONDS = 1  # spacing between messages, per recipient
 
 
 def latest_file(folder, suffix):
@@ -25,74 +30,54 @@ def latest_file(folder, suffix):
     return files[-1] if files else None
 
 
-def parse_readme_table(readme_path):
-    """Map truncated-uri-prefix -> (ping, location) from README.md's github table."""
-    mapping = []
-    if not os.path.exists(readme_path):
-        return mapping
-    with open(readme_path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line.startswith("|") or "Ping" in line or set(line) <= set("|-"):
-                continue
-            cols = [c.strip() for c in line.strip("|").split("|")]
-            if len(cols) != 3:
-                continue
-            prefix, ping, location = cols
-            prefix = prefix.rstrip(".")  # strip trailing "..."
-            mapping.append((prefix, ping, location))
-    return mapping
+def chunk_lines(lines, limit):
+    """Pack lines into chunks, each under `limit` chars, without splitting a line."""
+    chunks = [""]
+    for line in lines:
+        candidate = chunks[-1] + line + "\n"
+        if len(candidate) > limit and chunks[-1]:
+            chunks.append(line + "\n")
+        else:
+            chunks[-1] = candidate
+    return [c for c in chunks if c.strip()]
 
 
-def lookup(uri, table):
-    for prefix, ping, location in table:
-        if uri.startswith(prefix):
-            return ping, location
-    return "?", "?"
+def _post(method, data, headers, timeout):
+    req = urllib.request.Request(f"{API_BASE}/{method}", data=data, headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="replace")
+        print(f"[notify_telegram] Telegram API error {e.code}: {body}")
+        raise
 
 
-def build_messages(kind, uris, table):
-    header = HEADER_FORMAT.format(kind=kind, count=len(uris))
-    chunks = [header]
-    for i, uri in enumerate(uris, 1):
-        ping, location = lookup(uri, table)
-        entry = ENTRY_FORMAT.format(index=i, uri=uri, ping=ping, location=location)
-        if len(chunks[-1]) + len(entry) > TELEGRAM_MESSAGE_LIMIT:
-            chunks.append("")
-        chunks[-1] += entry
-    return chunks
-
-
-def send_message(text):
+def send_message(chat_id, text):
     payload = json.dumps({
-        "chat_id": TELEGRAM_CHAT_ID,
+        "chat_id": chat_id,
         "text": text,
-        "parse_mode": "Markdown",
         "disable_web_page_preview": True,
     }).encode("utf-8")
-    req = urllib.request.Request(f"{API_BASE}/sendMessage", data=payload,
-                                  headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=15) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    return _post("sendMessage", payload, {"Content-Type": "application/json"}, 15)
 
 
-def send_document(file_path, caption):
+def send_document(chat_id, file_path, caption):
     boundary = "----telegram-boundary"
     with open(file_path, "rb") as f:
         file_data = f.read()
 
-    body = []
-    body.append(f"--{boundary}\r\nContent-Disposition: form-data; name=\"chat_id\"\r\n\r\n{TELEGRAM_CHAT_ID}\r\n")
-    body.append(f"--{boundary}\r\nContent-Disposition: form-data; name=\"caption\"\r\n\r\n{caption}\r\n")
-    body.append(f"--{boundary}\r\nContent-Disposition: form-data; name=\"document\"; filename=\"{os.path.basename(file_path)}\"\r\nContent-Type: text/plain\r\n\r\n")
-    prefix = "".join(body).encode("utf-8")
+    parts = [
+        f"--{boundary}\r\nContent-Disposition: form-data; name=\"chat_id\"\r\n\r\n{chat_id}\r\n",
+        f"--{boundary}\r\nContent-Disposition: form-data; name=\"caption\"\r\n\r\n{caption}\r\n",
+        f"--{boundary}\r\nContent-Disposition: form-data; name=\"document\"; filename=\"{os.path.basename(file_path)}\"\r\nContent-Type: text/plain\r\n\r\n",
+    ]
+    prefix = "".join(parts).encode("utf-8")
     suffix = f"\r\n--{boundary}--\r\n".encode("utf-8")
     payload = prefix + file_data + suffix
 
-    req = urllib.request.Request(f"{API_BASE}/sendDocument", data=payload,
-                                  headers={"Content-Type": f"multipart/form-data; boundary={boundary}"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    headers = {"Content-Type": f"multipart/form-data; boundary={boundary}"}
+    return _post("sendDocument", payload, headers, 30)
 
 
 def notify(kind, folder, suffix):
@@ -108,17 +93,20 @@ def notify(kind, folder, suffix):
         print(f"[notify_telegram] {file_path} is empty, skipping.")
         return
 
-    table = parse_readme_table(os.path.join(folder, "README.md"))
+    chunks = chunk_lines(uris, TELEGRAM_MESSAGE_LIMIT)
 
-    # Small result set: send as formatted text. Large: send as file + short summary.
-    if len(uris) <= 15:
-        for chunk in build_messages(kind, uris, table):
-            send_message(chunk)
-    else:
-        send_message(HEADER_FORMAT.format(kind=kind, count=len(uris)) + "full list attached.")
-        send_document(file_path, caption=os.path.basename(file_path))
+    for chat_id in TELEGRAM_CHAT_IDS:
+        if len(chunks) <= MAX_TEXT_CHUNKS:
+            for chunk in chunks:
+                send_message(chat_id, chunk)
+                time.sleep(SEND_DELAY_SECONDS)
+        else:
+            send_message(chat_id, f"{kind} update — {len(uris)} entries — full list attached.")
+            time.sleep(SEND_DELAY_SECONDS)
+            send_document(chat_id, file_path, caption=os.path.basename(file_path))
+            time.sleep(SEND_DELAY_SECONDS)
 
-    print(f"[notify_telegram] sent {len(uris)} {suffix} entries from {file_path}.")
+    print(f"[notify_telegram] sent {len(uris)} {suffix} entries from {file_path} to {len(TELEGRAM_CHAT_IDS)} recipient(s).")
 
 
 if __name__ == "__main__":
