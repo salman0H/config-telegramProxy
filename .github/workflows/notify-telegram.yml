@@ -1,0 +1,42 @@
+name: Notify Telegram on config/proxy update
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "config/**"
+      - "proxy/**"
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Detect which folder changed
+        id: changed
+        run: |
+          CHANGED_CONFIG=$(git diff --name-only HEAD^ HEAD -- config/ | wc -l)
+          CHANGED_PROXY=$(git diff --name-only HEAD^ HEAD -- proxy/ | wc -l)
+          if [ "$CHANGED_CONFIG" -gt 0 ] && [ "$CHANGED_PROXY" -gt 0 ]; then
+            echo "target=both" >> "$GITHUB_OUTPUT"
+          elif [ "$CHANGED_CONFIG" -gt 0 ]; then
+            echo "target=config" >> "$GITHUB_OUTPUT"
+          elif [ "$CHANGED_PROXY" -gt 0 ]; then
+            echo "target=proxy" >> "$GITHUB_OUTPUT"
+          else
+            echo "target=none" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Send Telegram notification
+        if: steps.changed.outputs.target != 'none'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python3 scripts/notify_telegram.py ${{ steps.changed.outputs.target }}
