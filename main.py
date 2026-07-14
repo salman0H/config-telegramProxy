@@ -6,6 +6,7 @@ import re
 import shutil
 import time
 import urllib.request
+import urllib.error
 from datetime import datetime
 
 import pyperclip
@@ -15,6 +16,22 @@ CONFIG_URL = "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All
 PROXY_URL = "https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt"
 TIMEOUT_SECONDS = 3.0
 CONCURRENCY_LIMIT = 500
+HTTP_TIMEOUT = 15
+HTTP_RETRIES = 3
+HTTP_RETRY_DELAY = 2
+
+def fetch_url(url):
+    last_error = None
+    for attempt in range(1, HTTP_RETRIES + 1):
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as response:
+                return response.read().decode('utf-8')
+        except (urllib.error.URLError, ConnectionResetError, TimeoutError) as e:
+            last_error = e
+            if attempt < HTTP_RETRIES:
+                time.sleep(HTTP_RETRY_DELAY)
+    raise last_error
 
 def fetch_data(source_type, input_val):
     raw_data = ""
@@ -24,9 +41,7 @@ def fetch_data(source_type, input_val):
     elif source_type == "2":
         raw_data = pyperclip.paste()
     elif source_type == "3":
-        req = urllib.request.Request(input_val, headers={'User-Agent': 'Mozilla/5.0'})
-        with urllib.request.urlopen(req) as response:
-            raw_data = response.read().decode('utf-8')
+        raw_data = fetch_url(input_val)
 
     try:
         if not any(proto in raw_data[:50] for proto in ["vless://", "trojan://", "vmess://", "https://"]):
@@ -62,24 +77,53 @@ async def tcp_ping(uri, host, port, semaphore):
         except Exception:
             return uri, host, None
 
+def fetch_location_fallback(host):
+    # HTTPS single-host fallback for networks that block/reset plain-HTTP ip-api.com
+    try:
+        req = urllib.request.Request(
+            f"https://ipwho.is/{host}?fields=success,country",
+            headers={'User-Agent': 'Mozilla/5.0'}
+        )
+        with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as response:
+            data = json.loads(response.read().decode('utf-8'))
+            if data.get('success'):
+                return data.get('country', 'Unknown')
+    except Exception as e:
+        print(f"  [location] fallback lookup failed for {host}: {e}")
+    return "Unknown"
+
 def fetch_locations(hosts):
     locations = {}
     unique_hosts = list(set(hosts))
-    
+
     batches = [unique_hosts[i:i + 100] for i in range(0, len(unique_hosts), 100)]
-    
-    for batch in batches:
+    primary_failed_hosts = []
+
+    for i, batch in enumerate(batches):
         try:
             payload = json.dumps([{"query": h} for h in batch]).encode('utf-8')
-            req = urllib.request.Request("http://ip-api.com/batch?fields=query,country", data=payload)
+            req = urllib.request.Request("http://ip-api.com/batch?fields=query,country,status", data=payload)
             req.add_header('Content-Type', 'application/json')
-            with urllib.request.urlopen(req) as response:
+            with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as response:
                 data = json.loads(response.read().decode('utf-8'))
                 for item in data:
-                    locations[item.get('query')] = item.get('country', 'Unknown')
-        except Exception:
-            for h in batch:
-                locations[h] = "Unknown"
+                    query = item.get('query')
+                    if item.get('status') == 'success':
+                        locations[query] = item.get('country', 'Unknown')
+                    else:
+                        locations[query] = 'Unknown'
+                        primary_failed_hosts.append(query)
+        except Exception as e:
+            print(f"  [location] ip-api.com batch failed ({e}); will retry these {len(batch)} hosts via HTTPS fallback")
+            primary_failed_hosts.extend(batch)
+        if i < len(batches) - 1:
+            time.sleep(4)
+
+    if primary_failed_hosts:
+        print(f"  [location] resolving {len(primary_failed_hosts)} hosts via HTTPS fallback (ipwho.is)...")
+        for host in primary_failed_hosts:
+            locations[host] = fetch_location_fallback(host)
+
     return locations
 
 async def main():
@@ -99,13 +143,18 @@ async def main():
         input_val = url
 
     print("Fetching data...")
-    lines = fetch_data(src, input_val)
+    try:
+        lines = fetch_data(src, input_val)
+    except Exception as e:
+        print(f"Failed to fetch data: {e}")
+        return
+
     if not lines:
         print("No valid configurations found.")
         return
 
     print(f"Loaded {len(lines)} items. Testing configurations (Timeout: {TIMEOUT_SECONDS}s)...")
-    
+
     limit = 300 if mode == "1" else 200
     semaphore = asyncio.Semaphore(CONCURRENCY_LIMIT)
     tasks = []
@@ -115,16 +164,20 @@ async def main():
         if host and port:
             tasks.append(tcp_ping(uri, host, port, semaphore))
 
+    if not tasks:
+        print("No parsable config/proxy URIs found in source data.")
+        return
+
     results = await asyncio.gather(*tasks)
-    
+
     valid_configs = []
-    
+
     for uri, host, latency in results:
         if latency is not None and latency < limit:
             valid_configs.append({"uri": uri, "host": host, "ping": latency})
 
     valid_count = len(valid_configs)
-    
+
     if valid_count > 100:
         print(f"\nFound {valid_count} working configurations.")
         user_input = input(f"How many do you want to export? (Enter a number up to {valid_count}, or press Enter for all): ").strip()
@@ -141,24 +194,21 @@ async def main():
         print("No configurations met the latency criteria.")
         return
 
-    hosts_to_resolve = []
-    for item in valid_configs:
-        if re.match(r"^\d{1,3}(\.\d{1,3}){3}$", item["host"]):
-            hosts_to_resolve.append(item["host"])
+    hosts_to_resolve = [item["host"] for item in valid_configs]
 
     print("\nResolving IP locations...")
     locations = fetch_locations(hosts_to_resolve)
 
     table_data = []
     output_uris = []
-    
+
     for item in valid_configs:
         loc = locations.get(item["host"], item["host"])
         table_data.append([item["uri"][:30] + "...", round(item["ping"], 2), loc])
         output_uris.append(item["uri"])
 
     folder = "config" if mode == "1" else "proxy"
-    
+
     # Empty directory prior to saving
     if os.path.exists(folder):
         shutil.rmtree(folder)
@@ -166,9 +216,9 @@ async def main():
 
     filename = f"{folder}/{datetime.now().strftime('%Y-%m-%d')}_{folder}.txt"
     readme_filename = f"{folder}/README.md"
-    
+
     output_text = "\n".join(output_uris)
-    
+
     # Save text output
     with open(filename, "w", encoding="utf-8") as f:
         f.write(output_text)
@@ -178,7 +228,7 @@ async def main():
     markdown_table = tabulate(table_data, headers=["Config/Proxy (Truncated)", "Ping (ms)", "Location"], tablefmt="github")
     with open(readme_filename, "w", encoding="utf-8") as f:
         f.write(f"# Benchmark Results - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n{markdown_table}\n")
-    
+
     print(f"\nSaved {len(output_uris)} working configs to {filename}, updated {readme_filename}, and copied to clipboard.")
     print(tabulate(table_data, headers=["Config/Proxy (Truncated)", "Ping (ms)", "Location"], tablefmt="grid"))
 
