@@ -24,7 +24,11 @@ TELEGRAM_MESSAGE_LIMIT = 4096
 ITEMS_PER_MESSAGE = 10
 # Leave headroom under the hard 4096 cap for the header + code-fence characters.
 CHARS_BUDGET_FOR_ITEMS = 3600
-SEND_DELAY_SECONDS = 1.2  # spacing between messages, per recipient
+SEND_DELAY_SECONDS = 2  # spacing between messages, per recipient
+# If a result set would need more than this many code-block messages, send a
+# short summary + the raw file as an attachment instead. Sending dozens of
+# messages back-to-back reliably triggers Telegram's per-chat flood limit.
+MAX_TEXT_MESSAGES = 15
 
 HANDLE = "@sentencedIntoMusic"
 TEHRAN_TZ = timezone(timedelta(hours=3, minutes=30))
@@ -68,15 +72,25 @@ def pack_groups(lines, max_items=ITEMS_PER_MESSAGE, max_chars=CHARS_BUDGET_FOR_I
     return groups
 
 
-def _post(method, data, headers, timeout):
-    req = urllib.request.Request(f"{API_BASE}/{method}", data=data, headers=headers)
-    try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
-            return json.loads(resp.read().decode("utf-8"))
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="replace")
-        print(f"[notify_telegram] Telegram API error {e.code}: {body}")
-        raise
+def _post(method, data, headers, timeout, max_retries=4):
+    for attempt in range(1, max_retries + 1):
+        req = urllib.request.Request(f"{API_BASE}/{method}", data=data, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", errors="replace")
+            if e.code == 429:
+                try:
+                    retry_after = json.loads(body).get("parameters", {}).get("retry_after", 5)
+                except Exception:
+                    retry_after = 5
+                print(f"[notify_telegram] rate limited, waiting {retry_after}s before retry ({attempt}/{max_retries})...")
+                time.sleep(retry_after + 1)
+                continue
+            print(f"[notify_telegram] Telegram API error {e.code}: {body}")
+            raise
+    raise RuntimeError(f"Gave up on {method} after {max_retries} retries — Telegram kept rate-limiting.")
 
 
 def send_message(chat_id, text):
@@ -87,6 +101,24 @@ def send_message(chat_id, text):
         "disable_web_page_preview": True,
     }).encode("utf-8")
     return _post("sendMessage", payload, {"Content-Type": "application/json"}, 15)
+
+
+def send_document(chat_id, file_path, caption):
+    boundary = "----telegram-boundary"
+    with open(file_path, "rb") as f:
+        file_data = f.read()
+
+    parts = [
+        f"--{boundary}\r\nContent-Disposition: form-data; name=\"chat_id\"\r\n\r\n{chat_id}\r\n",
+        f"--{boundary}\r\nContent-Disposition: form-data; name=\"caption\"\r\n\r\n{caption}\r\n",
+        f"--{boundary}\r\nContent-Disposition: form-data; name=\"document\"; filename=\"{os.path.basename(file_path)}\"\r\nContent-Type: text/plain\r\n\r\n",
+    ]
+    prefix = "".join(parts).encode("utf-8")
+    suffix = f"\r\n--{boundary}--\r\n".encode("utf-8")
+    payload = prefix + file_data + suffix
+
+    headers = {"Content-Type": f"multipart/form-data; boundary={boundary}"}
+    return _post("sendDocument", payload, headers, 30)
 
 
 def notify(kind, folder, suffix):
@@ -110,6 +142,23 @@ def notify(kind, folder, suffix):
 
     for chat_id in TELEGRAM_CHAT_IDS:
         print(f"[notify_telegram] sending to chat_id={chat_id!r}")
+
+        if total_parts > MAX_TEXT_MESSAGES:
+            summary = HEADER_TEMPLATE.format(
+                kind=kind,
+                part=1,
+                total_parts=1,
+                total_count=len(uris),
+                date=date_str,
+                time=time_str,
+                handle=HANDLE,
+            ) + f"\n({total_parts} message-blocks worth — sending as a file instead.)"
+            send_message(chat_id, summary)
+            time.sleep(SEND_DELAY_SECONDS)
+            send_document(chat_id, file_path, caption=os.path.basename(file_path))
+            time.sleep(SEND_DELAY_SECONDS)
+            continue
+
         for i, group in enumerate(groups, 1):
             header = HEADER_TEMPLATE.format(
                 kind=kind,
