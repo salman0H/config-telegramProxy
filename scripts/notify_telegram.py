@@ -3,6 +3,7 @@ import sys
 import glob
 import json
 import time
+import random
 import urllib.request
 import urllib.error
 from datetime import datetime, timedelta, timezone
@@ -259,11 +260,23 @@ def fetch_and_process_updates(offset=None):
             if text.startswith("/start"):
                 reply_with_status(chat_id, "Welcome. System ready.")
             elif text.startswith("/getConfigs") or text.startswith("/configs"):
-                is_new = add_subscriber(chat_id)
-                if is_new:
-                    reply_with_status(chat_id, "Your Chat ID has been added to the broadcast list.")
-                else:
-                    reply_with_status(chat_id, "You are already subscribed to the broadcast list.")
+                # 1. Immediate acknowledgment message
+                send_message(chat_id, "صبر کن ایدیتو بردارم بعد برات میفرستوم", parse_mode="HTML")
+                
+                # 2. Save ID to subscribers list
+                add_subscriber(chat_id)
+                
+                # 3. Fun status delay simulation
+                time.sleep(1)
+                send_message(chat_id, "کارگران مشغول کارند... 👷🏻‍♂️", parse_mode="HTML")
+                
+                # Random delay between 2 to 5 seconds
+                random_wait = random.randint(2, 5)
+                time.sleep(random_wait)
+                
+                # 4. Final completion message and status
+                send_message(chat_id, "کار کارگرا تموم شد! 👷🏻‍♂️✅", parse_mode="HTML")
+                reply_with_status(chat_id, "آیدی شما در لیست دریافت خودکار ثبت شد و کانفیگ‌ها ارسال خواهند شد.")
             else:
                 reply_with_status(chat_id, "Unknown command logged.")
 
