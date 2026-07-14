@@ -198,6 +198,7 @@ async def main():
             valid_configs.append({"uri": uri, "host": host, "ping": latency})
 
     valid_count = len(valid_configs)
+    valid_configs.sort(key=lambda item: item["ping"])
 
     if valid_count > 100:
         print(f"\nFound {valid_count} working configurations.")

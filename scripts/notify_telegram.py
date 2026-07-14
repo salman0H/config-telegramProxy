@@ -21,6 +21,7 @@ CHARS_BUDGET_FOR_ITEMS = 3600
 SEND_DELAY_SECONDS = 2
 MAX_TEXT_MESSAGES = 15
 SUBSCRIBERS_FILE = "subscribers.json"
+OFFSET_FILE = "scripts/telegram_offset.json"
 
 HANDLE = "@sentencedIntoMusic"
 TEHRAN_TZ = timezone(timedelta(hours=3, minutes=30))
@@ -65,6 +66,45 @@ def add_subscriber(chat_id):
             json.dump(list(current_subs), f, ensure_ascii=False, indent=2)
         return True
     return False
+
+
+def remove_subscriber(chat_id):
+    """Remove a chat ID from the subscribers list, if present."""
+    chat_id_str = str(chat_id)
+    current_subs = set()
+    if os.path.exists(SUBSCRIBERS_FILE):
+        try:
+            with open(SUBSCRIBERS_FILE, "r", encoding="utf-8") as f:
+                current_subs = set(str(c) for c in json.load(f))
+        except Exception:
+            current_subs = set()
+
+    if chat_id_str in current_subs:
+        current_subs.discard(chat_id_str)
+        with open(SUBSCRIBERS_FILE, "w", encoding="utf-8") as f:
+            json.dump(list(current_subs), f, ensure_ascii=False, indent=2)
+        return True
+    return False
+
+
+def load_offset():
+    """Load the last-processed Telegram update_id so poll_once() doesn't
+    re-handle messages it already replied to in a previous run."""
+    if os.path.exists(OFFSET_FILE):
+        try:
+            with open(OFFSET_FILE, "r", encoding="utf-8") as f:
+                return json.load(f).get("offset")
+        except Exception:
+            return None
+    return None
+
+
+def save_offset(offset):
+    if offset is None:
+        return
+    os.makedirs(os.path.dirname(OFFSET_FILE), exist_ok=True)
+    with open(OFFSET_FILE, "w", encoding="utf-8") as f:
+        json.dump({"offset": offset}, f)
 
 
 def latest_file(folder, suffix):
@@ -245,46 +285,65 @@ def fetch_and_process_updates(offset=None):
 
     next_offset = offset
     for update in updates:
-        update_id = update.get("update_id")
-        next_offset = update_id + 1
+        next_offset = handle_update(update)
 
-        msg = update.get("message", {})
-        chat_id = msg.get("chat", {}).get("id")
-        user_id = msg.get("from", {}).get("id")
-        username = msg.get("from", {}).get("username", "N/A")
-        text = msg.get("text", "")
+    return next_offset
 
-        if chat_id and text:
-            append_request_log(user_id, username, text)
 
-            if text.startswith("/start"):
-                reply_with_status(chat_id, "Welcome. System ready.")
-            elif text.startswith("/getConfigs") or text.startswith("/configs"):
-                # 1. Immediate acknowledgment message
-                send_message(chat_id, "صبر کن ایدیتو بردارم بعد برات میفرستوم", parse_mode="HTML")
-                
-                # 2. Save ID to subscribers list
-                add_subscriber(chat_id)
-                
-                # 3. Fun status delay simulation
-                time.sleep(1)
-                send_message(chat_id, "کارگران مشغول کارند... 👷🏻‍♂️", parse_mode="HTML")
-                
-                # Random delay between 2 to 5 seconds
-                random_wait = random.randint(2, 5)
-                time.sleep(random_wait)
-                
-                # 4. Final completion message and status
-                send_message(chat_id, "کار کارگرا تموم شد! 👷🏻‍♂️✅", parse_mode="HTML")
-                reply_with_status(chat_id, "آیدی شما در لیست دریافت خودکار ثبت شد و کانفیگ‌ها ارسال خواهند شد.")
+def handle_update(update):
+    """Process a single Telegram update: log it, run the matching command,
+    return the next offset value (this update's id + 1)."""
+    update_id = update.get("update_id")
+    next_offset = update_id + 1
+
+    msg = update.get("message", {})
+    chat_id = msg.get("chat", {}).get("id")
+    user_id = msg.get("from", {}).get("id")
+    username = msg.get("from", {}).get("username", "N/A")
+    text = msg.get("text", "")
+
+    if chat_id and text:
+        append_request_log(user_id, username, text)
+
+        if text.startswith("/start"):
+            reply_with_status(chat_id, "Welcome. System ready.")
+        elif text.startswith("/getConfigs") or text.startswith("/configs"):
+            # 1. Immediate acknowledgment message
+            send_message(chat_id, "صبر کن ایدیتو بردارم بعد برات میفرستم", parse_mode="HTML")
+
+            # 2. Save ID to subscribers list
+            add_subscriber(chat_id)
+
+            # 3. Fun status delay simulation
+            time.sleep(1)
+            send_message(chat_id, "کارگران مشغول کارند... 👷🏻‍♂️", parse_mode="HTML")
+
+            # Random delay between 2 to 5 seconds
+            random_wait = random.randint(2, 5)
+            time.sleep(random_wait)
+
+            # 4. Final completion message and status
+            send_message(chat_id, "کار کارگرا تموم شد! 👷🏻‍♂️✅", parse_mode="HTML")
+            reply_with_status(chat_id, "آیدی شما در لیست دریافت خودکار ثبت شد و کانفیگ‌ها ارسال خواهند شد.")
+        elif text.startswith("/end") or text.startswith("/stop"):
+            removed = remove_subscriber(chat_id)
+            if removed:
+                reply_with_status(chat_id, "آیدی شما از لیست دریافت خودکار حذف شد. دیگه فایلی براتون ارسال نمی‌شه.")
             else:
-                reply_with_status(chat_id, "Unknown command logged.")
+                reply_with_status(chat_id, "شما اصلاً توی لیست دریافت خودکار نبودید.")
+        else:
+            reply_with_status(chat_id, "Unknown command logged.")
 
     return next_offset
 
 
 def run_bot_daemon():
-    """Start polling loop for live incoming message handling."""
+    """Continuous polling loop — for a persistently running host (VPS, your
+    own machine with systemd, etc). Do NOT run this as a scheduled GitHub
+    Actions job: it never exits, so the job just hangs until GitHub kills it
+    for hitting the runner's time limit, and any state it accumulates
+    (subscribers, offset) never gets committed back to the repo, so the next
+    run starts from scratch anyway."""
     print("[bot_polling] Starting daemon...")
     offset = None
     while True:
@@ -292,11 +351,55 @@ def run_bot_daemon():
         time.sleep(1)
 
 
+def poll_once(admin_chat_id=None):
+    """Single-pass check for messages received since the last run. Safe to
+    call from a scheduled CI job: it fetches whatever's pending, processes
+    it, persists the offset to OFFSET_FILE so the next run picks up where
+    this one left off, and (if admin_chat_id is set) forwards a digest of
+    what came in to that chat. Returns the list of (username, text) handled.
+    """
+    offset = load_offset()
+    received = []
+
+    url = f"{API_BASE}/getUpdates?timeout=5"
+    if offset:
+        url += f"&offset={offset}"
+
+    try:
+        req = urllib.request.Request(url)
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            updates = json.loads(resp.read().decode("utf-8")).get("result", [])
+    except Exception as e:
+        print(f"[bot_polling] Error fetching updates: {e}")
+        return received
+
+    for update in updates:
+        offset = handle_update(update)
+        msg = update.get("message", {})
+        text = msg.get("text", "")
+        username = msg.get("from", {}).get("username", "N/A")
+        if text:
+            received.append((username, text))
+
+    save_offset(offset)
+    print(f"[bot_polling] processed {len(received)} message(s) since last run.")
+
+    if admin_chat_id and received:
+        lines = [f"👤 @{u or 'ناشناس'}: {t}" for u, t in received]
+        digest = "📥 پیام‌های جدید ربات از اجرای قبلی تا الان:\n\n" + "\n".join(lines)
+        send_message(admin_chat_id, digest)
+
+    return received
+
+
 if __name__ == "__main__":
     target = sys.argv[1] if len(sys.argv) > 1 else "both"
 
     if target == "daemon":
         run_bot_daemon()
+    elif target == "poll":
+        admin = os.environ.get("TELEGRAM_ADMIN_CHAT_ID") or (TELEGRAM_CHAT_IDS[0] if TELEGRAM_CHAT_IDS else None)
+        poll_once(admin_chat_id=admin)
     else:
         if target in ("config", "both"):
             notify("Config", "config", "config", limit=50)
