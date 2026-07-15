@@ -1,504 +1,104 @@
-# Benchmark Results - 2026-07-15 10:38:58
+# Benchmark Results - 2026-07-16 01:15:18
 
-| Config/Proxy (Truncated)          |   Ping (ms) | Location             |
-|-----------------------------------|-------------|----------------------|
-| vless://c09795c8-ee61-4c2a-980... |        9.39 | Unknown              |
-| trojan://MiTiVPN@91.193.58.201... |       18.57 | United Kingdom       |
-| trojan://tg-dns68@162.159.152.... |       19.42 | Canada               |
-| trojan://humanity@104.16.174.1... |       19.9  | Canada               |
-| trojan://MiTiVPN@91.193.58.201... |       20.57 | United Kingdom       |
-| vless://f435d785-e3cf-4292-be4... |       20.74 | Iran                 |
-| trojan://MiTiVPN@91.193.58.201... |       20.87 | United Kingdom       |
-| trojan://MiTiVPN@91.193.58.201... |       20.88 | United Kingdom       |
-| trojan://humanity@45.80.111.7:... |       21.02 | Germany              |
-| vless://7968c546-02dc-4f8c-b79... |       21.81 | Canada               |
-| vless://c09795c8-ee61-4c2a-980... |       22.02 | Unknown              |
-| trojan://MiTiVPN@91.193.58.201... |       22.16 | United Kingdom       |
-| trojan://MiTiVPN@91.193.58.201... |       22.19 | United Kingdom       |
-| trojan://de4dbc41-fe13-4498-b5... |       22.56 | Germany              |
-| vless://adeefaa4-3734-4a6d-8e4... |       22.65 | Canada               |
-| trojan://MiTiVPN@88.216.67.230... |       22.8  | Curacao              |
-| vless://72d1797c-cef8-410a-b8f... |       22.85 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       22.88 | Canada               |
-| vless://b3abfae4-1a95-4c78-afd... |       22.93 | Canada               |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       23.19 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       23.48 | Canada               |
-| vless://72d1797c-cef8-410a-b8f... |       23.62 | Canada               |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       23.69 | Canada               |
-| vless://72d1797c-cef8-410a-b8f... |       23.78 | Canada               |
-| trojan://kZSruDyvxP@45.130.125... |       23.84 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       24.07 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       24.1  | Seychelles           |
-| vless://72d1797c-cef8-410a-b8f... |       24.12 | Canada               |
-| vless://a4140ffb-49da-45c3-91c... |       24.13 | Germany              |
-| vless://eeb6823c-b926-4ea2-866... |       24.33 | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       24.34 | Canada               |
-| trojan://humanity@45.130.125.7... |       24.52 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       24.85 | Canada               |
-| trojan://MiTiVPN@89.116.250.13... |       25.02 | Lithuania            |
-| vless://7124626c-9341-48a6-b89... |       25.06 | Seychelles           |
-| vless://767b6340-96dc-4aa0-801... |       25.21 | Canada               |
-| vless://f798a2c4-c51b-409d-b34... |       25.42 | Canada               |
-| vless://7e544a9d-7667-413b-bbb... |       25.63 | Canada               |
-| vless://c35050ce-01ab-45a9-91b... |       25.68 | Canada               |
-| vless://8ee19304-fdf4-43dd-ab7... |       25.7  | Canada               |
-| vless://dc9b85ff-a632-4349-974... |       25.79 | Iran                 |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       25.8  | Canada               |
-| trojan://humanity@104.16.174.1... |       25.8  | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       25.88 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       25.9  | Canada               |
-| trojan://humanity@45.130.125.3... |       25.93 | Seychelles           |
-| vless://c35050ce-01ab-45a9-91b... |       26    | Canada               |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       26.02 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       26.04 | Seychelles           |
-| vless://7968c546-02dc-4f8c-b79... |       26.08 | Canada               |
-| trojan://MiTiVPN@89.116.250.13... |       26.09 | Lithuania            |
-| vless://65d3f9b3-d289-4a8e-9c8... |       26.21 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       26.26 | Seychelles           |
-| trojan://humanity@45.130.125.2... |       26.26 | Seychelles           |
-| vless://8ee19304-fdf4-43dd-ab7... |       26.4  | Canada               |
-| vless://a0fe052d-6ca1-4a9c-b62... |       26.48 | Canada               |
-| vless://6202b230-417c-4d8e-b62... |       26.51 | France               |
-| vless://6680846a-8a57-4dfd-9a0... |       26.55 | Seychelles           |
-| vless://a0fe052d-6ca1-4a9c-b62... |       26.63 | Canada               |
-| trojan://humanity@45.130.125.2... |       26.82 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       26.88 | Canada               |
-| vless://adeefaa4-3734-4a6d-8e4... |       26.92 | Canada               |
-| trojan://MITIVPN@45.131.4.115:... |       26.94 | Iran                 |
-| vless://a0fe052d-6ca1-4a9c-b62... |       26.95 | Canada               |
-| trojan://MiTiVPN@89.116.250.13... |       27.03 | Lithuania            |
-| vless://eeb6823c-b926-4ea2-866... |       27.05 | Seychelles           |
-| vless://57b0d214-8602-4147-80d... |       27.09 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       27.14 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       27.2  | Seychelles           |
-| vless://6202b230-417c-4d8e-b62... |       27.31 | The Netherlands      |
-| trojan://MiTiVPN@89.116.250.13... |       27.4  | Lithuania            |
-| vless://dc8eccdb-ecfa-435f-9ac... |       27.53 | Seychelles           |
-| trojan://MiTiVPN@104.18.42.98:... |       27.53 | Canada               |
-| vless://97ea73b6-2043-4238-903... |       27.54 | Canada               |
-| trojan://MiTiVPN@89.116.250.13... |       27.65 | Lithuania            |
-| trojan://MITIVPN@94.140.0.40:4... |       27.67 | United Arab Emirates |
-| vless://6202b230-417c-4d8e-b62... |       27.72 | United Arab Emirates |
-| vless://6680846a-8a57-4dfd-9a0... |       27.8  | Seychelles           |
-| trojan://jZKsbuRpEB@45.130.125... |       27.93 | Seychelles           |
-| vless://dc8eccdb-ecfa-435f-9ac... |       27.97 | Seychelles           |
-| vless://6202b230-417c-4d8e-b62... |       28.03 | United States        |
-| vless://a5c05c1e-aa68-443f-859... |       28.04 | Sweden               |
-| vless://eeb6823c-b926-4ea2-866... |       28.04 | Canada               |
-| vless://7e544a9d-7667-413b-bbb... |       28.05 | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       28.1  | Seychelles           |
-| trojan://MITIVPN@89.116.250.13... |       28.1  | Lithuania            |
-| vless://ae0dd58e-e222-40bf-84a... |       28.1  | United States        |
-| vless://767b6340-96dc-4aa0-801... |       28.12 | Canada               |
-| trojan://humanity@104.19.230.2... |       28.19 | Canada               |
-| vless://dc8eccdb-ecfa-435f-9ac... |       28.21 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       28.36 | Seychelles           |
-| vless://c04e959d-3b7a-4d4f-881... |       28.42 | Unknown              |
-| vless://a5c05c1e-aa68-443f-859... |       28.45 | Sweden               |
-| vless://eeb6823c-b926-4ea2-866... |       28.49 | Canada               |
-| vless://a5c05c1e-aa68-443f-859... |       28.5  | Sweden               |
-| vless://6680846a-8a57-4dfd-9a0... |       28.51 | Unknown              |
-| vless://eeb6823c-b926-4ea2-866... |       28.56 | Seychelles           |
-| trojan://humanity@45.130.125.1... |       28.58 | Seychelles           |
-| vless://a5c05c1e-aa68-443f-859... |       28.61 | Sweden               |
-| vless://eeb6823c-b926-4ea2-866... |       28.69 | Canada               |
-| vless://767b6340-96dc-4aa0-801... |       28.71 | Canada               |
-| vless://b4626575-0ff0-4437-9a7... |       28.74 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       28.77 | Canada               |
-| vless://a5c05c1e-aa68-443f-859... |       28.78 | Sweden               |
-| vless://f798a2c4-c51b-409d-b34... |       28.78 | Canada               |
-| vless://dc8eccdb-ecfa-435f-9ac... |       28.82 | Seychelles           |
-| vless://6202b230-417c-4d8e-b62... |       28.93 | United States        |
-| vless://659a9075-d5ab-4fd2-bf3... |       28.96 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       28.96 | Unknown              |
-| vless://dc8eccdb-ecfa-435f-9ac... |       28.97 | Seychelles           |
-| vless://6202b230-417c-4d8e-b62... |       28.99 | France               |
-| trojan://humanity@212.183.88.1... |       29.06 | Austria              |
-| trojan://MiTiVPN@104.16.72.41:... |       29.08 | Canada               |
-| trojan://tg-dns68@162.159.153.... |       29.14 | Canada               |
-| vless://6202b230-417c-4d8e-b62... |       29.14 | Kazakhstan           |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       29.19 | Seychelles           |
-| trojan://MiTiVPN@45.130.125.2:... |       29.22 | Seychelles           |
-| vless://b72bae22-90e8-4e4d-937... |       29.23 | Iran                 |
-| vless://6680846a-8a57-4dfd-9a0... |       29.23 | United States        |
-| trojan://humanity@104.19.229.2... |       29.24 | Canada               |
-| trojan://humanity@208.103.161.... |       29.25 | United States        |
-| trojan://MiTiVPN@45.130.125.2:... |       29.33 | Seychelles           |
-| trojan://MITIVPN@89.116.250.13... |       29.38 | Lithuania            |
-| vless://bd134ebe-650c-4bd6-a20... |       29.42 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       29.49 | Canada               |
-| trojan://MiTiVPN@104.19.230.21... |       29.52 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       29.6  | Seychelles           |
-| vless://938e2c26-3d8e-4c1d-9a1... |       29.68 | Germany              |
-| trojan://humanity@165.215.250.... |       29.7  | United States        |
-| vless://659a9075-d5ab-4fd2-bf3... |       29.76 | Canada               |
-| trojan://humanity@104.18.152.2... |       29.79 | Canada               |
-| vless://7e544a9d-7667-413b-bbb... |       29.8  | Unknown              |
-| trojan://zBfIAxaXtz@45.130.125... |       29.81 | Seychelles           |
-| vless://a5c05c1e-aa68-443f-859... |       29.81 | Sweden               |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       29.82 | Seychelles           |
-| vless://6680846a-8a57-4dfd-9a0... |       29.86 | United States        |
-| trojan://MiTiVPN@89.116.250.13... |       29.87 | Lithuania            |
-| trojan://MITIVPN@45.131.4.115:... |       29.88 | Iran                 |
-| vless://dc8eccdb-ecfa-435f-9ac... |       30.01 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       30.02 | Canada               |
-| vless://5acc4610-f2d7-44c9-bbe... |       30.06 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       30.08 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       30.1  | Canada               |
-| vless://5acc4610-f2d7-44c9-bbe... |       30.13 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       30.14 | Canada               |
-| vless://dc8eccdb-ecfa-435f-9ac... |       30.2  | Seychelles           |
-| vless://a4140ffb-49da-45c3-91c... |       30.24 | Germany              |
-| vless://eeb6823c-b926-4ea2-866... |       30.25 | Canada               |
-| vless://a5c05c1e-aa68-443f-859... |       30.38 | Sweden               |
-| vless://a5c05c1e-aa68-443f-859... |       30.74 | Sweden               |
-| vless://7968c546-02dc-4f8c-b79... |       30.78 | Seychelles           |
-| vless://a13d3bce-a462-4244-88d... |       30.8  | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       30.81 | Seychelles           |
-| vless://b91a1a68-6696-4c9c-87a... |       30.83 | Seychelles           |
-| vless://a5c05c1e-aa68-443f-859... |       30.92 | Sweden               |
-| vless://8ee19304-fdf4-43dd-ab7... |       31.04 | Canada               |
-| vless://a5c05c1e-aa68-443f-859... |       31.08 | Sweden               |
-| vless://6680846a-8a57-4dfd-9a0... |       31.09 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       31.09 | Seychelles           |
-| vless://f798a2c4-c51b-409d-b34... |       31.26 | Canada               |
-| vless://dca945d2-6d9b-434f-875... |       31.26 | Canada               |
-| vless://e8c61352-444f-4154-ba3... |       31.29 | Canada               |
-| vless://e8c61352-444f-4154-ba3... |       31.41 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       31.59 | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       31.62 | Canada               |
-| vless://b2974faf-4dc2-4a6d-935... |       31.62 | Canada               |
-| trojan://tg-dns68@162.159.153.... |       31.65 | Canada               |
-| trojan://MiTiVPN@89.116.250.13... |       31.66 | Lithuania            |
-| vless://a5c05c1e-aa68-443f-859... |       31.77 | Sweden               |
-| vless://659a9075-d5ab-4fd2-bf3... |       31.78 | Canada               |
-| trojan://humanity@208.103.161.... |       31.8  | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       31.86 | Canada               |
-| vless://2fb22d40-598f-4890-85a... |       31.98 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       32    | Canada               |
-| trojan://humanity@199.181.197.... |       32.03 | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       32.15 | Seychelles           |
-| vless://d98c757d-2be3-49ff-8b9... |       32.15 | Seychelles           |
-| vless://7968c546-02dc-4f8c-b79... |       32.2  | Seychelles           |
-| vless://f798a2c4-c51b-409d-b34... |       32.28 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       32.29 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       32.31 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       32.35 | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       32.43 | Seychelles           |
-| trojan://humanity@104.16.72.2:... |       32.6  | Canada               |
-| trojan://humanity@212.183.88.1... |       32.64 | Austria              |
-| vless://eeb6823c-b926-4ea2-866... |       32.69 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       32.72 | Seychelles           |
-| vless://a5c05c1e-aa68-443f-859... |       32.74 | Sweden               |
-| vless://eeb6823c-b926-4ea2-866... |       32.84 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       32.84 | Seychelles           |
-| vless://6680846a-8a57-4dfd-9a0... |       32.94 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       32.99 | Canada               |
-| vless://f798a2c4-c51b-409d-b34... |       32.99 | Canada               |
-| vless://f798a2c4-c51b-409d-b34... |       33.08 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       33.11 | Canada               |
-| trojan://humanity@185.18.250.2... |       33.21 | Spain                |
-| vless://7968c546-02dc-4f8c-b79... |       33.22 | Seychelles           |
-| vless://f798a2c4-c51b-409d-b34... |       33.27 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       33.29 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       33.37 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       33.37 | Seychelles           |
-| vless://b3abfae4-1a95-4c78-afd... |       33.39 | Canada               |
-| vless://b2974faf-4dc2-4a6d-935... |       33.41 | Canada               |
-| vless://4a1441b0-7bc8-4906-85c... |       33.41 | Canada               |
-| trojan://tg-dns68@162.159.153.... |       33.43 | Canada               |
-| trojan://MiTiVPN@89.116.250.13... |       33.46 | Lithuania            |
-| trojan://M%69TiVPN@89.116.250.... |       33.58 | Lithuania            |
-| vless://f798a2c4-c51b-409d-b34... |       33.59 | Canada               |
-| vless://b9f5a731-ad7c-4185-9d8... |       33.75 | Iran                 |
-| vless://612ebec7-9607-4946-b10... |       33.8  | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       33.94 | Canada               |
-| vless://f798a2c4-c51b-409d-b34... |       33.95 | Canada               |
-| vless://612ebec7-9607-4946-b10... |       34.02 | Canada               |
-| trojan://humanity@185.18.250.2... |       34.15 | Spain                |
-| vless://6202b230-417c-4d8e-b62... |       34.26 | Canada               |
-| vless://ae18c4e2-4348-428d-8fe... |       34.29 | Unknown              |
-| vless://eeb6823c-b926-4ea2-866... |       34.36 | Seychelles           |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       34.49 | Unknown              |
-| trojan://humanity@185.18.250.2... |       34.5  | Spain                |
-| vless://eeb6823c-b926-4ea2-866... |       34.5  | Seychelles           |
-| trojan://MiTiVPN@104.16.71.48:... |       34.6  | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       34.6  | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       34.74 | Seychelles           |
-| trojan://humanity@104.18.32.47... |       34.83 | Canada               |
-| vless://72d1797c-cef8-410a-b8f... |       34.87 | Unknown              |
-| vless://f798a2c4-c51b-409d-b34... |       34.9  | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       34.91 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       35.03 | Seychelles           |
-| vless://31aa0950-eb19-45ff-94a... |       35.03 | Seychelles           |
-| trojan://MiTiVPN@104.16.71.48:... |       35.13 | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       35.14 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       35.14 | Seychelles           |
-| trojan://MiTiVPN@104.17.122.62... |       35.17 | Canada               |
-| vless://b3abfae4-1a95-4c78-afd... |       35.37 | Canada               |
-| trojan://eeb6823c-b926-4ea2-86... |       35.39 | Canada               |
-| vless://4f013568-a58b-4b04-b5d... |       35.42 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       35.43 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       35.47 | Seychelles           |
-| vless://4f013568-a58b-4b04-b5d... |       35.55 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       35.6  | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       35.61 | Canada               |
-| vless://4f013568-a58b-4b04-b5d... |       35.63 | Canada               |
-| vless://7e544a9d-7667-413b-bbb... |       35.67 | Canada               |
-| vless://4f013568-a58b-4b04-b5d... |       35.73 | Canada               |
-| vless://659a9075-d5ab-4fd2-bf3... |       35.94 | Canada               |
-| vless://8ee19304-fdf4-43dd-ab7... |       35.97 | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       36.01 | Seychelles           |
-| vless://4f013568-a58b-4b04-b5d... |       36.12 | Canada               |
-| vless://4f013568-a58b-4b04-b5d... |       36.28 | Canada               |
-| vless://b26ec0f4-6c92-45f7-b28... |       36.35 | Canada               |
-| vless://07c87117-8472-41f6-bea... |       36.42 | United States        |
-| vless://f798a2c4-c51b-409d-b34... |       36.42 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       36.45 | Seychelles           |
-| vless://f798a2c4-c51b-409d-b34... |       36.54 | Canada               |
-| vless://080fad7c-ff4b-499f-ab5... |       36.6  | The Netherlands      |
-| vless://8ee19304-fdf4-43dd-ab7... |       36.61 | Canada               |
-| trojan://humanity@104.18.32.47... |       36.72 | Canada               |
-| vless://f798a2c4-c51b-409d-b34... |       36.87 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       36.88 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       36.91 | Canada               |
-| vless://4f013568-a58b-4b04-b5d... |       36.96 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       37.06 | Seychelles           |
-| vless://75e19908-ecd0-4c71-99d... |       37.09 | Unknown              |
-| vless://eeb6823c-b926-4ea2-866... |       37.1  | Canada               |
-| vless://4feb7818-dc02-46cd-b98... |       37.31 | United Kingdom       |
-| vless://4f013568-a58b-4b04-b5d... |       37.49 | Canada               |
-| vless://4f013568-a58b-4b04-b5d... |       37.62 | Canada               |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       37.71 | Seychelles           |
-| vless://7968c546-02dc-4f8c-b79... |       37.8  | Canada               |
-| trojan://MiTiVPN@89.116.250.13... |       37.81 | Lithuania            |
-| vless://cc752a3e-1537-4e86-bb5... |       38.04 | Canada               |
-| vless://b3abfae4-1a95-4c78-afd... |       38.06 | Canada               |
-| vless://977bac99-33d4-408a-91f... |       38.07 | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       38.17 | Seychelles           |
-| vless://92a4cb10-228f-4239-8c6... |       38.18 | Canada               |
-| vless://977bac99-33d4-408a-91f... |       38.3  | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       38.34 | Seychelles           |
-| vless://073d1d50-8478-47bf-a82... |       38.39 | Canada               |
-| vless://f798a2c4-c51b-409d-b34... |       38.44 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       38.45 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       38.47 | Seychelles           |
-| vless://f798a2c4-c51b-409d-b34... |       38.48 | Canada               |
-| trojan://humanity@81.255.155.1... |       38.48 | France               |
-| vless://cccbfdd9-b6fe-45c5-ac0... |       38.66 | Iran                 |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       38.73 | Seychelles           |
-| trojan://humanity@104.16.72.2:... |       38.76 | Canada               |
-| trojan://humanity@45.130.125.2... |       38.89 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       38.91 | Canada               |
-| trojan://humanity@104.18.32.47... |       38.94 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       38.97 | Seychelles           |
-| vless://5361a986-91b9-4756-a78... |       38.98 | Kazakhstan           |
-| trojan://humanity@45.130.125.1... |       39    | Seychelles           |
-| vless://f798a2c4-c51b-409d-b34... |       39.02 | Canada               |
-| vless://c35050ce-01ab-45a9-91b... |       39.03 | Canada               |
-| vless://7e544a9d-7667-413b-bbb... |       39.04 | Canada               |
-| vless://dc8eccdb-ecfa-435f-9ac... |       39.07 | Seychelles           |
-| vless://902fd911-ca5d-49a6-99a... |       39.09 | Canada               |
-| vless://7e544a9d-7667-413b-bbb... |       39.12 | Canada               |
-| vless://b4626575-0ff0-4437-9a7... |       39.18 | Canada               |
-| vless://a5c05c1e-aa68-443f-859... |       39.2  | Sweden               |
-| vless://dc8eccdb-ecfa-435f-9ac... |       39.33 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       39.34 | Canada               |
-| vless://6202b230-417c-4d8e-b62... |       39.39 | United States        |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       39.51 | Seychelles           |
-| vless://f798a2c4-c51b-409d-b34... |       39.66 | Canada               |
-| trojan://humanity@104.18.152.2... |       39.68 | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       39.73 | Canada               |
-| vless://c35050ce-01ab-45a9-91b... |       39.78 | Canada               |
-| vless://7e544a9d-7667-413b-bbb... |       39.87 | Canada               |
-| vless://f798a2c4-c51b-409d-b34... |       40.01 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       40.11 | Seychelles           |
-| vless://30fcec7f-164b-465c-87f... |       40.12 | Iran                 |
-| vless://f798a2c4-c51b-409d-b34... |       40.17 | Canada               |
-| trojan://MITIVPN@45.130.125.2:... |       40.17 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       40.18 | Canada               |
-| vless://f798a2c4-c51b-409d-b34... |       40.26 | Canada               |
-| trojan://humanity@45.130.125.1... |       40.28 | Seychelles           |
-| trojan://Aimer@167.68.4.199:20... |       40.29 | United States        |
-| vless://4feb7818-dc02-46cd-b98... |       40.32 | United Kingdom       |
-| vless://eeb6823c-b926-4ea2-866... |       40.34 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       40.37 | Canada               |
-| trojan://MITIVPN@45.130.125.2:... |       40.52 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       40.6  | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       40.6  | Canada               |
-| vless://31aa0950-eb19-45ff-94a... |       40.61 | Seychelles           |
-| vless://f798a2c4-c51b-409d-b34... |       40.69 | Canada               |
-| trojan://MiTiVPN@89.116.250.13... |       41.07 | Lithuania            |
-| trojan://MITIVPN@45.130.125.2:... |       41.18 | Seychelles           |
-| vless://7e544a9d-7667-413b-bbb... |       41.26 | Canada               |
-| vless://ce977d82-824b-4209-87f... |       41.35 | Canada               |
-| vless://6202b230-417c-4d8e-b62... |       41.43 | Belize               |
-| vless://dc8eccdb-ecfa-435f-9ac... |       41.43 | Seychelles           |
-| vless://31aa0950-eb19-45ff-94a... |       41.47 | Seychelles           |
-| vless://4f013568-a58b-4b04-b5d... |       41.55 | Canada               |
-| vless://dc8eccdb-ecfa-435f-9ac... |       41.59 | Seychelles           |
-| vless://3176b184-8987-4e27-9e2... |       41.6  | Canada               |
-| vless://06b65903-406d-4a41-840... |       41.71 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       41.75 | Unknown              |
-| vless://b3abfae4-1a95-4c78-afd... |       41.85 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       41.87 | Seychelles           |
-| vless://7e544a9d-7667-413b-bbb... |       41.98 | Canada               |
-| trojan://humanity@2.144.21.112... |       42    | Iran                 |
-| vless://eeb6823c-b926-4ea2-866... |       42.05 | Canada               |
-| vless://48198295-b7ba-4b5c-8d8... |       42.35 | United States        |
-| vless://c35050ce-01ab-45a9-91b... |       42.36 | Unknown              |
-| vless://c35050ce-01ab-45a9-91b... |       42.46 | Canada               |
-| trojan://MiTiVPN@45.131.4.115:... |       42.58 | Iran                 |
-| vless://a5c05c1e-aa68-443f-859... |       42.64 | Sweden               |
-| vless://2c67d2be-27fa-49f6-94c... |       42.68 | Canada               |
-| vless://6e76eb41-46c0-438a-8e2... |       42.69 | Canada               |
-| vless://c35050ce-01ab-45a9-91b... |       42.69 | Canada               |
-| vless://48198295-b7ba-4b5c-8d8... |       42.7  | United States        |
-| trojan://humanity@104.18.152.2... |       42.81 | Canada               |
-| vless://a5c05c1e-aa68-443f-859... |       42.81 | Sweden               |
-| vless://973b0f5b-602b-4ab5-841... |       42.83 | Seychelles           |
-| trojan://humanity@104.18.13.14... |       43.16 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       43.31 | Canada               |
-| vless://973b0f5b-602b-4ab5-841... |       43.32 | Seychelles           |
-| trojan://humanity@104.18.12.14... |       43.32 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       43.44 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       43.51 | Canada               |
-| vless://7e544a9d-7667-413b-bbb... |       43.59 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       43.62 | Canada               |
-| vless://2b5f8588-87f6-40af-a78... |       43.69 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       43.74 | Canada               |
-| trojan://humanity@104.16.72.2:... |       43.82 | Canada               |
-| vless://ac767c97-53a0-447d-93e... |       43.94 | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       44.08 | Canada               |
-| vless://a5c05c1e-aa68-443f-859... |       44.1  | Sweden               |
-| trojan://MiTiVPN@104.16.71.48:... |       44.11 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       44.32 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       44.37 | United States        |
-| vless://ac006062-f051-43c6-bd4... |       44.42 | Seychelles           |
-| vless://ac006062-f051-43c6-bd4... |       44.47 | Seychelles           |
-| vless://dbf40548-9f3b-4012-b1c... |       44.53 | Canada               |
-| trojan://tg-dns68@162.159.152.... |       44.54 | Canada               |
-| vless://ad40a583-2d59-44ff-88c... |       44.58 | Canada               |
-| vless://ac767c97-53a0-447d-93e... |       44.68 | Canada               |
-| vless://4f013568-a58b-4b04-b5d... |       44.68 | Canada               |
-| vless://dbf40548-9f3b-4012-b1c... |       44.69 | Canada               |
-| vless://c9c7a2b1-caf7-4adb-a18... |       44.7  | Unknown              |
-| trojan://humanity@216.24.57.1:... |       44.75 | United States        |
-| vless://073d1d50-8478-47bf-a82... |       44.83 | Canada               |
-| vless://dbf40548-9f3b-4012-b1c... |       44.9  | Canada               |
-| trojan://humanity@45.130.125.1... |       45.01 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       45.11 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       45.13 | Seychelles           |
-| vless://16586b3b-9e26-4fe9-b13... |       45.19 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       45.32 | Canada               |
-| vless://28201cd6-c2a9-4703-a31... |       45.37 | Canada               |
-| trojan://MiTiVPN@104.16.71.48:... |       45.4  | Canada               |
-| vless://9df8feba-3070-40f4-94b... |       45.54 | Iran                 |
-| vless://902fd911-ca5d-49a6-99a... |       45.55 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       45.58 | United States        |
-| trojan://humanity@45.80.111.7:... |       45.6  | Germany              |
-| vless://ad356e93-cc14-417d-9f4... |       45.6  | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       45.74 | United States        |
-| vless://e7af22d8-dee7-2af7-e51... |       45.84 | Canada               |
-| trojan://bpb-trojan@190.93.244... |       45.92 | Costa Rica           |
-| vless://ad356e93-cc14-417d-9f4... |       46    | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       46.04 | Canada               |
-| trojan://humanity@172.64.147.2... |       46.05 | Canada               |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       46.15 | Seychelles           |
-| vless://7e544a9d-7667-413b-bbb... |       46.17 | Canada               |
-| trojan://MITIVPN@104.26.14.137... |       46.23 | Canada               |
-| trojan://humanity@162.159.17.1... |       46.24 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       46.33 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       46.36 | Canada               |
-| vless://3682a59c-b75a-4383-95a... |       46.37 | Germany              |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       46.59 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       46.63 | Canada               |
-| vless://5b9fa73b-b549-480b-add... |       46.74 | Unknown              |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       46.75 | Seychelles           |
-| trojan://humanity@162.159.17.1... |       46.76 | Canada               |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       46.85 | Seychelles           |
-| vless://6fc36cfc-561f-4544-9a0... |       46.99 | Canada               |
-| trojan://humanity@104.18.152.2... |       47.12 | Canada               |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       47.16 | Seychelles           |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       47.16 | Seychelles           |
-| trojan://MiTiVPN@89.116.250.13... |       47.19 | Lithuania            |
-| trojan://eeb6823c-b926-4ea2-86... |       47.25 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       47.35 | United States        |
-| vless://13ee9ac4-6b8d-42d5-90c... |       47.65 | Canada               |
-| trojan://MiTiVPN@89.116.250.13... |       47.73 | Lithuania            |
-| vless://ad8a28d6-a327-4ccc-933... |       47.74 | Unknown              |
-| vless://eeb6823c-b926-4ea2-866... |       47.79 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       47.84 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       47.94 | Canada               |
-| vless://e7961655-9674-4cbd-a36... |       48    | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       48    | Seychelles           |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       48    | Seychelles           |
-| vless://4f013568-a58b-4b04-b5d... |       48.08 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       48.14 | Seychelles           |
-| vless://b3abfae4-1a95-4c78-afd... |       48.18 | Canada               |
-| vless://e5f8a9f6-f164-479b-b3b... |       48.22 | Canada               |
-| vless://b3abfae4-1a95-4c78-afd... |       48.3  | Canada               |
-| vless://72d1797c-cef8-410a-b8f... |       48.37 | Unknown              |
-| vless://17540a16-a0dd-5694-7e1... |       48.44 | United Kingdom       |
-| vless://17540a16-a0dd-5694-7e1... |       48.52 | Spain                |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       48.54 | Seychelles           |
-| vless://7e544a9d-7667-413b-bbb... |       48.61 | Canada               |
-| vless://72d1797c-cef8-410a-b8f... |       48.68 | Unknown              |
-| vless://7e544a9d-7667-413b-bbb... |       48.72 | Canada               |
-| vless://72d1797c-cef8-410a-b8f... |       48.77 | Unknown              |
-| vless://dc8eccdb-ecfa-435f-9ac... |       48.78 | Seychelles           |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       48.86 | Seychelles           |
-| vless://cd7365e1-5397-411c-997... |       48.87 | Iran                 |
-| vless://7968c546-02dc-4f8c-b79... |       48.91 | Canada               |
-| vless://e5cc16a6-ea42-46b2-82a... |       48.91 | Canada               |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       48.94 | Seychelles           |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       49.02 | Seychelles           |
-| vless://ad356e93-cc14-417d-9f4... |       49.05 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       49.05 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       49.12 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       49.23 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       49.26 | Canada               |
-| vless://24c2a873-4584-4c53-867... |       49.29 | Canada               |
-| vless://6680846a-8a57-4dfd-9a0... |       49.44 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       49.45 | Canada               |
-| vless://cd7365e1-5397-411c-997... |       49.49 | Iran                 |
-| vless://14b59caf-a196-4ec2-8c7... |       49.86 | Seychelles           |
-| vless://3b7ec44b-66d8-4822-b77... |       49.98 | Canada               |
-| trojan://MiTiVPN@104.21.48.168... |       50.02 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       50.08 | Canada               |
-| vless://b3a5f201-eeaf-40c8-909... |       50.11 | Canada               |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       50.17 | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       50.2  | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       50.21 | Canada               |
-| trojan://humanity@45.130.125.1... |       50.24 | Seychelles           |
-| vless://659a9075-d5ab-4fd2-bf3... |       50.24 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       50.31 | Canada               |
-| trojan://Aimer@167.68.4.199:20... |       50.36 | United States        |
-| trojan://Aimer@167.68.4.199:20... |       50.4  | United States        |
-| trojan://MiTiVPN@104.21.48.168... |       50.42 | Canada               |
-| vless://4e4f0473-809a-4cf8-8f6... |       50.42 | Canada               |
-| vless://36ddcba8-5d7b-4243-831... |       50.44 | The Netherlands      |
-| vless://89b3cbba-e6ac-485a-948... |       50.58 | Canada               |
-| vless://36ddcba8-5d7b-4243-831... |       50.7  | United States        |
-| vless://74b1f2da-0e37-4795-b1d... |       50.72 | Canada               |
-| vless://3c8fe0d4-7163-41ef-8e7... |       50.74 | Canada               |
-| vless://dd321f25-8f90-4e7c-a1f... |       50.92 | Canada               |
-| vless://3c8fe0d4-7163-41ef-8e7... |       50.93 | Canada               |
-| vless://659a9075-d5ab-4fd2-bf3... |       51.04 | Canada               |
-| trojan://8r<[9'l6hAO#8ZQi@172.... |       51.12 | Canada               |
-| vless://72d1797c-cef8-410a-b8f... |       51.12 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       51.21 | Canada               |
-| vless://4e45c1b4-9107-45dd-999... |       51.21 | Canada               |
-| vless://3c8fe0d4-7163-41ef-8e7... |       51.25 | Canada               |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       51.28 | Canada               |
-| vless://659a9075-d5ab-4fd2-bf3... |       51.32 | Canada               |
-| vless://eeb6823c-b926-4ea2-866... |       51.33 | Canada               |
-| vless://5d8eb33a-2166-4daf-88f... |       51.37 | United States        |
-| vless://a5c05c1e-aa68-443f-859... |       51.37 | Canada               |
-| trojan://humanity@172.64.147.2... |       51.37 | Canada               |
-| vless://3c8fe0d4-7163-41ef-8e7... |       51.39 | Canada               |
-| vless://f3b8c2a1-9d4e-4b7f-a6c... |       51.42 | Canada               |
-| vless://7968c546-02dc-4f8c-b79... |       51.42 | Canada               |
-| trojan://MITIVPN@104.16.72.41:... |       51.53 | Canada               |
-| trojan://humanity@45.130.125.1... |       51.8  | Seychelles           |
-| vless://eeb6823c-b926-4ea2-866... |       51.94 | Canada               |
+| Config/Proxy (Truncated)          |   Ping (ms) | Location        |
+|-----------------------------------|-------------|-----------------|
+| vless://5c221de4-590b-41b8-8a3... |       17.55 | Germany         |
+| vless://6263516e-13f4-4a29-8c6... |       17.56 | Iran            |
+| vless://9f94a8b7-5804-46bb-82b... |       17.75 | Japan           |
+| vless://89049f79-320b-48a0-b1c... |       19.1  | Switzerland     |
+| vless://2730487f-0ed5-4f04-92d... |       20.19 | Canada          |
+| vless://9b01972f-86c0-4209-a68... |       22.67 | Iran            |
+| vless://859a537b-09cf-4bce-8da... |       23.36 | Germany         |
+| vless://0970324b-8c61-4ae7-8c3... |       23.41 | Germany         |
+| vless://5d8fcd24-9634-4dd7-845... |       23.49 | United States   |
+| vless://81caa837-c213-4731-a02... |       24.61 | Canada          |
+| vless://e4514801-0d5a-42ba-869... |       24.74 | France          |
+| vless://63ec2a82-e47c-4782-a89... |       25    | Canada          |
+| vless://bbb9db67-9cb1-4dc6-9b9... |       25.14 | Türkiye         |
+| vless://634cdbe8-963c-403b-834... |       25.3  | Canada          |
+| vless://b2f6aa3a-2550-4a1c-b2c... |       25.4  | United States   |
+| vless://c0897097-4f59-439c-aab... |       25.58 | United States   |
+| vless://1737df47-a4b2-4096-9fc... |       25.73 | Canada          |
+| vless://86c50e3a-5b87-49dd-bd2... |       25.77 | Canada          |
+| vless://c0897097-4f59-439c-aab... |       25.86 | United States   |
+| vless://82241d60-2bdf-4de7-9a2... |       26.46 | Canada          |
+| vless://eeb6823c-b926-4ea2-866... |       26.68 | Seychelles      |
+| vless://86c50e3a-5b87-49dd-bd2... |       26.95 | Canada          |
+| vless://891710f4-45f3-41b1-99a... |       27.03 | United States   |
+| vless://eeb6823c-b926-4ea2-866... |       28.09 | United States   |
+| vless://14b59caf-a196-4ec2-8c7... |       28.21 | Canada          |
+| vless://c0897097-4f59-439c-aab... |       28.29 | France          |
+| vless://a0c8a1de-b673-473a-ab6... |       28.45 | Canada          |
+| vless://AlfredConfig@104.17.10... |       28.51 | Canada          |
+| vless://859a537b-09cf-4bce-8da... |       28.99 | Germany         |
+| vless://859a537b-09cf-4bce-8da... |       29.2  | Germany         |
+| vless://62cdf075-a753-4836-9eb... |       29.33 | Finland         |
+| trojan://humanity@104.16.174.4... |       29.34 | Canada          |
+| vless://06b65903-406d-4a41-840... |       29.62 | Canada          |
+| vless://eeb6823c-b926-4ea2-866... |       29.73 | Canada          |
+| vless://073d1d50-8478-47bf-a82... |       29.8  | Canada          |
+| vless://388a6c57-87e7-420b-afe... |       30.48 | Canada          |
+| vless://eeb6823c-b926-4ea2-866... |       30.54 | United States   |
+| vless://5bf42840-cb06-4605-a7a... |       30.55 | Finland         |
+| vless://d98c757d-2be3-49ff-8b9... |       30.66 | Canada          |
+| vless://82241d60-2bdf-4de7-9a2... |       30.85 | Canada          |
+| trojan://MiTiVPN@104.16.72.50:... |       30.86 | Canada          |
+| vless://c065e1bb-cb56-41e5-b04... |       30.9  | Germany         |
+| vless://5fbee2a0-7ca4-46a8-aac... |       30.93 | Germany         |
+| trojan://MiTiVPN@151.101.1.194... |       31    | Canada          |
+| vless://Telegram-id-badangelll... |       31.03 | Germany         |
+| vless://6beee13a-f356-4a51-8e6... |       31.46 | Albania         |
+| vless://be5851ff-9af5-45ea-b87... |       31.61 | Canada          |
+| vless://f798a2c4-c51b-409d-b34... |       31.98 | Canada          |
+| vless://0ae9e91e-bf8c-44e4-b9c... |       32.1  | United States   |
+| vless://3536e1fa-0850-44d1-b12... |       32.15 | The Netherlands |
+| vless://eeb6823c-b926-4ea2-866... |       32.2  | United States   |
+| vless://b783c6d6-3a0f-4c13-bbd... |       32.21 | The Netherlands |
+| vless://eeb6823c-b926-4ea2-866... |       32.22 | United States   |
+| vless://86c50e3a-5b87-49dd-bd2... |       32.3  | Canada          |
+| vless://eeb6823c-b926-4ea2-866... |       32.33 | Seychelles      |
+| trojan://MiTiVPN@151.101.1.194... |       32.41 | Canada          |
+| vless://b783c6d6-3a0f-4c13-bbd... |       32.44 | The Netherlands |
+| vless://365abb75-6187-41d0-940... |       32.64 | United States   |
+| vless://5b25a339-bf7e-2673-196... |       32.66 | United States   |
+| vless://b3abfae4-1a95-4c78-afd... |       33.39 | Canada          |
+| vless://3536e1fa-0850-44d1-b12... |       33.64 | The Netherlands |
+| vless://0b0f0f45-b79a-4647-b46... |       33.65 | Türkiye         |
+| vless://5b002005-7fb1-413e-8cb... |       33.65 | Canada          |
+| vless://8f0560ec-ba22-4431-a6a... |       33.65 | Poland          |
+| vless://eeb6823c-b926-4ea2-866... |       33.73 | Canada          |
+| vless://86c50e3a-5b87-49dd-bd2... |       33.82 | Canada          |
+| trojan://telegram-id-directvpn... |       34.09 | United Kingdom  |
+| vless://859a537b-09cf-4bce-8da... |       34.16 | Germany         |
+| vless://e4514801-0d5a-42ba-869... |       34.18 | France          |
+| vless://eeb6823c-b926-4ea2-866... |       34.35 | United States   |
+| vless://a1750ade-801f-4e3e-a5d... |       34.37 | France          |
+| vless://7968c546-02dc-4f8c-b79... |       34.68 | Seychelles      |
+| vless://506e4a91-1d05-5683-b84... |       34.89 | Canada          |
+| vless://e4514801-0d5a-42ba-869... |       35.35 | France          |
+| vless://86c50e3a-5b87-49dd-bd2... |       35.7  | Canada          |
+| vless://dacb912c-39ef-4fe0-d72... |       35.74 | Germany         |
+| vless://7d876627-abf5-4865-8ff... |       36.07 | Germany         |
+| vless://86c50e3a-5b87-49dd-bd2... |       36.75 | Canada          |
+| vless://a10dab76-0f3a-42bb-979... |       36.78 | Canada          |
+| vless://a0fe052d-6ca1-4a9c-b62... |       36.8  | Canada          |
+| vless://b7675c4a-b148-4b02-9cf... |       36.82 | Russia          |
+| vless://27f2ae85-3e15-4a9a-9c7... |       36.84 | Latvia          |
+| vless://0970324b-8c61-4ae7-8c3... |       36.89 | Lithuania       |
+| vless://eeb6823c-b926-4ea2-866... |       36.97 | Canada          |
+| vless://86c50e3a-5b87-49dd-bd2... |       37.14 | Canada          |
+| vless://c0897097-4f59-439c-aab... |       37.19 | United States   |
+| vless://3aedf221-f6c5-9f8d-49d... |       37.25 | United States   |
+| vless://eeb6823c-b926-4ea2-866... |       37.5  | Canada          |
+| vless://5f65c1ae-9e7a-48ea-8ec... |       37.52 | United States   |
+| vless://RayNetTun@65.109.187.2... |       37.57 | Finland         |
+| vless://5c221de4-590b-41b8-8a3... |       37.63 | Germany         |
+| vless://ebe44c2c-96ed-4a36-845... |       37.74 | Canada          |
+| vless://5f2ddd7c-c7d5-4e57-895... |       37.91 | Germany         |
+| vless://0970324b-8c61-4ae7-8c3... |       37.94 | Germany         |
+| vless://659a9075-d5ab-4fd2-bf3... |       37.99 | Canada          |
+| trojan://MiTiVPN@172.67.74.47:... |       38.1  | Canada          |
+| vless://365abb75-6187-41d0-940... |       38.19 | United States   |
+| vless://e3c56988-5261-400f-b21... |       38.25 | The Netherlands |
+| vless://0665cf1e-0df8-4981-a8d... |       38.31 | Canada          |
+| vless://e4514801-0d5a-42ba-869... |       38.37 | France          |
