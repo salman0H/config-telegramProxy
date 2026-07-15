@@ -2,7 +2,7 @@ name: Broadcast config/proxy updates to Telegram
 
 on:
   push:
-    branches: [main]
+    branches: [feature/run-manually-option]
     paths:
       - "config/**"
       - "proxy/**"
