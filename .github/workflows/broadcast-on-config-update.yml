@@ -1,0 +1,49 @@
+name: Broadcast config/proxy updates to Telegram
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "config/**"
+      - "proxy/**"
+  workflow_dispatch: {}   # still lets you trigger it manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  broadcast:
+    runs-on: ubuntu-latest   # no TCP testing happens here, so Iran IP doesn't matter — just calling Telegram's API
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyperclip tabulate
+
+      - name: Poll Telegram for bot commands since last run
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
+        run: python3 scripts/notify_telegram.py poll
+
+      - name: Commit bot state (subscribers/log/offset)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add subscribers.json bot_requests_log.json scripts/telegram_offset.json 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Update bot state (subscribers/log/offset)"
+            git push
+          else
+            echo "No bot-state changes to commit."
+          fi
+
+      - name: Broadcast to subscribers
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
+        run: python3 scripts/notify_telegram.py both
