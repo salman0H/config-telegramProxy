@@ -16,6 +16,8 @@ jobs:
     runs-on: ubuntu-latest   # no TCP testing happens here, so Iran IP doesn't matter — just calling Telegram's API
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -42,8 +44,28 @@ jobs:
             echo "No bot-state changes to commit."
           fi
 
+      - name: Detect which folder changed
+        id: changed
+        run: |
+          BEFORE="${{ github.event.before }}"
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "target=both" >> "$GITHUB_OUTPUT"
+          else
+            CHANGED_CONFIG=$(git diff --name-only "$BEFORE" "${{ github.sha }}" -- config/ | wc -l)
+            CHANGED_PROXY=$(git diff --name-only "$BEFORE" "${{ github.sha }}" -- proxy/ | wc -l)
+            if [ "$CHANGED_CONFIG" -gt 0 ] && [ "$CHANGED_PROXY" -gt 0 ]; then
+              echo "target=both" >> "$GITHUB_OUTPUT"
+            elif [ "$CHANGED_CONFIG" -gt 0 ]; then
+              echo "target=config" >> "$GITHUB_OUTPUT"
+            elif [ "$CHANGED_PROXY" -gt 0 ]; then
+              echo "target=proxy" >> "$GITHUB_OUTPUT"
+            else
+              echo "target=both" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
       - name: Broadcast to subscribers
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
-        run: python3 scripts/notify_telegram.py both
+        run: python3 scripts/notify_telegram.py ${{ steps.changed.outputs.target }}
