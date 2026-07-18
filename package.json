@@ -1,0 +1,12 @@
+{
+  "name": "serverless-2way-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": {
+    "@tgcloud/cli": "latest"
+  },
+  "scripts": {
+    "deploy": "tgcloud push",
+    "migrate": "tgcloud migrate"
+  }
+}
