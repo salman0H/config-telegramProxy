@@ -1,1 +1,4 @@
 ids/
+.tgcloud/
+node_modules/
+bot_requests_log.json

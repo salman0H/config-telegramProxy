@@ -1,12 +1,13 @@
 {
-  "name": "serverless-2way-bot",
+  "name": "unified-telegram-bot",
   "version": "1.0.0",
   "type": "module",
   "devDependencies": {
-    "@tgcloud/cli": "latest"
+    "@tgcloud/cli": "^0.1.2"
   },
   "scripts": {
     "deploy": "tgcloud push",
     "migrate": "tgcloud migrate"
-  }
+  },
+  "private": true
 }
