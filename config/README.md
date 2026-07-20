@@ -1,34 +1,91 @@
-# Benchmark Results - 2026-07-18 09:48:08
+# Benchmark Results - 2026-07-20 15:41:45
 
-| Config/Proxy (Truncated)          |   Ping (ms) | Location           |
-|-----------------------------------|-------------|--------------------|
-| vless://fb3d8829-d22b-475c-b12... |       16.4  | Iran               |
-| vless://b9f5a731-ad7c-4185-9d8... |       18.05 | Iran               |
-| vless://e48cf70b-a9a5-4855-933... |       20.71 | Iran               |
-| trojan://humanity@2.144.21.112... |       25.09 | Iran               |
-| trojan://humanity@2.144.21.112... |       25.5  | Iran               |
-| trojan://humanity@2.144.21.112... |       25.58 | Iran               |
-| vless://cf39fab0-bb85-42cb-994... |       26.35 | United States      |
-| vless://cd7365e1-5397-411c-997... |       32.24 | Iran               |
-| vless://cd7365e1-5397-411c-997... |       32.3  | Iran               |
-| vless://d40896cb-c5bc-4ae1-8c6... |       35.32 | Unknown            |
-| vless://3ea79688-3819-41fa-913... |       38.91 | Iran               |
-| vless://dcb2544a-b257-4267-920... |       38.98 | Unknown            |
-| vless://3ea79688-3819-41fa-913... |       39.03 | Iran               |
-| vless://3ea79688-3819-41fa-913... |       39.24 | Iran               |
-| vless://15d05a66-e5cd-4173-8ba... |       48.42 | Unknown            |
-| vless://a256bcb1-e3fd-4148-b20... |       56.73 | Russian Federation |
-| vless://a521084f-7c84-4fe0-adf... |       58.67 | Russian Federation |
-| vless://a521084f-7c84-4fe0-adf... |       60.57 | Russian Federation |
-| vless://de64aaa6-a0ea-48d0-853... |       61.4  | Türkiye            |
-| vless://de64aaa6-a0ea-48d0-853... |       61.86 | Türkiye            |
-| vless://de64aaa6-a0ea-48d0-853... |       62.4  | Türkiye            |
-| vless://a521084f-7c84-4fe0-adf... |       62.7  | Russian Federation |
-| vless://596b215c-3743-4893-b24... |       64.45 | Russian Federation |
-| vless://86045e92-64d2-4586-b22... |       66.9  | Russian Federation |
-| vless://596b215c-3743-4893-b24... |       68.42 | Russian Federation |
-| vless://82ddfe27-2ad0-48cf-92a... |       69.91 | Romania            |
-| vless://04b3ed78-61b5-42bb-914... |       69.99 | Russian Federation |
-| vless://0dce55ed-b73c-40cf-95e... |       72.11 | Russian Federation |
-| socks://Og@87.248.152.144:1080... |       73.27 | Iran               |
-| vless://c61ac406-6661-4f55-a73... |       73.36 | United States      |
+| Config/Proxy (Truncated)          |   Ping (ms) | Location   |
+|-----------------------------------|-------------|------------|
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       79.66 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       79.67 | Unknown    |
+| vless://eeb6823c-b926-4ea2-866... |       80.26 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       80.42 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       80.43 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      110.07 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      110.77 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      111.01 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      112.09 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      112.26 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      113.75 | Unknown    |
+| ss://2022-blake3-aes-256-gcm:u... |      116.93 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      118.38 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      120.79 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      121.51 | Unknown    |
+| ss://2022-blake3-aes-256-gcm:u... |      121.91 | Unknown    |
+| ss://2022-blake3-aes-256-gcm:u... |      121.97 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      122.19 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      122.49 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      122.83 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      123.52 | Unknown    |
+| ss://2022-blake3-aes-256-gcm:u... |      125.96 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      126.81 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      126.92 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      127.01 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      127.09 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      127.12 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      127.58 | Unknown    |
+| ss://2022-blake3-aes-256-gcm:u... |      128    | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      128.06 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      128.49 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      128.99 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      129.07 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      129.5  | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      130.4  | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      130.54 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      130.98 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      131.15 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      131.21 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      131.44 | Unknown    |
+| ss://2022-blake3-aes-256-gcm:u... |      134.38 | Unknown    |
+| ss://2022-blake3-aes-256-gcm:u... |      134.58 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      136.5  | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      136.88 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      136.9  | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.08 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.36 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.37 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.38 | Unknown    |
+| ss://2022-blake3-aes-256-gcm:u... |      137.41 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.43 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.48 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.52 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.53 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.76 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      137.95 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      138.21 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      138.23 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      138.36 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      138.38 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      138.67 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      138.76 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      138.96 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      139    | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      139.01 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      140.58 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      140.8  | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      140.94 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      141.1  | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      141.19 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      141.25 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      141.82 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      144.19 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      144.23 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      148.22 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      149.32 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      151.23 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      151.94 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      152.82 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      156.28 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      206.79 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      206.8  | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      206.82 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      206.9  | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      228.84 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      229.15 | Unknown    |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      278.69 | Unknown    |
