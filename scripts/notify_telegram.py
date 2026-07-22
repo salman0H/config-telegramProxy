@@ -34,75 +34,87 @@ HEADER_TEMPLATE = (
 )
 
 
-def load_subscribers():
-    """Load dynamically registered chat IDs from subscriber JSON file."""
-    subscribers = set(TELEGRAM_CHAT_IDS)
+def _load_subscribers_dict():
     if os.path.exists(SUBSCRIBERS_FILE):
         try:
             with open(SUBSCRIBERS_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
+                if isinstance(data, dict):
+                    return data
                 if isinstance(data, list):
-                    subscribers.update(str(cid) for cid in data)
+                    return {str(c): "N/A" for c in data}
         except Exception as e:
             print(f"[subscribers] Error loading subscriber file: {e}")
-    return list(subscribers)
+    return {}
 
 
-def add_subscriber(chat_id):
-    """Add a new chat ID to the subscribers list if not already present."""
+def load_subscribers():
+    subs = _load_subscribers_dict()
+    for cid in TELEGRAM_CHAT_IDS:
+        subs.setdefault(cid, "N/A")
+    return subs
+
+
+def add_subscriber(chat_id, username="N/A"):
+    subs = _load_subscribers_dict()
     chat_id_str = str(chat_id)
-    current_subs = set()
-    if os.path.exists(SUBSCRIBERS_FILE):
-        try:
-            with open(SUBSCRIBERS_FILE, "r", encoding="utf-8") as f:
-                current_subs = set(str(c) for c in json.load(f))
-        except Exception:
-            current_subs = set()
-
-    if chat_id_str not in current_subs:
-        current_subs.add(chat_id_str)
-        with open(SUBSCRIBERS_FILE, "w", encoding="utf-8") as f:
-            json.dump(list(current_subs), f, ensure_ascii=False, indent=2)
-        return True
-    return False
+    is_new = chat_id_str not in subs
+    subs[chat_id_str] = username or "N/A"
+    with open(SUBSCRIBERS_FILE, "w", encoding="utf-8") as f:
+        json.dump(subs, f, ensure_ascii=False, indent=2)
+    return is_new
 
 
 def remove_subscriber(chat_id):
-    """Remove a chat ID from the subscribers list, if present."""
+    subs = _load_subscribers_dict()
     chat_id_str = str(chat_id)
-    current_subs = set()
-    if os.path.exists(SUBSCRIBERS_FILE):
-        try:
-            with open(SUBSCRIBERS_FILE, "r", encoding="utf-8") as f:
-                current_subs = set(str(c) for c in json.load(f))
-        except Exception:
-            current_subs = set()
-
-    if chat_id_str in current_subs:
-        current_subs.discard(chat_id_str)
+    if chat_id_str in subs:
+        del subs[chat_id_str]
         with open(SUBSCRIBERS_FILE, "w", encoding="utf-8") as f:
-            json.dump(list(current_subs), f, ensure_ascii=False, indent=2)
+            json.dump(subs, f, ensure_ascii=False, indent=2)
         return True
     return False
 
 
-def load_offset():
-    """Load last processed update_id."""
+def _load_state():
     if os.path.exists(OFFSET_FILE):
         try:
             with open(OFFSET_FILE, "r", encoding="utf-8") as f:
-                return json.load(f).get("offset")
+                data = json.load(f)
+                if isinstance(data, dict):
+                    return data
         except Exception:
-            return None
-    return None
+            pass
+    return {}
+
+
+def _save_state(state):
+    os.makedirs(os.path.dirname(OFFSET_FILE), exist_ok=True)
+    with open(OFFSET_FILE, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
+
+
+def load_offset():
+    return _load_state().get("offset")
 
 
 def save_offset(offset):
     if offset is None:
         return
-    os.makedirs(os.path.dirname(OFFSET_FILE), exist_ok=True)
-    with open(OFFSET_FILE, "w", encoding="utf-8") as f:
-        json.dump({"offset": offset}, f)
+    state = _load_state()
+    state["offset"] = offset
+    _save_state(state)
+
+
+def record_sent(chat_id, kind, username="N/A"):
+    state = _load_state()
+    sent = state.setdefault("sent", {})
+    sent[str(chat_id)] = {
+        "username": username,
+        "kind": kind,
+        "last_sent": datetime.now(timezone.utc).isoformat(),
+    }
+    _save_state(state)
 
 
 def latest_file(folder, suffix):
@@ -112,7 +124,6 @@ def latest_file(folder, suffix):
 
 
 def pack_groups(lines, max_items=ITEMS_PER_MESSAGE, max_chars=CHARS_BUDGET_FOR_ITEMS):
-    """Group lines into chunks of at most max_items."""
     groups = []
     current = []
     current_len = 0
@@ -151,7 +162,6 @@ def _post(method, data, headers, timeout, max_retries=4):
 
 
 def send_message(chat_id, text, parse_mode=None):
-    """Send a text message with optional parse mode (defaults to plain text)."""
     payload_dict = {
         "chat_id": chat_id,
         "text": text,
@@ -159,7 +169,6 @@ def send_message(chat_id, text, parse_mode=None):
     }
     if parse_mode:
         payload_dict["parse_mode"] = parse_mode
-
     payload = json.dumps(payload_dict).encode("utf-8")
     return _post("sendMessage", payload, {"Content-Type": "application/json"}, 15)
 
@@ -209,36 +218,26 @@ def notify(kind, folder, suffix, limit=None):
         print("[notify_telegram] No recipients found in environment or subscriber list.")
         return
 
-    for chat_id in recipients:
-        print(f"[notify_telegram] sending to chat_id={chat_id!r}")
+    for chat_id, username in recipients.items():
+        print(f"[notify_telegram] sending {kind} to chat_id={chat_id!r} username={username!r}")
 
         if total_parts > MAX_TEXT_MESSAGES:
             summary = HEADER_TEMPLATE.format(
-                kind=kind,
-                part=1,
-                total_parts=1,
-                total_count=len(uris),
-                date=date_str,
-                time=time_str,
-                handle=HANDLE,
+                kind=kind, part=1, total_parts=1, total_count=len(uris),
+                date=date_str, time=time_str, handle=HANDLE,
             ) + f"\n({total_parts} message-blocks worth — sending as a file instead.)"
-            send_message(chat_id, summary, parse_mode="Markdown")
+            send_message(chat_id, summary)
             time.sleep(SEND_DELAY_SECONDS)
             send_document(chat_id, file_path, caption=os.path.basename(file_path))
             time.sleep(SEND_DELAY_SECONDS)
+            record_sent(chat_id, kind, username)
             continue
 
         for i, group in enumerate(groups, 1):
             header = HEADER_TEMPLATE.format(
-                kind=kind,
-                part=i,
-                total_parts=total_parts,
-                total_count=len(uris),
-                date=date_str,
-                time=time_str,
-                handle=HANDLE,
+                kind=kind, part=i, total_parts=total_parts, total_count=len(uris),
+                date=date_str, time=time_str, handle=HANDLE,
             )
-
             if kind == "Proxy":
                 body = "\n".join(f"<blockquote>{line}</blockquote>" for line in group)
                 parse_mode = "HTML"
@@ -249,11 +248,12 @@ def notify(kind, folder, suffix, limit=None):
             send_message(chat_id, header + body, parse_mode=parse_mode)
             time.sleep(SEND_DELAY_SECONDS)
 
+        record_sent(chat_id, kind, username)
+
     print(f"[notify_telegram] sent {len(uris)} {suffix} entries ({total_parts} messages) from {file_path} to {len(recipients)} recipient(s).")
 
 
 def append_request_log(user_id, username, request_text):
-    """Log incoming user updates into a JSON file."""
     log_data = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "user_id": user_id,
@@ -265,8 +265,6 @@ def append_request_log(user_id, username, request_text):
 
 
 def handle_update(update):
-    """Process a single update: save subscriber silently, log interaction silently,
-    and send NO interactive responses."""
     update_id = update.get("update_id")
     next_offset = update_id + 1
 
@@ -277,12 +275,10 @@ def handle_update(update):
     text = msg.get("text", "")
 
     if chat_id and text:
-        # Save request to log file silently
         append_request_log(user_id, username, text)
 
-        # Handle subscriptions silently
         if text.startswith("/start") or text.startswith("/getConfigs") or text.startswith("/configs"):
-            add_subscriber(chat_id)
+            add_subscriber(chat_id, username)
         elif text.startswith("/end") or text.startswith("/stop"):
             remove_subscriber(chat_id)
 
@@ -290,11 +286,9 @@ def handle_update(update):
 
 
 def fetch_and_process_updates(offset=None):
-    """Poll updates from Telegram API and handle incoming commands."""
     url = f"{API_BASE}/getUpdates?timeout=10"
     if offset:
         url += f"&offset={offset}"
-
     try:
         req = urllib.request.Request(url)
         with urllib.request.urlopen(req, timeout=15) as resp:
@@ -306,12 +300,10 @@ def fetch_and_process_updates(offset=None):
     next_offset = offset
     for update in updates:
         next_offset = handle_update(update)
-
     return next_offset
 
 
 def run_bot_daemon():
-    """Continuous polling loop."""
     print("[bot_polling] Starting daemon...")
     offset = None
     while True:
@@ -319,9 +311,7 @@ def run_bot_daemon():
         time.sleep(1)
 
 
-def poll_once(admin_chat_id=None):
-    """Single-pass update checker for GitHub Actions.
-    Processes pending updates silently, updates offset, and sends zero log messages."""
+def poll_once():
     offset = load_offset()
     received_count = 0
 
