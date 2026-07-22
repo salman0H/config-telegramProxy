@@ -1,0 +1,13 @@
+{
+  "name": "unified-telegram-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": {
+    "@tgcloud/cli": "^0.1.2"
+  },
+  "scripts": {
+    "deploy": "tgcloud push",
+    "migrate": "tgcloud migrate"
+  },
+  "private": true
+}
