@@ -53,6 +53,27 @@ def fetch_data(source_type, input_val):
 
     return [line.strip() for line in raw_data.splitlines() if line.strip()]
 
+import urllib.parse
+
+CUSTOM_LABEL = "@sentencedIntoMusic"
+
+def apply_custom_label(uri, label=CUSTOM_LABEL):
+    """Rename config's display tag. vmess stores it in base64 JSON ('ps');
+    vless/trojan/ss store it after '#'. MTProto t.me/proxy links have no
+    name field, so this is only meaningful for mode 1 (Configs)."""
+    if uri.startswith("vmess://"):
+        try:
+            b64 = uri[len("vmess://"):]
+            padded = b64 + "=" * (-len(b64) % 4)
+            data = json.loads(base64.b64decode(padded).decode("utf-8"))
+            data["ps"] = label
+            new_b64 = base64.b64encode(json.dumps(data).encode("utf-8")).decode("utf-8")
+            return "vmess://" + new_b64
+        except Exception:
+            return uri
+    base = uri.split("#")[0]
+    return f"{base}#{urllib.parse.quote(label, safe='')}"
+
 def extract_target(uri, mode):
     if mode == "1":
         match = re.search(r'@([^/:\?]+):(\d+)', uri)
@@ -238,7 +259,8 @@ async def main():
     for item in valid_configs:
         loc = locations.get(item["host"], item["host"])
         table_data.append([item["uri"][:30] + "...", round(item["ping"], 2), loc])
-        output_uris.append(item["uri"])
+        uri = apply_custom_label(item["uri"]) if mode == "1" else item["uri"]
+        output_uris.append(uri)
 
     folder = "config" if mode == "1" else "proxy"
 
