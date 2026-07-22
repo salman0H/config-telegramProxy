@@ -21,9 +21,6 @@ jobs:
       - name: Install dependencies
         run: pip install pyperclip tabulate
 
-      - name: Test configs
-        run: python3 main.py --mode 1 --source 3 --export all
-
       - name: Test MTProto proxies
         run: python3 main.py --mode 2 --source 3 --export all
 
