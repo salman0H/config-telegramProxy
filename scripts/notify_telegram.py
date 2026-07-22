@@ -34,10 +34,6 @@ HEADER_TEMPLATE = (
 )
 
 
-# subscribers.json format: {"<chat_id>": "<username or 'N/A'>", ...}
-# (kept as a dict now, instead of a flat list, specifically so we know WHO
-# each chat_id belongs to when broadcasting.)
-
 def _load_subscribers_dict():
     if os.path.exists(SUBSCRIBERS_FILE):
         try:
@@ -45,7 +41,7 @@ def _load_subscribers_dict():
                 data = json.load(f)
                 if isinstance(data, dict):
                     return data
-                if isinstance(data, list):  # migrate old flat-list format
+                if isinstance(data, list):
                     return {str(c): "N/A" for c in data}
         except Exception as e:
             print(f"[subscribers] Error loading subscriber file: {e}")
@@ -53,8 +49,6 @@ def _load_subscribers_dict():
 
 
 def load_subscribers():
-    """Return {chat_id: username} for everyone who should receive broadcasts
-    (static TELEGRAM_CHAT_IDS + dynamically subscribed users)."""
     subs = _load_subscribers_dict()
     for cid in TELEGRAM_CHAT_IDS:
         subs.setdefault(cid, "N/A")
@@ -62,7 +56,6 @@ def load_subscribers():
 
 
 def add_subscriber(chat_id, username="N/A"):
-    """Add/refresh a chat ID (and its username) in the subscribers file."""
     subs = _load_subscribers_dict()
     chat_id_str = str(chat_id)
     is_new = chat_id_str not in subs
@@ -83,22 +76,45 @@ def remove_subscriber(chat_id):
     return False
 
 
-def load_offset():
+def _load_state():
     if os.path.exists(OFFSET_FILE):
         try:
             with open(OFFSET_FILE, "r", encoding="utf-8") as f:
-                return json.load(f).get("offset")
+                data = json.load(f)
+                if isinstance(data, dict):
+                    return data
         except Exception:
-            return None
-    return None
+            pass
+    return {}
+
+
+def _save_state(state):
+    os.makedirs(os.path.dirname(OFFSET_FILE), exist_ok=True)
+    with open(OFFSET_FILE, "w", encoding="utf-8") as f:
+        json.dump(state, f, ensure_ascii=False, indent=2)
+
+
+def load_offset():
+    return _load_state().get("offset")
 
 
 def save_offset(offset):
     if offset is None:
         return
-    os.makedirs(os.path.dirname(OFFSET_FILE), exist_ok=True)
-    with open(OFFSET_FILE, "w", encoding="utf-8") as f:
-        json.dump({"offset": offset}, f)
+    state = _load_state()
+    state["offset"] = offset
+    _save_state(state)
+
+
+def record_sent(chat_id, kind, username="N/A"):
+    state = _load_state()
+    sent = state.setdefault("sent", {})
+    sent[str(chat_id)] = {
+        "username": username,
+        "kind": kind,
+        "last_sent": datetime.now(timezone.utc).isoformat(),
+    }
+    _save_state(state)
 
 
 def latest_file(folder, suffix):
@@ -197,7 +213,7 @@ def notify(kind, folder, suffix, limit=None):
     date_str = now.strftime("%Y-%m-%d")
     time_str = now.strftime("%H:%M")
 
-    recipients = load_subscribers()  # {chat_id: username}
+    recipients = load_subscribers()
     if not recipients:
         print("[notify_telegram] No recipients found in environment or subscriber list.")
         return
@@ -214,6 +230,7 @@ def notify(kind, folder, suffix, limit=None):
             time.sleep(SEND_DELAY_SECONDS)
             send_document(chat_id, file_path, caption=os.path.basename(file_path))
             time.sleep(SEND_DELAY_SECONDS)
+            record_sent(chat_id, kind, username)
             continue
 
         for i, group in enumerate(groups, 1):
@@ -231,6 +248,8 @@ def notify(kind, folder, suffix, limit=None):
             send_message(chat_id, header + body, parse_mode=parse_mode)
             time.sleep(SEND_DELAY_SECONDS)
 
+        record_sent(chat_id, kind, username)
+
     print(f"[notify_telegram] sent {len(uris)} {suffix} entries ({total_parts} messages) from {file_path} to {len(recipients)} recipient(s).")
 
 
@@ -246,8 +265,6 @@ def append_request_log(user_id, username, request_text):
 
 
 def handle_update(update):
-    """Process a single update: save subscriber (with username) silently,
-    log interaction silently, send NO interactive responses."""
     update_id = update.get("update_id")
     next_offset = update_id + 1
 
