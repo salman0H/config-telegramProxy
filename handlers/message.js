@@ -5,6 +5,7 @@ import { OWNER_ID, BROADCAST_DELAY_MS } from 'lib/config';
 import { processMediaLink } from 'lib/downloader';
 import { askGemini } from 'lib/ai';
 import { checkRateLimit } from 'lib/rateLimit';
+import { askGemini, parseCommandWithAI } from 'lib/ai';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -123,12 +124,36 @@ export default async function (message) {
       return;
     }
 
-    // Pass any other text to Gemini for NLP processing (Todo/Learning/Reminder)
+    // NLP processing for Owner's natural language inputs
     try {
-      await api.sendMessage({ chat_id: chatId, text: 'Processing your request...' });
-      // TODO: Implement specific Gemini prompt for structured JSON output
+      const parsedData = await parseCommandWithAI(text);
+      
+      if (parsedData.type === 'TODO') {
+        await db.insert(todos).values({ chatId, task: parsedData.task }).run();
+        await api.sendMessage({ chat_id: chatId, text: `✅ Todo added:\n${parsedData.task}` });
+      } 
+      else if (parsedData.type === 'LEARNING') {
+        await db.insert(learnings).values({ chatId, subject: parsedData.subject, content: parsedData.content }).run();
+        await api.sendMessage({ chat_id: chatId, text: `🧠 Learning logged [${parsedData.subject}]` });
+      } 
+      else if (parsedData.type === 'REMINDER') {
+        const remindTime = new Date(parsedData.remindAt);
+        await db.insert(reminders).values({ 
+          chatId, 
+          text: parsedData.remindText, 
+          remindAt: remindTime 
+        }).run();
+        
+        // Format date for user confirmation
+        const timeString = remindTime.toLocaleString('en-US', { timeZone: 'Asia/Tehran' });
+        await api.sendMessage({ chat_id: chatId, text: `⏰ Reminder set for:\n${timeString}` });
+      } 
+      else {
+        // GENERAL conversation
+        await api.sendMessage({ chat_id: chatId, text: parsedData.content });
+      }
     } catch (e) {
-      await api.sendMessage({ chat_id: chatId, text: `Error: ${e.message}` });
+      await api.sendMessage({ chat_id: chatId, text: `❌ Processing Error: ${e.message}` });
     }
     return;
   }
