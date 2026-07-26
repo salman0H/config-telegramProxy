@@ -1,4 +1,7 @@
-ids/
-.tgcloud/
 node_modules/
+.tgcloud/
+ids/
 bot_requests_log.json
+subscribers.json
+scripts/telegram_offset.json
+.env

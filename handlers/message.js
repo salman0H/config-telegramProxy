@@ -1,6 +1,6 @@
 import { api, db } from 'sdk';
-import { users, messages } from 'schema';
-import { eq, ne, and } from 'sdk/db';
+import { users, messages, todos, reminders } from 'schema';
+import { eq, and, ne } from 'sdk/db';
 import { OWNER_ID, BROADCAST_DELAY_MS } from 'lib/config';
 import { processMediaLink } from 'lib/downloader';
 import { askGemini } from 'lib/ai';
@@ -13,8 +13,9 @@ async function logMessage(chatId, direction, text) {
 }
 
 async function upsertUser(chatId, username) {
+  const isOwner = OWNER_ID !== null && chatId === OWNER_ID;
   await db.insert(users)
-    .values({ chatId, username, isOwner: chatId === OWNER_ID })
+    .values({ chatId, username, isOwner })
     .onConflictDoUpdate({ target: users.chatId, set: { username } })
     .run();
 }
@@ -25,43 +26,46 @@ export default async function (message) {
   const chatId = message.chat.id;
   const text = message.text.trim();
   const username = message.from?.username ?? null;
-  const isOwner = chatId === OWNER_ID;
+  const isOwner = OWNER_ID !== null && chatId === OWNER_ID;
 
   await upsertUser(chatId, username);
 
   const userRow = await db.select().from(users).where(eq(users.chatId, chatId)).get();
-  if (userRow?.isBlocked && !isOwner) return; // silently ignore blocked users
+  
+  if (userRow?.isBlocked && !isOwner) return;
 
   if (!isOwner) {
     const allowed = await checkRateLimit(chatId);
-    if (!allowed) return; // over the limit — drop silently, no warning spam
-  }
+    if (!allowed) return;
 
-  await logMessage(chatId, 'in', text);
+    await logMessage(chatId, 'in', text);
 
-  // ---- subscriber commands (config/proxy broadcast opt-in) — non-owner only.
-  // Without the isOwner guard, the owner typing /start would get the
-  // subscriber welcome text and never reach the admin panel below.
-  if (!isOwner && (text.startsWith('/getConfigs') || text.startsWith('/configs'))) {
-    await db.update(users).set({ wantsConfigs: true }).where(eq(users.chatId, chatId)).run();
-    await api.sendMessage({ chat_id: chatId, text: '✅ ثبت شد. کانفیگ‌ها و پروکسی‌های جدید براتون ارسال می‌شه.' });
-    await logMessage(chatId, 'out', 'subscribed to configs');
+    if (text.startsWith('/getConfigs') || text.startsWith('/configs')) {
+      await db.update(users).set({ wantsConfigs: true }).where(eq(users.chatId, chatId)).run();
+      await api.sendMessage({ chat_id: chatId, text: 'Subscribed to configs.' });
+      await logMessage(chatId, 'out', 'subscribed to configs');
+      return;
+    }
+
+    if (text.startsWith('/end') || text.startsWith('/stop')) {
+      await db.update(users).set({ wantsConfigs: false }).where(eq(users.chatId, chatId)).run();
+      await api.sendMessage({ chat_id: chatId, text: 'Unsubscribed from configs.' });
+      await logMessage(chatId, 'out', 'unsubscribed from configs');
+      return;
+    }
+
+    await api.sendMessage({ chat_id: OWNER_ID, text: `[USER:${chatId}]\n${text}` });
+    try {
+      const reply = await askGemini(text);
+      await api.sendMessage({ chat_id: chatId, text: reply });
+      await logMessage(chatId, 'out', reply);
+    } catch (e) {
+      await api.sendMessage({ chat_id: chatId, text: 'Error processing request.' });
+    }
     return;
   }
-  if (!isOwner && (text.startsWith('/end') || text.startsWith('/stop'))) {
-    await db.update(users).set({ wantsConfigs: false }).where(eq(users.chatId, chatId)).run();
-    await api.sendMessage({ chat_id: chatId, text: '🛑 لغو شد. دیگه چیزی براتون ارسال نمی‌شه.' });
-    await logMessage(chatId, 'out', 'unsubscribed from configs');
-    return;
-  }
-  if (!isOwner && text.startsWith('/start')) {
-    await api.sendMessage({ chat_id: chatId, text: 'سلام 👋\nبرای دریافت کانفیگ/پروکسی: /getConfigs\nبرای توقف: /end' });
-    return;
-  }
 
-  // ---------------------------- owner-only ----------------------------
   if (isOwner) {
-    // reply-to-message relay back to whichever user's message it tags
     if (message.reply_to_message?.text) {
       const match = message.reply_to_message.text.match(/\[USER:(\d+)\]/);
       if (match) {
@@ -72,32 +76,27 @@ export default async function (message) {
       }
     }
 
-    if (text.startsWith('/ai ')) {
-      const prompt = text.slice(4);
-      await api.sendMessage({ chat_id: chatId, text: '💡 در حال تفکر...' });
-      try {
-        const reply = await askGemini(prompt);
-        await api.sendMessage({ chat_id: chatId, text: reply });
-      } catch (e) {
-        await api.sendMessage({ chat_id: chatId, text: `❌ خطا: ${e.message}` });
+    if (text === '/check_reminders') {
+      const now = new Date();
+      const dueReminders = await db.select().from(reminders)
+        .where(eq(reminders.isSent, false))
+        .all();
+
+      for (const item of dueReminders) {
+        if (new Date(item.remindAt) <= now) {
+          await api.sendMessage({ chat_id: OWNER_ID, text: `Reminder:\n${item.text}` });
+          await db.update(reminders).set({ isSent: true }).where(eq(reminders.id, item.id)).run();
+        }
       }
       return;
     }
 
-    if (text.startsWith('/block ')) {
-      const targetId = parseInt(text.slice(7).trim(), 10);
-      if (!Number.isNaN(targetId)) {
-        await db.update(users).set({ isBlocked: true }).where(eq(users.chatId, targetId)).run();
-        await api.sendMessage({ chat_id: chatId, text: `🚫 کاربر ${targetId} بلاک شد.` });
-      }
-      return;
-    }
-    if (text.startsWith('/unblock ')) {
-      const targetId = parseInt(text.slice(9).trim(), 10);
-      if (!Number.isNaN(targetId)) {
-        await db.update(users).set({ isBlocked: false }).where(eq(users.chatId, targetId)).run();
-        await api.sendMessage({ chat_id: chatId, text: `✅ کاربر ${targetId} آنبلاک شد.` });
-      }
+    if (text === '/sync_data') {
+      const pendingTodos = await db.select().from(todos).where(eq(todos.isCompleted, false)).all();
+      await api.sendMessage({
+        chat_id: OWNER_ID,
+        text: JSON.stringify({ type: 'SYNC_RESPONSE', data: pendingTodos })
+      });
       return;
     }
 
@@ -106,7 +105,9 @@ export default async function (message) {
       const recipients = await db.select().from(users)
         .where(and(eq(users.isBlocked, false), ne(users.chatId, OWNER_ID)))
         .all();
-      await api.sendMessage({ chat_id: chatId, text: `⏳ در حال ارسال به ${recipients.length} کاربر...` });
+      
+      await api.sendMessage({ chat_id: chatId, text: `Broadcasting to ${recipients.length} users...` });
+      
       let sent = 0;
       for (const r of recipients) {
         try {
@@ -118,48 +119,17 @@ export default async function (message) {
         }
         await sleep(BROADCAST_DELAY_MS);
       }
-      await api.sendMessage({ chat_id: chatId, text: `✅ به ${sent}/${recipients.length} نفر ارسال شد.` });
+      await api.sendMessage({ chat_id: chatId, text: `Broadcast complete: ${sent}/${recipients.length} sent.` });
       return;
     }
 
-    if (text.startsWith('/stats')) {
-      const total = await db.$count(users);
-      const blocked = await db.$count(users, eq(users.isBlocked, true));
-      const subscribed = await db.$count(users, eq(users.wantsConfigs, true));
-      const totalMessages = await db.$count(messages);
-      await api.sendMessage({
-        chat_id: chatId,
-        text: `📊 آمار\n👥 کاربران: ${total}\n🚫 بلاک‌شده: ${blocked}\n🗂 مشترک کانفیگ: ${subscribed}\n💬 کل پیام‌ها: ${totalMessages}`,
-      });
-      return;
+    // Pass any other text to Gemini for NLP processing (Todo/Learning/Reminder)
+    try {
+      await api.sendMessage({ chat_id: chatId, text: 'Processing your request...' });
+      // TODO: Implement specific Gemini prompt for structured JSON output
+    } catch (e) {
+      await api.sendMessage({ chat_id: chatId, text: `Error: ${e.message}` });
     }
-
-    if (text.includes('youtube.com') || text.includes('youtu.be') || text.includes('spotify.com')) {
-      const result = await processMediaLink(text);
-      await api.sendMessage({ chat_id: chatId, text: result });
-      return;
-    }
-
-    await api.sendMessage({
-      chat_id: chatId,
-      text:
-        'پیشخوان مدیریت فعال است.\n' +
-        '- ریپلای روی پیام یک کاربر → پاسخ به همون کاربر\n' +
-        '- /ai <متن> → سؤال از هوش مصنوعی\n' +
-        '- /broadcast <متن> → پیام به همه\n' +
-        '- /block <chat_id> ، /unblock <chat_id>\n' +
-        '- /stats → آمار کلی',
-    });
     return;
-  }
-
-  // -------------------------- non-owner default --------------------------
-  await api.sendMessage({ chat_id: OWNER_ID, text: `[USER:${chatId}]\n${text}` });
-  try {
-    const reply = await askGemini(text);
-    await api.sendMessage({ chat_id: chatId, text: reply });
-    await logMessage(chatId, 'out', reply);
-  } catch (e) {
-    await api.sendMessage({ chat_id: chatId, text: 'در حال حاضر قادر به پاسخگویی نیستم. پیام شما به مدیر ارسال شد.' });
   }
 }
