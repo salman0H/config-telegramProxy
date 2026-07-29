@@ -1,53 +1,49 @@
-name: Scheduled config/proxy refresh
+name: Telegram Notifier
 
 on:
   schedule:
-    - cron: "0 */12 * * *"   # every 12 hours, UTC
-  workflow_dispatch: {}       # lets you trigger it manually from the Actions tab
-
-permissions:
-  contents: write
+    - cron: '0 */12 * * *'
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target to send'
+        required: true
+        default: 'proxy'
+        type: choice
+        options:
+          - proxy
+          - config
+          - both
 
 jobs:
-  run:
+  notify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install pyperclip tabulate
 
-      - name: Test configs
-        run: python3 main.py --mode 1 --source 3 --export all
-
-      - name: Test MTProto proxies
-        run: python3 main.py --mode 2 --source 3 --export all
-
-      - name: Poll Telegram for bot commands since last run
+      - name: Run Notify Script
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
           TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
-        run: python3 scripts/notify_telegram.py poll
-
-      - name: Commit and push results
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add config/ proxy/ subscribers.json bot_requests_log.json scripts/telegram_offset.json 2>/dev/null || true
-          if ! git diff --cached --quiet; then
-            git commit -m "Scheduled auto-update configs/proxies + bot state"
-            git push
-          else
-            echo "No changes to commit."
-          fi
+          TARGET="${{ github.event.inputs.target || 'proxy' }}"
+          python scripts/notify_telegram.py $TARGET
 
-      - name: Notify Telegram
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
-        run: python3 scripts/notify_telegram.py both
+      - name: Commit changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git reset -- config/
+          git commit -m "Auto-update proxies and bot state" || echo "No changes to commit"
+          git push
