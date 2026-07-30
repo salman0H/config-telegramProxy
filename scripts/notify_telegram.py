@@ -66,6 +66,7 @@ def save_offset(offset):
 def latest_file(folder, suffix):
     pattern = os.path.join(folder, f"*_{suffix}.txt")
     files = sorted(glob.glob(pattern))
+    print(f"[Debug] Searching for pattern: {pattern} -> Found: {files}")
     return files[-1] if files else None
 
 def pack_groups(lines, max_items=ITEMS_PER_MESSAGE, max_chars=CHARS_BUDGET_FOR_ITEMS):
@@ -99,6 +100,7 @@ def _post(method, data, headers, timeout, max_retries=4):
                     retry_after = 5
                 time.sleep(retry_after + 1)
                 continue
+            print(f"[Error] API HTTPError {e.code}: {body}")
             raise RuntimeError(f"API HTTPError {e.code}: {body}")
     raise RuntimeError(f"API request failed after {max_retries} attempts.")
 
@@ -157,6 +159,7 @@ def apply_custom_label(uri, label):
     return f"{base}#{urllib.parse.quote(label, safe='@')}"
 
 def poll_updates():
+    print("[Polling] Fetching Telegram updates...")
     offset = load_offset()
     url = f"{API_BASE}/getUpdates?timeout=5"
     if offset:
@@ -171,8 +174,10 @@ def poll_updates():
         return
 
     if not updates:
+        print("[Polling] No new messages found.")
         return
 
+    print(f"[Polling] Found {len(updates)} new update(s).")
     subs = load_subscribers()
     next_offset = offset
 
@@ -191,25 +196,33 @@ def poll_updates():
             if is_user_member(user_id):
                 subs[chat_id] = username
                 send_message(chat_id, "System ready. Subscribed.")
+                print(f"[Polling] User {username} ({chat_id}) subscribed successfully.")
             else:
                 send_message(chat_id, "سلام! برای دریافت پروکسی‌ها اول باید تو کانال @sentencedIntoMusic عضو بشی. بعد از عضویت، هر ۱۲ ساعت کانفیگ‌ها و پروکسی‌های تازه و پرسرعت به صورت خودکار برات ارسال میشه.")
+                print(f"[Polling] User {username} ({chat_id}) denied. Not in channel.")
         
         elif text.startswith("/stop"):
             if chat_id in subs:
                 del subs[chat_id]
                 send_message(chat_id, "Unsubscribed.")
+                print(f"[Polling] User {username} ({chat_id}) unsubscribed.")
 
     save_subscribers(subs)
     save_offset(next_offset)
+    print("[Polling] Offset and subscribers saved.")
 
 def notify(kind, folder, suffix, limit=None):
+    print(f"[Notify] Starting broadcast for {kind}...")
     if not TELEGRAM_CHANNEL_ID or not TELEGRAM_BOT_TOKEN:
+        print("[Error] Missing Telegram variables.")
         return
 
     file_path = latest_file(folder, suffix)
     if not file_path:
+        print(f"[Notify] Aborted: No file found matching '{folder}/*_{suffix}.txt'")
         return
 
+    print(f"[Notify] Target file found: {file_path}")
     with open(file_path, "r", encoding="utf-8") as f:
         raw_uris = [line.strip() for line in f if line.strip()]
     
@@ -217,6 +230,7 @@ def notify(kind, folder, suffix, limit=None):
         raw_uris = raw_uris[:limit]
         
     if not raw_uris:
+        print(f"[Notify] Aborted: File {file_path} is empty.")
         return
 
     uris = [apply_custom_label(uri, TELEGRAM_CHANNEL_ID) for uri in raw_uris]
@@ -230,11 +244,17 @@ def notify(kind, folder, suffix, limit=None):
     recipients = load_subscribers()
     active_users = []
 
+    if not recipients:
+        print("[Notify] Aborted: No subscribers found in database.")
+        return
+
     for chat_id, username in recipients.items():
         if not is_user_member(chat_id):
+            print(f"[Notify] Skipped {chat_id} (not a member).")
             continue
             
         active_users.append(f"{username} ({chat_id})")
+        print(f"[Notify] Sending to {username} ({chat_id})...")
 
         if total_parts > MAX_TEXT_MESSAGES:
             summary = HEADER_TEMPLATE.format(
@@ -263,6 +283,7 @@ def notify(kind, folder, suffix, limit=None):
     if TELEGRAM_ADMIN_CHAT_ID:
         report = f"Broadcast Report - {kind}\nActive Users ({len(active_users)}):\n" + "\n".join(active_users)
         send_message(TELEGRAM_ADMIN_CHAT_ID, report)
+        print("[Notify] Admin report sent.")
 
 if __name__ == "__main__":
     target = sys.argv[1] if len(sys.argv) > 1 else "both"
