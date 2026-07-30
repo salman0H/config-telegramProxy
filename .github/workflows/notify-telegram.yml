@@ -20,6 +20,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+      TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -33,10 +37,6 @@ jobs:
         run: pip install pyperclip tabulate
 
       - name: Run Notify Script
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
-          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: |
           python scripts/notify_telegram.py poll
           TARGET="${{ github.event.inputs.target || 'proxy' }}"
@@ -47,7 +47,6 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add scripts/telegram_offset.json || true
-          git add subscribers.json || true
-          git add bot_requests_log.json || true
+          git add -f subscribers.json || true
           git commit -m "chore: auto-update bot state" || echo "No changes to commit"
           git push
