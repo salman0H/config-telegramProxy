@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_ADMIN_CHAT_ID = os.environ.get("TELEGRAM_ADMIN_CHAT_ID")
-TELEGRAM_CHANNEL_ID = os.environ.get("TELEGRAM_CHANNEL_ID", "@sentencedIntoMusic")
+TELEGRAM_CHANNEL_ID = os.environ.get("TELEGRAM_CHANNEL_ID") or "@sentencedIntoMusic"
 
 API_BASE = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 ITEMS_PER_MESSAGE = 10
@@ -160,6 +160,10 @@ def apply_custom_label(uri, label):
 
 def poll_updates():
     print("[Polling] Fetching Telegram updates...")
+    if not TELEGRAM_BOT_TOKEN:
+        print("[Error] TELEGRAM_BOT_TOKEN is empty.")
+        return
+
     offset = load_offset()
     url = f"{API_BASE}/getUpdates?timeout=5"
     if offset:
@@ -213,8 +217,11 @@ def poll_updates():
 
 def notify(kind, folder, suffix, limit=None):
     print(f"[Notify] Starting broadcast for {kind}...")
-    if not TELEGRAM_CHANNEL_ID or not TELEGRAM_BOT_TOKEN:
-        print("[Error] Missing Telegram variables.")
+    if not TELEGRAM_BOT_TOKEN:
+        print("[Error] TELEGRAM_BOT_TOKEN is empty. Check GitHub Secrets.")
+        return
+    if not TELEGRAM_CHANNEL_ID:
+        print("[Error] TELEGRAM_CHANNEL_ID is empty.")
         return
 
     file_path = latest_file(folder, suffix)

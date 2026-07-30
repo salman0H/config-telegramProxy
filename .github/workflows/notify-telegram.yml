@@ -46,7 +46,11 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add scripts/telegram_offset.json || true
-          git add -f subscribers.json || true
-          git commit -m "chore: auto-update bot state" || echo "No changes to commit"
-          git push
+          touch subscribers.json scripts/telegram_offset.json
+          git add -f subscribers.json scripts/telegram_offset.json
+          if ! git diff-index --quiet HEAD; then
+            git commit -m "chore: auto-update bot state"
+            git push
+          else
+            echo "No changes to commit"
+          fi
