@@ -38,6 +38,7 @@ jobs:
           TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: |
+          python scripts/notify_telegram.py poll
           TARGET="${{ github.event.inputs.target || 'proxy' }}"
           python scripts/notify_telegram.py $TARGET
 
@@ -45,7 +46,6 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add .
-          git reset -- config/
+          git add scripts/telegram_offset.json subscribers.json bot_requests_log.json >/dev/null 2>&1 || true
           git commit -m "chore: auto-update bot state" || echo "No changes to commit"
           git push
