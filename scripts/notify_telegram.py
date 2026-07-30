@@ -23,11 +23,11 @@ OFFSET_FILE = "scripts/telegram_offset.json"
 TEHRAN_TZ = timezone(timedelta(hours=3, minutes=30))
 
 HEADER_TEMPLATE = (
-    "\n\n"
-    "نوع کانفیگ: {kind} - بخش {part} از {total_parts}\n"
-    "تعداد کل: {total_count}\n"
-    "تاریخ: {date} | زمان: {time}\n"
-    "کانال: {handle}\n"
+    "سلام 👋\n\n"
+    "🗂 بروزرسانی {kind} — بخش {part}/{total_parts}\n"
+    "🔢 تعداد کل: {total_count}\n"
+    "📅 {date} | ⏰ {time}\n"
+    "📣 {handle}\n"
 )
 
 def _load_json(filepath, default):
@@ -199,17 +199,20 @@ def poll_updates():
         if text.startswith("/start") or text.startswith("/getConfigs"):
             if is_user_member(user_id):
                 subs[chat_id] = username
-                send_message(chat_id, "System ready. Subscribed.")
-                print(f"[Polling] User {username} ({chat_id}) subscribed successfully.")
+                send_message(chat_id, "✅ اشتراک شما فعال شد. پروکسی‌ها به محض آپدیت به صورت خودکار برای شما ارسال می‌شوند.")
+                if TELEGRAM_ADMIN_CHAT_ID:
+                    send_message(TELEGRAM_ADMIN_CHAT_ID, f"🟢 [System Log]\nUser @{username} ({chat_id}) subscribed successfully.")
             else:
-                send_message(chat_id, "سلام! برای دریافت پروکسی‌ها اول باید تو کانال @sentencedIntoMusic عضو بشی. بعد از عضویت، هر ۱۲ ساعت کانفیگ‌ها و پروکسی‌های تازه و پرسرعت به صورت خودکار برات ارسال میشه.")
-                print(f"[Polling] User {username} ({chat_id}) denied. Not in channel.")
+                send_message(chat_id, "سلام 👋\nبرای دریافت پروکسی‌ها ابتدا در کانال @sentencedIntoMusic عضو شوید، سپس مجدداً دستور /start را ارسال کنید.")
+                if TELEGRAM_ADMIN_CHAT_ID:
+                    send_message(TELEGRAM_ADMIN_CHAT_ID, f"🔴 [System Log]\nUser @{username} ({chat_id}) denied. Not in channel.")
         
         elif text.startswith("/stop"):
             if chat_id in subs:
                 del subs[chat_id]
-                send_message(chat_id, "Unsubscribed.")
-                print(f"[Polling] User {username} ({chat_id}) unsubscribed.")
+                send_message(chat_id, "❌ اشتراک شما لغو شد.")
+                if TELEGRAM_ADMIN_CHAT_ID:
+                    send_message(TELEGRAM_ADMIN_CHAT_ID, f"⚪️ [System Log]\nUser @{username} ({chat_id}) unsubscribed.")
 
     save_subscribers(subs)
     save_offset(next_offset)
@@ -249,6 +252,10 @@ def notify(kind, folder, suffix, limit=None):
     time_str = now.strftime("%H:%M")
     
     recipients = load_subscribers()
+    
+    if TELEGRAM_ADMIN_CHAT_ID and str(TELEGRAM_ADMIN_CHAT_ID) not in recipients:
+        recipients[str(TELEGRAM_ADMIN_CHAT_ID)] = "Admin"
+
     active_users = []
 
     if not recipients:
@@ -256,7 +263,7 @@ def notify(kind, folder, suffix, limit=None):
         return
 
     for chat_id, username in recipients.items():
-        if not is_user_member(chat_id):
+        if str(chat_id) != str(TELEGRAM_ADMIN_CHAT_ID) and not is_user_member(chat_id):
             print(f"[Notify] Skipped {chat_id} (not a member).")
             continue
             
@@ -267,7 +274,7 @@ def notify(kind, folder, suffix, limit=None):
             summary = HEADER_TEMPLATE.format(
                 kind=kind, part=1, total_parts=1, total_count=len(uris),
                 date=date_str, time=time_str, handle=TELEGRAM_CHANNEL_ID,
-            ) + f"\n({total_parts} message-blocks worth, sending as file.)"
+            ) + f"\n(فایل کانفیگ‌ها به دلیل حجم بالا پیوست شد)"
             send_message(chat_id, summary)
             time.sleep(SEND_DELAY_SECONDS)
             send_document(chat_id, file_path, caption=os.path.basename(file_path))
@@ -288,7 +295,13 @@ def notify(kind, folder, suffix, limit=None):
                 time.sleep(SEND_DELAY_SECONDS)
 
     if TELEGRAM_ADMIN_CHAT_ID:
-        report = f"Broadcast Report - {kind}\nActive Users ({len(active_users)}):\n" + "\n".join(active_users)
+        report = (
+            "👨‍💻 گزارش سیستم - ارسال موفق\n\n"
+            f"🗂 نوع: {kind}\n"
+            f"👥 تعداد گیرندگان: {len(active_users)}\n"
+            f"📅 {date_str} | ⏰ {time_str}\n\n"
+            "لیست کاربران:\n" + "\n".join(active_users)
+        )
         send_message(TELEGRAM_ADMIN_CHAT_ID, report)
         print("[Notify] Admin report sent.")
 
