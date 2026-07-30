@@ -5,4 +5,5 @@ bot_requests_log.json
 subscribers.json
 scripts/telegram_offset.json
 .env
-config/
+config/.env.local
+lib/config.js
