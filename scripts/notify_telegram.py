@@ -101,8 +101,12 @@ def _post(method, data, headers, timeout, max_retries=4):
                 time.sleep(retry_after + 1)
                 continue
             print(f"[Error] API HTTPError {e.code}: {body}")
-            raise RuntimeError(f"API HTTPError {e.code}: {body}")
-    raise RuntimeError(f"API request failed after {max_retries} attempts.")
+            return {"ok": False, "error_code": e.code, "description": body}
+        except Exception as e:
+            print(f"[Error] Network exception: {e}")
+            time.sleep(2)
+    print(f"[Error] API request failed after {max_retries} attempts.")
+    return {"ok": False, "description": "Max retries reached"}
 
 def send_message(chat_id, text, parse_mode=None):
     payload_dict = {
@@ -199,12 +203,12 @@ def poll_updates():
         if text.startswith("/start") or text.startswith("/getConfigs"):
             if is_user_member(user_id):
                 subs[chat_id] = username
-                send_message(chat_id, "✅ اشتراک شما فعال شد. پروکسی‌ها به محض آپدیت به صورت خودکار برای شما ارسال می‌شوند.")
-                if TELEGRAM_ADMIN_CHAT_ID:
+                res = send_message(chat_id, "✅ اشتراک شما فعال شد. پروکسی‌ها به محض آپدیت به صورت خودکار برای شما ارسال می‌شوند.")
+                if TELEGRAM_ADMIN_CHAT_ID and res and res.get("ok"):
                     send_message(TELEGRAM_ADMIN_CHAT_ID, f"🟢 [System Log]\nUser @{username} ({chat_id}) subscribed successfully.")
             else:
-                send_message(chat_id, "سلام 👋\nبرای دریافت پروکسی‌ها ابتدا در کانال @sentencedIntoMusic عضو شوید، سپس مجدداً دستور /start را ارسال کنید.")
-                if TELEGRAM_ADMIN_CHAT_ID:
+                res = send_message(chat_id, "سلام 👋\nبرای دریافت پروکسی‌ها ابتدا در کانال @sentencedIntoMusic عضو شوید، سپس مجدداً دستور /start را ارسال کنید.")
+                if TELEGRAM_ADMIN_CHAT_ID and res and res.get("ok"):
                     send_message(TELEGRAM_ADMIN_CHAT_ID, f"🔴 [System Log]\nUser @{username} ({chat_id}) denied. Not in channel.")
         
         elif text.startswith("/stop"):
@@ -262,22 +266,25 @@ def notify(kind, folder, suffix, limit=None):
         print("[Notify] Aborted: No subscribers found in database.")
         return
 
-    for chat_id, username in recipients.items():
+    for chat_id, username in list(recipients.items()):
         if str(chat_id) != str(TELEGRAM_ADMIN_CHAT_ID) and not is_user_member(chat_id):
             print(f"[Notify] Skipped {chat_id} (not a member).")
             continue
             
-        active_users.append(f"{username} ({chat_id})")
         print(f"[Notify] Sending to {username} ({chat_id})...")
+        success = True
 
         if total_parts > MAX_TEXT_MESSAGES:
             summary = HEADER_TEMPLATE.format(
                 kind=kind, part=1, total_parts=1, total_count=len(uris),
                 date=date_str, time=time_str, handle=TELEGRAM_CHANNEL_ID,
             ) + f"\n(فایل کانفیگ‌ها به دلیل حجم بالا پیوست شد)"
-            send_message(chat_id, summary)
-            time.sleep(SEND_DELAY_SECONDS)
-            send_document(chat_id, file_path, caption=os.path.basename(file_path))
+            res = send_message(chat_id, summary)
+            if res and res.get("ok"):
+                time.sleep(SEND_DELAY_SECONDS)
+                send_document(chat_id, file_path, caption=os.path.basename(file_path))
+            else:
+                success = False
         else:
             for i, group in enumerate(groups, 1):
                 header = HEADER_TEMPLATE.format(
@@ -291,14 +298,20 @@ def notify(kind, folder, suffix, limit=None):
                     body = "```\n" + "\n".join(group) + "\n```"
                     parse_mode = "Markdown"
                 
-                send_message(chat_id, header + body, parse_mode=parse_mode)
+                res = send_message(chat_id, header + body, parse_mode=parse_mode)
+                if not res or not res.get("ok"):
+                    success = False
+                    break
                 time.sleep(SEND_DELAY_SECONDS)
+                
+        if success:
+            active_users.append(f"{username} ({chat_id})")
 
     if TELEGRAM_ADMIN_CHAT_ID:
         report = (
             "👨‍💻 گزارش سیستم - ارسال موفق\n\n"
             f"🗂 نوع: {kind}\n"
-            f"👥 تعداد گیرندگان: {len(active_users)}\n"
+            f"👥 تعداد گیرندگان موفق: {len(active_users)}\n"
             f"📅 {date_str} | ⏰ {time_str}\n\n"
             "لیست کاربران:\n" + "\n".join(active_users)
         )
