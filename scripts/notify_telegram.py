@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_ADMIN_CHAT_ID = os.environ.get("TELEGRAM_ADMIN_CHAT_ID")
-TELEGRAM_CHANNEL_ID = os.environ.get("TELEGRAM_CHANNEL_ID", "@sentencedIntoMusic")
+TELEGRAM_CHANNEL_ID = os.environ.get("TELEGRAM_CHANNEL_ID") or "@sentencedIntoMusic"
 
 API_BASE = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 ITEMS_PER_MESSAGE = 10
@@ -66,6 +66,7 @@ def save_offset(offset):
 def latest_file(folder, suffix):
     pattern = os.path.join(folder, f"*_{suffix}.txt")
     files = sorted(glob.glob(pattern))
+    print(f"[Debug] Searching pattern: {pattern} -> Found: {files}")
     return files[-1] if files else None
 
 def pack_groups(lines, max_items=ITEMS_PER_MESSAGE, max_chars=CHARS_BUDGET_FOR_ITEMS):
@@ -142,7 +143,8 @@ def is_user_member(user_id):
             data = json.loads(resp.read().decode("utf-8"))
             status = data.get("result", {}).get("status")
             return status in ["member", "administrator", "creator"]
-    except Exception:
+    except Exception as e:
+        print(f"[Membership] Verification failed for {user_id}: {e}")
         return False
 
 def apply_custom_label(uri, label):
@@ -160,8 +162,11 @@ def apply_custom_label(uri, label):
     return f"{base}#{urllib.parse.quote(label, safe='@')}"
 
 def poll_updates():
+    print("[Polling] Fetching Telegram updates...")
     if not TELEGRAM_BOT_TOKEN:
+        print("[Error] TELEGRAM_BOT_TOKEN is missing.")
         return
+
     offset = load_offset()
     url = f"{API_BASE}/getUpdates?timeout=5"
     if offset:
@@ -171,12 +176,15 @@ def poll_updates():
         req = urllib.request.Request(url)
         with urllib.request.urlopen(req, timeout=15) as resp:
             updates = json.loads(resp.read().decode("utf-8")).get("result", [])
-    except Exception:
+    except Exception as e:
+        print(f"[Polling] Error fetching updates: {e}")
         return
 
     if not updates:
+        print("[Polling] No new messages found.")
         return
 
+    print(f"[Polling] Found {len(updates)} new update(s).")
     subs = load_subscribers()
     next_offset = offset
 
@@ -211,15 +219,24 @@ def poll_updates():
 
     save_subscribers(subs)
     save_offset(next_offset)
+    print("[Polling] Offset and subscribers saved.")
 
 def notify(kind, folder, suffix, limit=None):
-    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
+    print(f"[Notify] Starting broadcast for {kind}...")
+    if not TELEGRAM_BOT_TOKEN:
+        print("[Error] TELEGRAM_BOT_TOKEN is missing!")
+        return
+    if not TELEGRAM_CHANNEL_ID:
+        print("[Error] TELEGRAM_CHANNEL_ID is missing!")
         return
 
+    print(f"[Notify] Using Channel ID: {TELEGRAM_CHANNEL_ID}")
     file_path = latest_file(folder, suffix)
     if not file_path:
+        print(f"[Notify] Aborted: No file found in '{folder}' matching '*_{suffix}.txt'")
         return
 
+    print(f"[Notify] Target file found: {file_path}")
     with open(file_path, "r", encoding="utf-8") as f:
         raw_uris = [line.strip() for line in f if line.strip()]
     
@@ -227,6 +244,7 @@ def notify(kind, folder, suffix, limit=None):
         raw_uris = raw_uris[:limit]
         
     if not raw_uris:
+        print(f"[Notify] Aborted: File {file_path} is empty.")
         return
 
     if kind == "Config":
@@ -242,6 +260,7 @@ def notify(kind, folder, suffix, limit=None):
     time_str = now.strftime("%H:%M")
     
     recipients = load_subscribers()
+    print(f"[Notify] Loaded {len(recipients)} subscriber(s) from database.")
     
     if TELEGRAM_ADMIN_CHAT_ID and str(TELEGRAM_ADMIN_CHAT_ID) not in recipients:
         recipients[str(TELEGRAM_ADMIN_CHAT_ID)] = "Admin"
@@ -249,12 +268,15 @@ def notify(kind, folder, suffix, limit=None):
     active_users = []
 
     if not recipients:
+        print("[Notify] Aborted: No recipients found.")
         return
 
     for chat_id, username in list(recipients.items()):
         if str(chat_id) != str(TELEGRAM_ADMIN_CHAT_ID) and not is_user_member(chat_id):
+            print(f"[Notify] Skipped user {chat_id} (not a channel member).")
             continue
             
+        print(f"[Notify] Sending to {username} ({chat_id})...")
         success = True
 
         if total_parts > MAX_TEXT_MESSAGES:
@@ -283,6 +305,7 @@ def notify(kind, folder, suffix, limit=None):
                 
                 res = send_message(chat_id, header + body, parse_mode=parse_mode)
                 if not res or not res.get("ok"):
+                    print(f"[Error] Message send failed for {chat_id}: {res}")
                     success = False
                     break
                 time.sleep(SEND_DELAY_SECONDS)
@@ -290,6 +313,7 @@ def notify(kind, folder, suffix, limit=None):
         if success:
             active_users.append(f"{username} ({chat_id})")
 
+    print(f"[Notify] Successfully delivered to {len(active_users)} user(s).")
     if TELEGRAM_ADMIN_CHAT_ID:
         report = (
             "👨‍💻 گزارش سیستم - ارسال موفق\n\n"
@@ -299,6 +323,7 @@ def notify(kind, folder, suffix, limit=None):
             "لیست کاربران:\n" + "\n".join(active_users)
         )
         send_message(TELEGRAM_ADMIN_CHAT_ID, report)
+        print("[Notify] Admin report sent successfully.")
 
 if __name__ == "__main__":
     target = sys.argv[1] if len(sys.argv) > 1 else "both"
