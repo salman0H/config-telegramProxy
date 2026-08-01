@@ -23,15 +23,12 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
-        run: pip install pyperclip tabulate
-
       - name: Decrypt Database
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           if [ -f "bot_state.enc" ]; then
-            openssl aes-256-cbc -d -pbkdf2 -in bot_state.enc -out bot_state.tar.gz -pass pass:"$DB_PASSWORD"
+            openssl aes-256-cbc -d -pbkdf2 -md sha256 -in bot_state.enc -out bot_state.tar.gz -pass env:DB_PASSWORD
             tar -xzf bot_state.tar.gz
           fi
 
@@ -39,6 +36,7 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: python3 scripts/notify_telegram.py poll
 
       - name: Detect which folder changed
@@ -65,20 +63,26 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: python3 scripts/notify_telegram.py ${{ steps.changed.outputs.target }}
 
       - name: Encrypt and Commit Database
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
+          touch subscribers.json
+          mkdir -p scripts
+          touch scripts/telegram_offset.json
+          
           tar -czf bot_state.tar.gz subscribers.json scripts/telegram_offset.json 2>/dev/null || true
-          openssl aes-256-cbc -salt -pbkdf2 -in bot_state.tar.gz -out bot_state.enc -pass pass:"$DB_PASSWORD"
+          openssl aes-256-cbc -salt -pbkdf2 -md sha256 -in bot_state.tar.gz -out bot_state.enc -pass env:DB_PASSWORD
           
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add bot_state.enc
           if ! git diff --cached --quiet; then
             git commit -m "chore: secure update bot state (encrypted)"
+            git pull origin main --rebase --autostash
             git push
           else
             echo "No bot-state changes to commit."

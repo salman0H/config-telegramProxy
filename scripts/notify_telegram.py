@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_ADMIN_CHAT_ID = os.environ.get("TELEGRAM_ADMIN_CHAT_ID")
-TELEGRAM_CHANNEL_ID = os.environ.get("TELEGRAM_CHANNEL_ID") or "@sentencedIntoMusic"
+TELEGRAM_CHANNEL_ID = os.environ.get("TELEGRAM_CHANNEL_ID", "@sentencedIntoMusic")
 
 API_BASE = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}"
 ITEMS_PER_MESSAGE = 10
@@ -66,7 +66,6 @@ def save_offset(offset):
 def latest_file(folder, suffix):
     pattern = os.path.join(folder, f"*_{suffix}.txt")
     files = sorted(glob.glob(pattern))
-    print(f"[Debug] Searching for pattern: {pattern} -> Found: {files}")
     return files[-1] if files else None
 
 def pack_groups(lines, max_items=ITEMS_PER_MESSAGE, max_chars=CHARS_BUDGET_FOR_ITEMS):
@@ -105,7 +104,6 @@ def _post(method, data, headers, timeout, max_retries=4):
         except Exception as e:
             print(f"[Error] Network exception: {e}")
             time.sleep(2)
-    print(f"[Error] API request failed after {max_retries} attempts.")
     return {"ok": False, "description": "Max retries reached"}
 
 def send_message(chat_id, text, parse_mode=None):
@@ -144,8 +142,7 @@ def is_user_member(user_id):
             data = json.loads(resp.read().decode("utf-8"))
             status = data.get("result", {}).get("status")
             return status in ["member", "administrator", "creator"]
-    except Exception as e:
-        print(f"[Membership] Verification failed for {user_id}: {e}")
+    except Exception:
         return False
 
 def apply_custom_label(uri, label):
@@ -163,11 +160,8 @@ def apply_custom_label(uri, label):
     return f"{base}#{urllib.parse.quote(label, safe='@')}"
 
 def poll_updates():
-    print("[Polling] Fetching Telegram updates...")
     if not TELEGRAM_BOT_TOKEN:
-        print("[Error] TELEGRAM_BOT_TOKEN is empty.")
         return
-
     offset = load_offset()
     url = f"{API_BASE}/getUpdates?timeout=5"
     if offset:
@@ -177,15 +171,12 @@ def poll_updates():
         req = urllib.request.Request(url)
         with urllib.request.urlopen(req, timeout=15) as resp:
             updates = json.loads(resp.read().decode("utf-8")).get("result", [])
-    except Exception as e:
-        print(f"[Polling] Error fetching updates: {e}")
+    except Exception:
         return
 
     if not updates:
-        print("[Polling] No new messages found.")
         return
 
-    print(f"[Polling] Found {len(updates)} new update(s).")
     subs = load_subscribers()
     next_offset = offset
 
@@ -207,7 +198,7 @@ def poll_updates():
                 if TELEGRAM_ADMIN_CHAT_ID and res and res.get("ok"):
                     send_message(TELEGRAM_ADMIN_CHAT_ID, f"🟢 [System Log]\nUser @{username} ({chat_id}) subscribed successfully.")
             else:
-                res = send_message(chat_id, "سلام 👋\nبرای دریافت پروکسی‌ها ابتدا در کانال @sentencedIntoMusic عضو شوید، سپس مجدداً دستور /start را ارسال کنید.")
+                res = send_message(chat_id, f"سلام 👋\nبرای دریافت پروکسی‌ها ابتدا در کانال {TELEGRAM_CHANNEL_ID} عضو شوید، سپس مجدداً دستور /start را ارسال کنید.")
                 if TELEGRAM_ADMIN_CHAT_ID and res and res.get("ok"):
                     send_message(TELEGRAM_ADMIN_CHAT_ID, f"🔴 [System Log]\nUser @{username} ({chat_id}) denied. Not in channel.")
         
@@ -220,23 +211,15 @@ def poll_updates():
 
     save_subscribers(subs)
     save_offset(next_offset)
-    print("[Polling] Offset and subscribers saved.")
 
 def notify(kind, folder, suffix, limit=None):
-    print(f"[Notify] Starting broadcast for {kind}...")
-    if not TELEGRAM_BOT_TOKEN:
-        print("[Error] TELEGRAM_BOT_TOKEN is empty. Check GitHub Secrets.")
-        return
-    if not TELEGRAM_CHANNEL_ID:
-        print("[Error] TELEGRAM_CHANNEL_ID is empty.")
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHANNEL_ID:
         return
 
     file_path = latest_file(folder, suffix)
     if not file_path:
-        print(f"[Notify] Aborted: No file found matching '{folder}/*_{suffix}.txt'")
         return
 
-    print(f"[Notify] Target file found: {file_path}")
     with open(file_path, "r", encoding="utf-8") as f:
         raw_uris = [line.strip() for line in f if line.strip()]
     
@@ -244,10 +227,13 @@ def notify(kind, folder, suffix, limit=None):
         raw_uris = raw_uris[:limit]
         
     if not raw_uris:
-        print(f"[Notify] Aborted: File {file_path} is empty.")
         return
 
-    uris = [apply_custom_label(uri, TELEGRAM_CHANNEL_ID) for uri in raw_uris]
+    if kind == "Config":
+        uris = [apply_custom_label(uri, TELEGRAM_CHANNEL_ID) for uri in raw_uris]
+    else:
+        uris = raw_uris
+
     groups = pack_groups(uris)
     total_parts = len(groups)
     
@@ -263,22 +249,19 @@ def notify(kind, folder, suffix, limit=None):
     active_users = []
 
     if not recipients:
-        print("[Notify] Aborted: No subscribers found in database.")
         return
 
     for chat_id, username in list(recipients.items()):
         if str(chat_id) != str(TELEGRAM_ADMIN_CHAT_ID) and not is_user_member(chat_id):
-            print(f"[Notify] Skipped {chat_id} (not a member).")
             continue
             
-        print(f"[Notify] Sending to {username} ({chat_id})...")
         success = True
 
         if total_parts > MAX_TEXT_MESSAGES:
             summary = HEADER_TEMPLATE.format(
                 kind=kind, part=1, total_parts=1, total_count=len(uris),
                 date=date_str, time=time_str, handle=TELEGRAM_CHANNEL_ID,
-            ) + f"\n(فایل کانفیگ‌ها به دلیل حجم بالا پیوست شد)"
+            ) + "\n(فایل کانفیگ‌ها به دلیل حجم بالا پیوست شد)"
             res = send_message(chat_id, summary)
             if res and res.get("ok"):
                 time.sleep(SEND_DELAY_SECONDS)
@@ -316,7 +299,6 @@ def notify(kind, folder, suffix, limit=None):
             "لیست کاربران:\n" + "\n".join(active_users)
         )
         send_message(TELEGRAM_ADMIN_CHAT_ID, report)
-        print("[Notify] Admin report sent.")
 
 if __name__ == "__main__":
     target = sys.argv[1] if len(sys.argv) > 1 else "both"
