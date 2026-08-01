@@ -1,104 +1,104 @@
-# Benchmark Results - 2026-07-31 12:43:05
+# Benchmark Results - 2026-08-01 18:10:21
 
-| Config/Proxy (Truncated)          |   Ping (ms) | Location        |
-|-----------------------------------|-------------|-----------------|
-| vless://aabbcac-acab-acba-badc... |        1.42 | Unknown         |
-| vless://abaacbc-caba-abca-cdab... |        1.88 | Unknown         |
-| vless://e65a5cbc-5663-4f7d-ad7... |       15.16 | Kazakhstan      |
-| vless://e65a5cbc-5663-4f7d-ad7... |       19.92 | Kazakhstan      |
-| ss://YWVzLTEyOC1jZmI6c2hhZG93c... |       22.98 | The Netherlands |
-| vless://9ccd06a2-5616-47e3-976... |       23.24 | United States   |
-| vless://8038f7de-9bba-4ebd-835... |       25.68 | Germany         |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       26.02 | The Netherlands |
-| ss://YWVzLTEyOC1nY206c2hhZG93c... |       26.41 | United States   |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       27.39 | The Netherlands |
-| trojan://humanity@208.103.161.... |       27.86 | United States   |
-| ss://YWVzLTEyOC1nY206c2hhZG93c... |       32.17 | Japan           |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       35.75 | The Netherlands |
-| ss://YWVzLTEyOC1nY206c2hhZG93c... |       40.37 | Japan           |
-| trojan://humanity@198.202.211.... |       55.78 | United States   |
-| vless://a1de0630-5786-48a0-84f... |       71.81 | United Kingdom  |
-| vless://a0fe052d-6ca1-4a9c-b62... |       72.53 | Canada          |
-| trojan://MiTiVPN@104.18.6.178:... |       72.9  | Canada          |
-| vless://cf75e4d5-21f0-426b-beb... |       72.97 | Canada          |
-| trojan://MiTiVPN@172.67.75.194... |       73.06 | Canada          |
-| trojan://MiTiVPN@162.159.140.9... |       73.1  | Canada          |
-| vless://a7f02fcc-16d5-47cb-82c... |       73.46 | Canada          |
-| vless://e9503cee-ae7d-4abe-b6e... |       73.85 | Canada          |
-| vless://de64aaa6-a0ea-48d0-853... |       74.93 | Türkiye         |
-| vless://10a6b923-e349-4594-92b... |       75.11 | Canada          |
-| vless://e7299042-7d8f-440f-836... |       75.96 | Russia          |
-| vless://cf39fab0-bb85-42cb-994... |       77.1  | Canada          |
-| vless://WANCLOUDFA-FREE@104.16... |       77.52 | Canada          |
-| vless://ecd01b9c-8172-41a4-be7... |       77.74 | Canada          |
-| trojan://humanity@172.64.147.2... |       77.77 | Canada          |
-| trojan://humanity@104.20.6.134... |       78.09 | Canada          |
-| vless://77e120a9-7ced-44a3-b6d... |       78.37 | United States   |
-| vless://38a43f18-b4d9-443f-9ff... |       78.85 | United States   |
-| trojan://humanity@185.18.250.2... |       78.86 | Spain           |
-| vless://33e1a095-1e25-4198-bfe... |       78.88 | Canada          |
-| vless://aaaaaabb-4ddd-4eee-9ff... |       78.89 | Canada          |
-| vless://fc08f98b-a379-cd06-45a... |       78.89 | Canada          |
-| vless://f75814f6-8f81-4847-b79... |       79.17 | Philippines     |
-| vless://11e17410-7b67-495a-ad7... |       79.74 | Canada          |
-| trojan://humanity@202.37.33.80... |       79.8  | New Zealand     |
-| trojan://MiTiVPN@89.116.250.13... |       79.99 | Lithuania       |
-| vless://ecd01b9c-8172-41a4-be7... |       80.16 | Canada          |
-| vless://11e17410-7b67-495a-ad7... |       80.3  | Canada          |
-| vless://aaaaaabb-4ddd-4eee-9ff... |       80.72 | Canada          |
-| vless://a7f02fcc-16d5-47cb-82c... |       81.05 | Canada          |
-| vless://fc08f98b-a379-cd06-45a... |       81.32 | Canada          |
-| vless://cf39fab0-bb85-42cb-994... |       82    | Canada          |
-| trojan://humanity@208.103.161.... |       82.14 | United States   |
-| vless://31d3bb30-fbb1-4e25-ac6... |       82.26 | Canada          |
-| vless://a8f84171-5f96-4547-b62... |       82.78 | Russia          |
-| trojan://humanity@104.26.14.13... |       83.1  | Canada          |
-| vless://8899d15d-a022-4b61-b84... |       83.27 | United States   |
-| vless://5acc4610-f2d7-44c9-bbe... |       84.61 | Canada          |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       85.44 | Canada          |
-| vless://322a90bb-511c-4368-b0d... |       87.8  | Canada          |
-| vless://111bcefe-653e-4e94-8b2... |       88.03 | Canada          |
-| vless://a8f84171-5f96-4547-b62... |       88.76 | Russia          |
-| vless://a13df940-020c-465f-bc8... |       90.31 | Australia       |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       90.54 | Türkiye         |
-| vless://2df56fd0-d1b7-4793-b87... |       91.08 | Canada          |
-| vless://14b59caf-a196-4ec2-8c7... |       91.16 | United Kingdom  |
-| vless://1641a422-2dff-45a5-846... |       92.31 | Canada          |
-| vless://89b3cbba-e6ac-485a-948... |       93.2  | Canada          |
-| vless://155e8dd4-a559-407a-9ea... |       93.58 | Russia          |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       95.28 | Albania         |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       95.4  | Albania         |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       95.48 | Albania         |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       95.57 | Albania         |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       95.67 | Albania         |
-| vless://c9380ef8-23f8-422e-81f... |       97.42 | Canada          |
-| vless://155e8dd4-a559-407a-9ea... |       98.35 | Russia          |
-| vless://155e8dd4-a559-407a-9ea... |       98.85 | Russia          |
-| vless://155e8dd4-a559-407a-9ea... |       99.64 | Russia          |
-| vless://155e8dd4-a559-407a-9ea... |      100.77 | Russia          |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      100.93 | Bulgaria        |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      101.04 | Bulgaria        |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      101.33 | Bulgaria        |
-| trojan://Telegram-Config0plus@... |      101.55 | Canada          |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      101.62 | Romania         |
-| vless://d85ea913-7dfa-44b0-bd6... |      102.09 | Canada          |
-| vless://155e8dd4-a559-407a-9ea... |      102.36 | Russia          |
-| vless://155e8dd4-a559-407a-9ea... |      102.5  | Russia          |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      103.32 | Hungary         |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      103.55 | Austria         |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      103.68 | Austria         |
-| trojan://VPNCUSTOMIZE@104.18.1... |      103.73 | Canada          |
-| vless://2f466a3b-5093-4556-875... |      103.94 | United States   |
-| vless://a77e29e5-4e64-4f17-92e... |      104.17 | United States   |
-| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      105.18 | Bulgaria        |
-| trojan://MiTiVPN@104.18.6.178:... |      105.32 | Canada          |
-| vless://d15cce83-9de9-4e37-98b... |      105.41 | United States   |
-| vless://5e243126-4a2a-84b6-782... |      107.06 | Spain           |
-| vless://cf39fab0-bb85-42cb-994... |      107.39 | Canada          |
-| vless://11e559f8-f5b7-48be-9ab... |      107.51 | The Netherlands |
-| trojan://MITIVPN@45.130.125.11... |      108.73 | Seychelles      |
-| trojan://MiTiVPN@151.101.1.194... |      109.04 | Canada          |
-| trojan://humanity@141.101.90.1... |      109.07 | Germany         |
-| vless://8525fe74-67e6-4a55-8a2... |      109.09 | Germany         |
-| vless://5e243126-4a2a-84b6-782... |      109.15 | Spain           |
-| vless://ecd01b9c-8172-41a4-be7... |      109.65 | Canada          |
+| Config/Proxy (Truncated)          |   Ping (ms) | Location      |
+|-----------------------------------|-------------|---------------|
+| vless://8038f7de-9bba-4ebd-835... |       27.72 | Germany       |
+| vless://6fc36cfc-561f-4544-9a0... |       38.29 | United States |
+| vless://388a6c57-87e7-420b-afe... |       41.4  | United States |
+| vless://b79948e1-a34a-480d-8eb... |       42.84 | Seychelles    |
+| vless://17540a16-a0dd-5694-7e1... |       45.78 | Switzerland   |
+| vless://81d0dbc8-e69e-4cb1-b1a... |       46.82 | United States |
+| vless://8cf1e524-ce8c-4c63-844... |       47.34 | United States |
+| vless://6202b230-417c-4d8e-b62... |       47.43 | Hong Kong     |
+| vless://6202b230-417c-4d8e-b62... |       47.5  | United States |
+| trojan://c206d543-023d-46cc-9d... |       47.61 | United States |
+| vless://392ed37c-c0cd-472e-876... |       49.19 | United States |
+| vless://412d7fbe-7474-4f1d-86c... |       49.28 | Unknown       |
+| vless://406d8436-0eb9-4eb2-84f... |       50.61 | Seychelles    |
+| vless://6202b230-417c-4d8e-b62... |       53.14 | Hong Kong     |
+| trojan://c206d543-023d-46cc-9d... |       53.62 | United States |
+| vless://5b9503aa-119b-4288-aa4... |       54.5  | United States |
+| trojan://MITIVPN@45.80.111.7:4... |       54.66 | Germany       |
+| vless://b2f6aa3a-2550-4a1c-b2c... |       58.23 | United States |
+| vless://32a2c585-23e8-40fa-a4c... |       59.57 | United States |
+| vless://8d11f290-c2a5-4ce5-b79... |       59.69 | United States |
+| vless://5b9503aa-119b-4288-aa4... |       60.09 | United States |
+| vless://5ebd890f-cdf7-4eec-ac4... |       62.26 | Australia     |
+| vless://89b3cbba-e6ac-485a-948... |       63.82 | United States |
+| vless://412d7fbe-7474-4f1d-86c... |       65.37 | Unknown       |
+| trojan://MiTiVPN@104.21.40.208... |       66.23 | United States |
+| vless://ad356e93-cc14-417d-9f4... |       70.04 | United States |
+| trojan://humanity@104.18.12.14... |       71.05 | United States |
+| vless://1737df47-a4b2-4096-9fc... |       71.72 | United States |
+| vless://41a52590-0ab0-4def-acb... |       73.85 | Türkiye       |
+| vless://412d7fbe-7474-4f1d-86c... |       75.11 | Unknown       |
+| trojan://auto@zula.ir:443?path... |       79.7  | Unknown       |
+| trojan://humanity@104.18.8.83:... |       86.95 | United States |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       93.17 | Netherlands   |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       93.34 | Netherlands   |
+| vless://5ed7fb94-bacd-485b-aca... |       99.52 | Unknown       |
+| trojan://humanity@104.18.8.83:... |      103.73 | United States |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      103.86 | Albania       |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      103.98 | Albania       |
+| vless://aaaaaabb-4ddd-4eee-9ff... |      109.27 | United States |
+| vless://7b81d175-d180-4ec8-bbc... |      109.44 | Poland        |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      109.77 | Canada        |
+| vless://5ed7fb94-bacd-485b-aca... |      109.98 | Unknown       |
+| trojan://MiTiVPN@104.26.12.41:... |      111.37 | United States |
+| trojan://db0857e9-7f60-4f27-a7... |      111.95 | United States |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      112.09 | Norway        |
+| trojan://humanity@104.16.174.1... |      112.14 | United States |
+| vless://b2059bd6-7ce2-45a5-96e... |      112.79 | United States |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      113.01 | United States |
+| vless://33e1a095-1e25-4198-bfe... |      113.12 | United States |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      113.15 | United States |
+| vless://bb516522-3937-4647-ad3... |      113.55 | United States |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      113.9  | Mexico        |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |      113.98 | United States |
+| trojan://humanity@104.16.174.1... |      114.33 | United States |
+| trojan://MiTiVPN@151.101.1.194... |      114.81 | United States |
+| ss://MjAyMi1ibGFrZTMtYWVzLTI1N... |      114.88 | Singapore     |
+| vless://1737df47-a4b2-4096-9fc... |      114.91 | Unknown       |
+| trojan://MiTiVPN@104.21.55.230... |      115.08 | United States |
+| vless://3f0f36f5-f091-45c5-88c... |      115.48 | United States |
+| vless://5e243126-4a2a-84b6-782... |      115.61 | Finland       |
+| trojan://ba07a8af-5544-48ac-ab... |      115.72 | Unknown       |
+| vless://5e1da13a-5080-4089-840... |      115.76 | United States |
+| vless://b79948e1-a34a-480d-8eb... |      115.93 | United States |
+| trojan://c206d543-023d-46cc-9d... |      116.05 | United States |
+| trojan://Mitivpn@151.101.0.0:8... |      116.43 | United States |
+| vless://5eecb34f-c905-4c77-b7f... |      116.66 | Czechia       |
+| ss://4d10c997-4781-4cd9-82c3-1... |      116.73 | United States |
+| hysteria2://voQTxwGh4I@91.107.... |      117    | Germany       |
+| vless://8dc7722c-2767-4eea-a28... |      117    | Italy         |
+| vless://406d8436-0eb9-4eb2-84f... |      117.14 | United States |
+| vless://489f6ece-37ab-58ab-cb1... |      117.18 | United States |
+| vless://bbafc769-441b-4f06-9aa... |      117.22 | Unknown       |
+| trojan://ba07a8af-5544-48ac-ab... |      117.3  | Unknown       |
+| vless://406d8436-0eb9-4eb2-84f... |      117.35 | United States |
+| vless://83afd88f-200f-4d89-bfc... |      117.38 | United States |
+| vless://412d7fbe-7474-4f1d-86c... |      117.52 | United States |
+| trojan://c206d543-023d-46cc-9d... |      117.71 | United States |
+| vless://ba5a5970-d35b-4bd6-a0e... |      117.94 | France        |
+| vless://bb3f7d41-a044-4937-bf6... |      118.02 | United States |
+| vless://89b3cbba-e6ac-485a-948... |      118.02 | Singapore     |
+| trojan://humanity@104.18.32.47... |      118.08 | United States |
+| trojan://humanity@104.19.229.2... |      118.09 | United States |
+| vless://4d10c997-4781-4cd9-82c... |      118.15 | United States |
+| vless://406d8436-0eb9-4eb2-84f... |      118.35 | United States |
+| hysteria2://mY0pSnWDFk@91.107.... |      118.42 | Germany       |
+| hysteria2://hSKnm6Byp7@91.107.... |      118.5  | Germany       |
+| vless://1737df47-a4b2-4096-9fc... |      118.61 | Unknown       |
+| trojan://humanity@104.18.152.2... |      118.73 | United States |
+| trojan://ba07a8af-5544-48ac-ab... |      119.33 | Unknown       |
+| vless://bbae962a-b6e9-46e6-990... |      119.5  | Germany       |
+| hysteria2://HChdbj6duc@91.107.... |      119.81 | Germany       |
+| hysteria2://HChdbj6duc@91.107.... |      119.88 | Germany       |
+| hysteria2://HChdbj6duc@91.107.... |      120.17 | Germany       |
+| hysteria2://HChdbj6duc@91.107.... |      120.37 | Germany       |
+| vless://bbae962a-b6e9-46e6-990... |      120.62 | Unknown       |
+| vless://3ccbad0a-cedc-dd42-163... |      120.71 | Unknown       |
+| vless://5ed7fb94-bacd-485b-aca... |      120.92 | Unknown       |
+| vless://564082ff-cf3c-48db-9e1... |      121.33 | Finland       |
+| trojan://humanity@104.18.152.7... |      121.41 | United States |
+| trojan://humanity@104.16.174.1... |      121.43 | United States |
