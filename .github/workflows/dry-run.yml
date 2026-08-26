@@ -3,6 +3,9 @@ name: Check Subscribers (Dry Run)
 on:
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
   check-users:
     runs-on: ubuntu-latest
@@ -24,9 +27,38 @@ jobs:
             tar -xzf bot_state.tar.gz
           fi
 
+      - name: Poll New Users
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+        run: python3 scripts/notify_telegram.py poll
+
       - name: Run Dry Run Check
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_ADMIN_CHAT_ID: ${{ secrets.TELEGRAM_ADMIN_CHAT_ID }}
           TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: python3 scripts/dry_run.py
+
+      - name: Encrypt and Commit Database
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          touch subscribers.json
+          mkdir -p scripts
+          touch scripts/telegram_offset.json
+          
+          tar -czf bot_state.tar.gz subscribers.json scripts/telegram_offset.json 2>/dev/null || true
+          openssl aes-256-cbc -salt -pbkdf2 -md sha256 -in bot_state.tar.gz -out bot_state.enc -pass env:DB_PASSWORD
+          
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add bot_state.enc
+          if ! git diff-index --quiet HEAD; then
+            git commit -m "chore: update bot state after dry-run polling"
+            git pull origin main --rebase --autostash
+            git push
+          else
+            echo "No changes to commit"
+          fi
