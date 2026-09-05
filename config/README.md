@@ -1,204 +1,204 @@
-# Benchmark Results - 2026-08-09 09:53:33
+# Benchmark Results - 2026-09-05 10:27:50
 
-| Config/Proxy (Truncated)          |   Ping (ms) | Location             |
-|-----------------------------------|-------------|----------------------|
-| vless://16227db7-1914-4a97-bb6... |        4.68 | Iran                 |
-| vless://70e63e1e-08fc-4c8f-885... |        6.13 | Iran                 |
-| vless://ef27ea8f-b3fc-4b41-83a... |        9.47 | Iran                 |
-| vless://70e63e1e-08fc-4c8f-885... |       12.13 | Iran                 |
-| vless://70e63e1e-08fc-4c8f-885... |       13.63 | Iran                 |
-| vless://1ee1f28d-4975-4d7c-95c... |       16.44 | Iran                 |
-| vless://1ee1f28d-4975-4d7c-95c... |       16.48 | Iran                 |
-| vless://5b3fa4fc-0533-4023-b99... |       21.75 | Iran                 |
-| vless://5fe45328-4ead-43be-aaa... |       22.03 | Iran                 |
-| vless://272dcdf4-0cbd-4b81-a1c... |       22.86 | Iran                 |
-| vless://272dcdf4-0cbd-4b81-a1c... |       22.97 | Iran                 |
-| vless://272dcdf4-0cbd-4b81-a1c... |       23.2  | Iran                 |
-| vless://272dcdf4-0cbd-4b81-a1c... |       23.3  | Iran                 |
-| vless://272dcdf4-0cbd-4b81-a1c... |       23.49 | Iran                 |
-| vless://272dcdf4-0cbd-4b81-a1c... |       23.58 | Iran                 |
-| vless://272dcdf4-0cbd-4b81-a1c... |       23.64 | Iran                 |
-| vless://feade342-9a00-427e-b04... |       25.19 | Iran                 |
-| trojan://humanity@2.144.21.112... |       30.16 | Iran                 |
-| vless://c09795c8-ee61-4c2a-980... |       30.46 | Unknown              |
-| vless://e48cf70b-a9a5-4855-933... |       33.63 | Unknown              |
-| vless://c09795c8-ee61-4c2a-980... |       34.37 | Unknown              |
-| ss://YWVzLTI1Ni1nY206T0dOaE5EZ... |       34.59 | Iran                 |
-| ss://YWVzLTI1Ni1nY206T0dOaE5EZ... |       36.78 | Iran                 |
-| vless://01a95af3-a2f6-453e-9f8... |       38.25 | Iran                 |
-| vless://d40896cb-c5bc-4ae1-8c6... |       38.39 | Unknown              |
-| vless://b4469373-b425-4902-80d... |       47.07 | United Arab Emirates |
-| ss://YWVzLTI1Ni1nY206T1dJNE1HU... |       47.18 | Iran                 |
-| vless://b4469373-b425-4902-80d... |       48.83 | United Arab Emirates |
-| vless://b4469373-b425-4902-80d... |       50.15 | United Arab Emirates |
-| vless://b4469373-b425-4902-80d... |       50.38 | United Arab Emirates |
-| vless://769087cc-c835-4c64-883... |       50.51 | Türkiye              |
-| vless://769087cc-c835-4c64-883... |       51.4  | Türkiye              |
-| vless://b4469373-b425-4902-80d... |       52.53 | United Arab Emirates |
-| trojan://humanity@45.130.125.1... |       55.87 | Seychelles           |
-| vless://6e5aeb09-49db-4447-b7b... |       56.31 | United States        |
-| trojan://humanity@104.18.152.7... |       56.51 | United States        |
-| vless://d195909a-eff4-489d-a26... |       56.98 | Unknown              |
-| trojan://humanity@104.18.152.2... |       57.08 | United States        |
-| vless://d566d849-ab28-4695-b01... |       57.11 | United Kingdom       |
-| vless://ce354701-e5dd-4ca6-9a4... |       57.52 | United States        |
-| vless://ce354701-e5dd-4ca6-9a4... |       57.76 | United States        |
-| vless://928cfab8-097c-4f24-9ba... |       57.81 | Türkiye              |
-| vless://56eba3f8-94f8-48f2-920... |       57.89 | United States        |
-| vless://3a38b35b-7b31-452c-954... |       58    | United States        |
-| vless://166ef05e-8ab5-43b7-891... |       58.04 | Russian Federation   |
-| vless://512a764b-846f-4d51-b33... |       58.17 | Türkiye              |
-| vless://6202b230-417c-4d8e-b62... |       58.22 | United States        |
-| vless://19804f6b-3661-4eca-b29... |       58.26 | United States        |
-| vless://mahanvpn-mahanvpn@104.... |       58.35 | United States        |
-| vless://6202b230-417c-4d8e-b62... |       58.39 | Russian Federation   |
-| vless://2370f4d8-6694-4e51-8c7... |       58.55 | United States        |
-| vless://6202b230-417c-4d8e-b62... |       58.67 | United States        |
-| vless://6202b230-417c-4d8e-b62... |       58.68 | United States        |
-| vless://mahanvpn-mahanvpn@104.... |       58.71 | United States        |
-| trojan://Mehdi1234@172.64.144.... |       58.75 | United States        |
-| vless://e8c61352-444f-4154-ba3... |       58.78 | United States        |
-| vless://e7961655-9674-4cbd-a36... |       58.79 | United States        |
-| vless://e7961655-9674-4cbd-a36... |       58.79 | United States        |
-| vless://telegram-id-Arfilter@1... |       58.85 | Portugal             |
-| vless://5acc4610-f2d7-44c9-bbe... |       58.91 | United States        |
-| vless://0cca1132-94a6-476c-ab1... |       59.01 | United States        |
-| vless://2f466a3b-5093-4556-875... |       59.03 | United States        |
-| vless://767b6340-96dc-4aa0-801... |       59.03 | United States        |
-| vless://501b6afa-f955-473f-844... |       59.09 | Russian Federation   |
-| vless://6202b230-417c-4d8e-b62... |       59.13 | United States        |
-| vless://b2974faf-4dc2-4a6d-935... |       59.18 | United States        |
-| vless://e7961655-9674-4cbd-a36... |       59.28 | United States        |
-| vless://ebe44c2c-96ed-4a36-845... |       59.28 | United States        |
-| vless://928cfab8-097c-4f24-9ba... |       59.29 | Türkiye              |
-| vless://be5851ff-9af5-45ea-b87... |       59.31 | United States        |
-| vless://98b6cb05-b5ab-4c82-868... |       59.31 | United States        |
-| vless://927eb03d-f806-4f21-88e... |       59.32 | United States        |
-| vless://86c50e3a-5b87-49dd-bd2... |       59.35 | United States        |
-| vless://16068e83-af4c-49ba-804... |       59.35 | United States        |
-| vless://6202b230-417c-4d8e-b62... |       59.37 | United States        |
-| vless://bcce095a-9f98-4e23-a68... |       59.42 | United States        |
-| vless://512a764b-846f-4d51-b33... |       59.46 | Türkiye              |
-| vless://17a5e590-46cb-4830-9a8... |       59.47 | United States        |
-| vless://e7961655-9674-4cbd-a36... |       59.58 | United States        |
-| vless://58c1b245-2ea0-40b9-b51... |       59.72 | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       59.72 | United States        |
-| vless://93b2c17b-b745-43b3-bbd... |       59.73 | Türkiye              |
-| vless://512a764b-846f-4d51-b33... |       59.78 | Türkiye              |
-| vless://eeb6823c-b926-4ea2-866... |       59.79 | United States        |
-| vless://166ef05e-8ab5-43b7-891... |       59.8  | Russian Federation   |
-| vless://4d10c997-4781-4cd9-82c... |       59.91 | United States        |
-| vless://9f135709-60a1-4a9b-b31... |       59.95 | United States        |
-| vless://8f1a15bf-a352-4c32-aee... |       59.96 | United States        |
-| vless://cf39fab0-bb85-42cb-994... |       60.02 | United States        |
-| vless://17540a16-a0dd-5694-7e1... |       60.03 | Switzerland          |
-| vless://4a1441b0-7bc8-4906-85c... |       60.06 | United States        |
-| vless://104b694e-5063-4e4f-8d9... |       60.09 | United States        |
-| vless://12d8b109-394d-4d0c-a20... |       60.13 | United States        |
-| vless://166ef05e-8ab5-43b7-891... |       60.23 | Russian Federation   |
-| vless://0481cdac-8ccc-4694-b4c... |       60.23 | United States        |
-| vless://cf39fab0-bb85-42cb-994... |       60.25 | United States        |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       60.36 | Seychelles           |
-| vless://3727b0ac-9f3e-4da8-895... |       60.37 | United States        |
-| vless://cf39fab0-bb85-42cb-994... |       60.39 | United States        |
-| vless://86c50e3a-5b87-49dd-bd2... |       60.4  | United States        |
-| vless://e7961655-9674-4cbd-a36... |       60.43 | United States        |
-| vless://6202b230-417c-4d8e-b62... |       60.44 | Brazil               |
-| vless://4d10c997-4781-4cd9-82c... |       60.46 | United States        |
-| vless://Parsashonam-14@104.24.... |       60.47 | United States        |
-| vless://e6acf17c-b19c-45ee-afd... |       60.49 | Russian Federation   |
-| vless://0cca1132-94a6-476c-ab1... |       60.58 | United States        |
-| trojan://humanity@104.16.174.3... |       60.61 | United States        |
-| vless://1853d1d2-1ccf-48e6-ae0... |       60.62 | United States        |
-| vless://104380d8-f859-421a-bd1... |       60.62 | United States        |
-| vless://166ef05e-8ab5-43b7-891... |       60.75 | Russian Federation   |
-| vless://6680846a-8a57-4dfd-9a0... |       60.79 | Seychelles           |
-| trojan://humanity@104.19.64.10... |       60.87 | United States        |
-| vless://6202b230-417c-4d8e-b62... |       60.88 | United States        |
-| vless://e6acf17c-b19c-45ee-afd... |       60.92 | Russian Federation   |
-| vless://901ff980-0727-4a6b-841... |       60.97 | United States        |
-| vless://927eb03d-f806-4f21-88e... |       61    | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       61.03 | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       61.04 | United States        |
-| vless://bd134ebe-650c-4bd6-a20... |       61.05 | United States        |
-| vless://245bb424-b186-4738-8f4... |       61.08 | United States        |
-| vless://93b2c17b-b745-43b3-bbd... |       61.1  | Türkiye              |
-| vless://4c97ec3e-3527-48c5-80f... |       61.2  | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       61.28 | United States        |
-| vless://187cba2e-94df-407e-8d0... |       61.29 | United States        |
-| vless://5d0206d9-fb42-4c8b-a84... |       61.34 | Russian Federation   |
-| vless://6202b230-417c-4d8e-b62... |       61.34 | United States        |
-| vless://d6971cc4-a506-49f6-8eb... |       61.39 | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       61.4  | United States        |
-| vless://9b44bfb4-9d28-4870-9fc... |       61.4  | Russian Federation   |
-| vless://6680846a-8a57-4dfd-9a0... |       61.41 | Seychelles           |
-| vless://93b2c17b-b745-43b3-bbd... |       61.42 | Türkiye              |
-| vless://bcce095a-9f98-4e23-a68... |       61.43 | United States        |
-| vless://ed0e05af-49ab-4ea8-a39... |       61.45 | Unknown              |
-| vless://4d10c997-4781-4cd9-82c... |       61.46 | United States        |
-| vless://6fe9fe86-0dc0-4657-806... |       61.47 | Lithuania            |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       61.47 | United States        |
-| vless://telegram-id-PcV2ray@10... |       61.49 | United States        |
-| trojan://humanity@104.18.152.2... |       61.51 | United States        |
-| vless://31f345f3-b8eb-4ca6-8b1... |       61.54 | United States        |
-| vless://telegram-id-Arfilter@1... |       61.56 | Portugal             |
-| vless://6fc36cfc-561f-4544-9a0... |       61.62 | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       61.63 | United States        |
-| vless://4c41d237-630a-4d02-8ec... |       61.63 | United States        |
-| vless://c0e1f187-a2c5-44f9-a9c... |       61.71 | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       61.72 | United States        |
-| vless://6fc36cfc-561f-4544-9a0... |       61.75 | United States        |
-| vless://14b02e2a-8930-4afb-841... |       61.75 | United States        |
-| vless://5acc4610-f2d7-44c9-bbe... |       61.75 | United States        |
-| vless://9e81276e-5d48-4238-b72... |       61.78 | United States        |
-| vless://bcce095a-9f98-4e23-a68... |       61.79 | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       61.79 | United States        |
-| vless://501b6afa-f955-473f-844... |       61.8  | Russian Federation   |
-| vless://eeb6823c-b926-4ea2-866... |       61.81 | United States        |
-| vless://e5f8a9f6-f164-479b-b3b... |       61.87 | United States        |
-| vless://bdba330b-dfc6-0023-93e... |       61.94 | Russian Federation   |
-| trojan://humanity@141.101.90.1... |       61.94 | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       61.97 | United States        |
-| vless://0481cdac-8ccc-4694-b4c... |       61.99 | United States        |
-| vless://af309ad2-c943-48ea-b57... |       62.02 | Sweden               |
-| vless://cf39fab0-bb85-42cb-994... |       62.03 | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       62.03 | United States        |
-| vless://e7961655-9674-4cbd-a36... |       62.04 | United States        |
-| vless://f3d6c244-772a-428f-b8f... |       62.07 | United States        |
-| vless://34c84d9d-2bad-4272-a45... |       62.1  | United States        |
-| vless://97ea73b6-2043-4238-903... |       62.1  | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       62.11 | United States        |
-| vless://073d1d50-8478-47bf-a82... |       62.12 | United States        |
-| vless://cf39fab0-bb85-42cb-994... |       62.15 | United States        |
-| vless://6202b230-417c-4d8e-b62... |       62.2  | Belize               |
-| vless://6202b230-417c-4d8e-b62... |       62.23 | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       62.25 | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       62.28 | United States        |
-| vless://5d8eb33a-2166-4daf-88f... |       62.3  | United States        |
-| vless://e4927998-38dd-4bf4-a37... |       62.3  | United States        |
-| vless://ec1bb388-649c-4deb-9eb... |       62.33 | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       62.34 | United States        |
-| vless://5acc4610-f2d7-44c9-bbe... |       62.36 | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       62.37 | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       62.37 | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       62.38 | United States        |
-| vless://c49a0981-6d37-4ec0-9a0... |       62.44 | Unknown              |
-| vless://4d10c997-4781-4cd9-82c... |       62.46 | United States        |
-| vless://7e544a9d-7667-413b-bbb... |       62.49 | Seychelles           |
-| vless://cf39fab0-bb85-42cb-994... |       62.5  | United States        |
-| vless://c5389662-95a5-4e51-8bc... |       62.56 | United States        |
-| vless://cff6f361-828a-43c8-a8b... |       62.57 | Seychelles           |
-| vless://d617f9de-8905-478d-b30... |       62.66 | Sweden               |
-| vless://730cbebb-39b2-4a1c-b2f... |       62.7  | United States        |
-| vless://b2f6aa3a-2550-4a1c-b2c... |       62.7  | United States        |
-| vless://eeb6823c-b926-4ea2-866... |       62.71 | United States        |
-| vless://9b44bfb4-9d28-4870-9fc... |       62.74 | Russian Federation   |
-| vless://53fa8faf-ba4b-4322-9c6... |       62.75 | United States        |
-| vless://5856a798-2bfd-4ee6-bf2... |       62.75 | United States        |
-| vless://4d10c997-4781-4cd9-82c... |       62.78 | United States        |
-| vless://bdba330b-dfc6-001f-93e... |       62.79 | Russian Federation   |
-| vless://4d10c997-4781-4cd9-82c... |       62.79 | United States        |
-| vless://166ef05e-8ab5-43b7-891... |       62.84 | Russian Federation   |
-| vless://166ef05e-8ab5-43b7-891... |       62.89 | Russian Federation   |
-| vless://928cfab8-097c-4f24-9ba... |       62.9  | Türkiye              |
-| vless://b2974faf-4dc2-4a6d-935... |       62.91 | United States        |
+| Config/Proxy (Truncated)          |   Ping (ms) | Location      |
+|-----------------------------------|-------------|---------------|
+| vless://41bc5a50-7c41-4078-9a2... |        6.17 | Unknown       |
+| vless://41bc5a50-7c41-4078-9a2... |        6.58 | Unknown       |
+| vless://38dd06a1-e1cb-492b-bb8... |        6.66 | Iran          |
+| vless://16227db7-1914-4a97-bb6... |        7.67 | Iran          |
+| vless://ffa37367-6313-4cc5-86b... |        8    | Unknown       |
+| vless://7b81a350-89c3-47da-a3a... |        8.44 | Unknown       |
+| vless://41bc5a50-7c41-4078-9a2... |        8.51 | Unknown       |
+| vless://c09795c8-ee61-4c2a-980... |       11.83 | Unknown       |
+| vless://c09795c8-ee61-4c2a-980... |       12.1  | Unknown       |
+| vless://949139db-dcd3-4da9-a51... |       23.17 | Unknown       |
+| vless://41a0ea4e-5f0b-4f58-9a7... |       23.93 | Unknown       |
+| vless://4feeac9e-f8ea-4101-b6f... |       24.04 | Unknown       |
+| vless://38dd06a1-e1cb-492b-bb8... |       24.04 | Iran          |
+| vless://38dd06a1-e1cb-492b-bb8... |       24.47 | Iran          |
+| vless://38dd06a1-e1cb-492b-bb8... |       24.6  | Iran          |
+| vless://38dd06a1-e1cb-492b-bb8... |       24.77 | Iran          |
+| vless://38dd06a1-e1cb-492b-bb8... |       24.97 | Iran          |
+| vless://38dd06a1-e1cb-492b-bb8... |       25.06 | Iran          |
+| vless://38dd06a1-e1cb-492b-bb8... |       25.24 | Iran          |
+| vless://f8a8b40d-a714-43bf-022... |       25.41 | Unknown       |
+| vless://83afd88f-200f-4d89-bfc... |       26.34 | Canada        |
+| vless://e31085f9-7f55-4a7d-b00... |       27.54 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       27.77 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       27.79 | Canada        |
+| vless://38dd06a1-e1cb-492b-bb8... |       27.85 | Iran          |
+| vless://83afd88f-200f-4d89-bfc... |       28.1  | Canada        |
+| vless://e8c61352-444f-4154-ba3... |       28.27 | Canada        |
+| vless://3b540fa0-24ab-415b-944... |       28.31 | Unknown       |
+| vless://e5cc16a6-ea42-46b2-82a... |       28.71 | Canada        |
+| vless://eaeb9077-b90c-45e3-a52... |       28.75 | Unknown       |
+| vless://83afd88f-200f-4d89-bfc... |       28.84 | Canada        |
+| vless://eaeb9077-b90c-45e3-a52... |       28.9  | Unknown       |
+| vless://e5cc16a6-ea42-46b2-82a... |       29.19 | Canada        |
+| vless://542fd687-5160-4f80-922... |       29.43 | Canada        |
+| vless://39036971-c66f-423d-b30... |       29.56 | Iran          |
+| vless://fd5c3b3e-0f0e-4877-9a1... |       29.56 | Unknown       |
+| vless://e5cc16a6-ea42-46b2-82a... |       29.64 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       29.65 | Canada        |
+| vless://83afd88f-200f-4d89-bfc... |       29.89 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       29.91 | Canada        |
+| vless://e8c61352-444f-4154-ba3... |       30    | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       30.08 | Canada        |
+| vless://83afd88f-200f-4d89-bfc... |       30.13 | Canada        |
+| vless://eaeb9077-b90c-45e3-a52... |       30.15 | Unknown       |
+| vless://dca945d2-6d9b-434f-875... |       30.19 | Canada        |
+| vless://bae8c3d3-ca5b-46ba-9c3... |       30.5  | Unknown       |
+| vless://eaeb9077-b90c-45e3-a52... |       30.53 | Unknown       |
+| vless://83afd88f-200f-4d89-bfc... |       30.58 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       30.6  | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       30.61 | Canada        |
+| vless://eaeb9077-b90c-45e3-a52... |       30.65 | Unknown       |
+| vless://e5cc16a6-ea42-46b2-82a... |       30.68 | Canada        |
+| vless://436251af-af1b-4f91-9a8... |       30.92 | Unknown       |
+| vless://e5cc16a6-ea42-46b2-82a... |       30.92 | Canada        |
+| vless://30fcec7f-164b-465c-87f... |       31.28 | Iran          |
+| vless://30fcec7f-164b-465c-87f... |       31.46 | Iran          |
+| vless://30fcec7f-164b-465c-87f... |       31.51 | Iran          |
+| vless://6fefce4c-2683-41fd-90b... |       31.62 | Unknown       |
+| vless://542fd687-5160-4f80-922... |       31.84 | Canada        |
+| vless://e65a5cbc-5663-4f7d-ad7... |       32.01 | Canada        |
+| vless://83afd88f-200f-4d89-bfc... |       32.39 | Canada        |
+| vless://542fd687-5160-4f80-922... |       32.42 | Canada        |
+| vless://bb8c74a1-abc1-4511-b10... |       32.55 | Canada        |
+| vless://cbeb096e-3e16-4f3a-b6c... |       32.81 | Unknown       |
+| vless://30fcec7f-164b-465c-87f... |       33.03 | Iran          |
+| vless://e5cc16a6-ea42-46b2-82a... |       33.14 | Canada        |
+| vless://396c904b-4b62-4334-b79... |       33.21 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       33.24 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       33.26 | Canada        |
+| vless://542fd687-5160-4f80-922... |       33.59 | Canada        |
+| vless://38dd06a1-e1cb-492b-bb8... |       33.71 | Iran          |
+| vless://eaeb9077-b90c-45e3-a52... |       33.76 | Unknown       |
+| vless://38dd06a1-e1cb-492b-bb8... |       33.81 | Iran          |
+| vless://eaeb9077-b90c-45e3-a52... |       34.61 | Unknown       |
+| vless://d361072e-9e0e-4e2d-8ec... |       34.72 | Canada        |
+| vless://38dd06a1-e1cb-492b-bb8... |       34.74 | Iran          |
+| vless://8899d15d-a022-4b61-b84... |       34.77 | Canada        |
+| vless://eaeb9077-b90c-45e3-a52... |       34.94 | Unknown       |
+| vless://eaeb9077-b90c-45e3-a52... |       34.98 | Unknown       |
+| vless://eaeb9077-b90c-45e3-a52... |       35.11 | Iran          |
+| vless://eaeb9077-b90c-45e3-a52... |       35.13 | Iran          |
+| vless://e62aa442-9f2c-4b5b-8b9... |       35.26 | Unknown       |
+| vless://396c904b-4b62-4334-b79... |       35.31 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       35.5  | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       36.07 | Canada        |
+| vless://fef4a93d-eb4f-4657-b56... |       36.08 | Canada        |
+| vless://0dbad6ba-be87-46e1-ab9... |       36.71 | Canada        |
+| vless://fef4a93d-eb4f-4657-b56... |       36.97 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       38.27 | Canada        |
+| vless://83f03646-fb28-44cc-9d2... |       38.83 | Canada        |
+| vless://f07b0239-d5a4-42c4-b5a... |       39.11 | Iran          |
+| vless://829658bf-03c4-4c28-81e... |       39.12 | Canada        |
+| vless://83f03646-fb28-44cc-9d2... |       39.27 | Canada        |
+| vless://396c904b-4b62-4334-b79... |       39.29 | Canada        |
+| vless://58ea8326-65e1-4848-9ee... |       39.63 | Unknown       |
+| vless://d361072e-9e0e-4e2d-8ec... |       40.38 | Canada        |
+| vless://d361072e-9e0e-4e2d-8ec... |       40.75 | Canada        |
+| vless://eaeb9077-b90c-45e3-a52... |       41.16 | Unknown       |
+| vless://eaeb9077-b90c-45e3-a52... |       41.41 | Unknown       |
+| vless://396c904b-4b62-4334-b79... |       41.64 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       41.95 | United States |
+| trojan://20ba0c60-0133-11f1-95... |       42.04 | Canada        |
+| vless://e5cc16a6-ea42-46b2-82a... |       42.47 | United States |
+| vless://eaeb9077-b90c-45e3-a52... |       42.72 | Unknown       |
+| vless://e5cc16a6-ea42-46b2-82a... |       42.91 | United States |
+| vless://eaeb9077-b90c-45e3-a52... |       43.13 | Unknown       |
+| vless://d84c0e47-7575-44cb-bc0... |       43.19 | Canada        |
+| vless://9ccd06a2-5616-47e3-976... |       43.66 | Canada        |
+| vless://396c904b-4b62-4334-b79... |       44.21 | Canada        |
+| vless://cf39fab0-bb85-42cb-994... |       44.25 | United States |
+| vless://55b0463c-e27f-455b-a25... |       46.46 | Canada        |
+| vless://d361072e-9e0e-4e2d-8ec... |       46.52 | Unknown       |
+| vless://2f466a3b-5093-4556-875... |       47.48 | Canada        |
+| vless://06ef598c-1555-4887-b3f... |       47.97 | Canada        |
+| vless://2f466a3b-5093-4556-875... |       48.14 | Canada        |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       50.27 | Iran          |
+| ss://Y2hhY2hhMjAtaWV0Zi1wb2x5M... |       50.38 | Iran          |
+| vless://ddb4b81b-3c9d-43b9-b85... |       51    | Unknown       |
+| vless://6e229311-eed2-4b92-91c... |       51.92 | Unknown       |
+| vless://c122fae8-7875-421f-a42... |       53.62 | Unknown       |
+| vless://63ea20f5-0702-4962-849... |       54.47 | Unknown       |
+| vless://b644728c-b82f-4507-91b... |       54.48 | Turkey        |
+| vless://d057338f-0f7b-4245-80b... |       54.53 | Unknown       |
+| vless://3321a819-889d-40b3-b8f... |       54.65 | Canada        |
+| vless://eaeb9077-b90c-45e3-a52... |       54.92 | Unknown       |
+| vless://83f03646-fb28-44cc-9d2... |       55.35 | Canada        |
+| vless://8c64cae9-a513-4e37-a68... |       55.85 | Türkiye       |
+| vless://3923100b-fc39-4568-b58... |       55.87 | Unknown       |
+| vless://eaeb9077-b90c-45e3-a52... |       56.07 | Unknown       |
+| vless://b5539644-22ce-4140-96c... |       56.38 | Turkey        |
+| vless://d4e041e6-6960-4723-9fa... |       57.29 | Unknown       |
+| vless://f75814f6-8f81-4847-b79... |       57.44 | France        |
+| vless://78eb4455-0d07-4bc2-93e... |       59.61 | Türkiye       |
+| vless://78eb4455-0d07-4bc2-93e... |       60.29 | Türkiye       |
+| vless://1ee1f28d-4975-4d7c-95c... |       60.39 | Iran          |
+| vless://78eb4455-0d07-4bc2-93e... |       60.49 | Türkiye       |
+| vless://78eb4455-0d07-4bc2-93e... |       60.55 | Türkiye       |
+| vless://1ee1f28d-4975-4d7c-95c... |       60.61 | Iran          |
+| vless://eaeb9077-b90c-45e3-a52... |       61.04 | Unknown       |
+| vless://78eb4455-0d07-4bc2-93e... |       61.17 | Türkiye       |
+| vless://eaeb9077-b90c-45e3-a52... |       61.29 | Unknown       |
+| vless://78eb4455-0d07-4bc2-93e... |       61.47 | Türkiye       |
+| vless://f75814f6-8f81-4847-b79... |       61.48 | France        |
+| vless://f75814f6-8f81-4847-b79... |       61.48 | France        |
+| vless://1ee1f28d-4975-4d7c-95c... |       62.49 | Iran          |
+| vless://eaeb9077-b90c-45e3-a52... |       63.06 | Unknown       |
+| vless://0dea82cd-a030-4c11-bcc... |       63.3  | Russia        |
+| vless://0dc1fc26-b8e9-4296-987... |       63.56 | Russia        |
+| vless://eaeb9077-b90c-45e3-a52... |       63.8  | Unknown       |
+| vless://0dea82cd-a030-4c11-bcc... |       63.96 | Russia        |
+| vless://0dea82cd-a030-4c11-bcc... |       64.08 | Russia        |
+| vless://1e35b4bf-b270-4c0b-918... |       64.45 | Canada        |
+| vless://fe334bef-4f9a-47a5-962... |       64.63 | Canada        |
+| vless://09d20121-a470-4d88-85a... |       64.75 | Turkey        |
+| vless://94498f1a-26c1-4d86-a38... |       64.85 | Canada        |
+| vless://5dc15e15-f285-4a9d-959... |       65.04 | Unknown       |
+| vless://0dea82cd-a030-4c11-bcc... |       65.14 | Russia        |
+| vless://78eb4455-0d07-23f0-93e... |       65.15 | Russia        |
+| vless://2eb1e3e2-34b9-4ca8-864... |       65.42 | Russia        |
+| vless://0dea82cd-a030-4c11-bcc... |       65.49 | Russia        |
+| vless://78eb4455-0d07-28a0-93e... |       65.49 | Russia        |
+| vless://6eb169bc-9d85-46ab-a9e... |       65.55 | Turkey        |
+| trojan://humanity@172.64.152.2... |       65.85 | Canada        |
+| vless://0dea82cd-a030-4c11-bcc... |       66.07 | Russia        |
+| vless://dc8eccdb-ecfa-435f-9ac... |       66.1  | Canada        |
+| vless://85c4c0ce-08ef-493d-96f... |       66.12 | Canada        |
+| vless://c668980f-1ddf-0028-9c9... |       66.12 | Russia        |
+| vless://c668980f-1ddf-017c-9c9... |       66.25 | Russia        |
+| vless://c7e9c591-2764-423a-afc... |       66.52 | Canada        |
+| vless://c55c929d-e9d4-45bc-ba5... |       66.82 | Canada        |
+| vless://89f8b5cd-f3d7-4562-c16... |       67.14 | Canada        |
+| vless://c55c929d-e9d4-45bc-ba5... |       67.15 | Canada        |
+| vless://213426db-afb7-48d1-ae5... |       67.75 | Canada        |
+| vless://9b18ccef-b9e0-41d1-899... |       67.87 | Canada        |
+| vless://0f0b7f69-78e1-4e9e-8b3... |       68.06 | Canada        |
+| vless://851ed0d8-a37b-452d-8ef... |       68.14 | Russia        |
+| vless://c55c929d-e9d4-45bc-ba5... |       68.14 | Canada        |
+| vless://abc71b1a-2efb-4982-8cf... |       68.15 | Canada        |
+| vless://435bda4c-fe5e-42c9-a3a... |       68.35 | Canada        |
+| trojan://humanity@104.18.32.47... |       68.38 | Canada        |
+| vless://ad356e93-cc14-417d-9f4... |       68.44 | Canada        |
+| vless://942bdcfc-e522-44f1-b89... |       68.61 | Canada        |
+| trojan://humanity@104.18.32.47... |       68.63 | Canada        |
+| vless://0dea82cd-a030-4c11-bcc... |       68.67 | Russia        |
+| trojan://humanity@104.18.32.47... |       68.68 | Canada        |
+| vless://0f0b7f69-78e1-4e9e-8b3... |       68.87 | Canada        |
+| ss://2b285251-1c04-404e-bea8-e... |       68.88 | Russia        |
+| vless://0f0b7f69-78e1-4e9e-8b3... |       68.9  | Canada        |
+| vless://fc965ad9-bdd7-4815-ad7... |       69.1  | Canada        |
+| vless://2271c50f-ac7a-4d7f-8b0... |       69.19 | Canada        |
+| vless://0f0b7f69-78e1-4e9e-8b3... |       69.21 | Canada        |
+| vless://81caa837-c213-4731-a02... |       69.34 | Canada        |
+| vless://89b3cbba-e6ac-485a-948... |       69.42 | Canada        |
+| vless://188079af-1b15-4256-90f... |       69.54 | Türkiye       |
+| vless://76186f1e-3062-4a2b-98c... |       69.58 | Russia        |
+| vless://98b6cb05-b5ab-4c82-868... |       69.61 | Canada        |
+| vless://0f0b7f69-78e1-4e9e-8b3... |       69.62 | Canada        |
+| vless://851ed0d8-a37b-452d-8ef... |       70    | Russia        |
+| vless://81caa837-c213-4731-a02... |       70.06 | Canada        |
+| vless://b69b43d1-091d-4d7c-90b... |       70.12 | Canada        |
