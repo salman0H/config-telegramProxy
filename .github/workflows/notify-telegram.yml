@@ -45,11 +45,11 @@ jobs:
             tar -xzf bot_state.tar.gz
           fi
 
-      - name: Fetch New Configs and Proxies
+      - name: Run script
         run: |
-          printf "1\n3\n\n" | python3 main.py
-          printf "2\n3\n\n" | python3 main.py
-
+          python3 main.py --mode 1 --source 3 --export all
+          python3 main.py --mode 2 --source 3 --export all
+        
       - name: Commit Fetched Files
         run: |
           git config --local user.name "github-actions[bot]"
