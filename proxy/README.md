@@ -1,24 +1,25 @@
-# Benchmark Results - 2026-09-13 03:40:39
+# Benchmark Results - 2026-09-13 15:46:06
 
 | Config/Proxy (Truncated)          |   Ping (ms) | Location        |
 |-----------------------------------|-------------|-----------------|
-| https://t.me/proxy?server=172.... |        8.94 | Canada          |
-| https://t.me/proxy?server=172.... |        8.99 | Canada          |
-| https://t.me/proxy?server=172.... |        9.02 | Canada          |
-| https://t.me/proxy?server=172.... |        9.06 | Canada          |
-| https://t.me/proxy?server=172.... |        9.34 | Canada          |
-| https://t.me/proxy?server=194.... |      132.76 | The Netherlands |
-| https://t.me/proxy?server=91.1... |      139.68 | Germany         |
-| https://t.me/proxy?server=194.... |      139.9  | The Netherlands |
-| https://t.me/proxy?server=shen... |      154.65 | Unknown         |
-| https://t.me/proxy?server=116.... |      155.07 | Germany         |
-| https://t.me/proxy?server=nont... |      169.33 | Unknown         |
-| https://t.me/proxy?server=tera... |      171.07 | Unknown         |
-| https://t.me/proxy?server=vahs... |      172.25 | Unknown         |
-| https://t.me/proxy?server=rain... |      173.94 | Unknown         |
-| https://t.me/proxy?server=khat... |      175.95 | Unknown         |
-| https://t.me/proxy?server=new2... |      180.43 | Unknown         |
-| https://t.me/proxy?server=noro... |      181.8  | Unknown         |
-| https://t.me/proxy?server=noon... |      191.27 | Unknown         |
-| https://t.me/proxy?server=silv... |      194.75 | Unknown         |
-| https://t.me/proxy?server=new.... |      196.67 | Unknown         |
+| https://t.me/proxy?server=194.... |       86.06 | The Netherlands |
+| https://t.me/proxy?server=194.... |       87.4  | The Netherlands |
+| https://t.me/proxy?server=159.... |       93.19 | Germany         |
+| https://t.me/proxy?server=195.... |       93.64 | Germany         |
+| https://t.me/proxy?server=91.1... |       94.74 | Germany         |
+| https://t.me/proxy?server=46.2... |       95.4  | Germany         |
+| https://t.me/proxy?server=136.... |       95.69 | Germany         |
+| https://t.me/proxy?server=91.1... |       97.07 | Germany         |
+| https://t.me/proxy?server=shen... |      105.54 | Unknown         |
+| https://t.me/proxy?server=new2... |      109.62 | Unknown         |
+| https://t.me/proxy?server=vahs... |      109.79 | Unknown         |
+| https://t.me/proxy?server=116.... |      112.48 | Germany         |
+| https://t.me/proxy?server=95.2... |      114.87 | Finland         |
+| https://t.me/proxy?server=65.2... |      115.5  | Finland         |
+| https://t.me/proxy?server=65.2... |      116.1  | Finland         |
+| https://t.me/proxy?server=65.2... |      116.55 | Finland         |
+| https://t.me/proxy?server=siln... |      120.25 | Unknown         |
+| https://t.me/proxy?server=khat... |      165.18 | Unknown         |
+| https://t.me/proxy?server=tera... |      165.9  | Unknown         |
+| https://t.me/proxy?server=craf... |      172.48 | Unknown         |
+| https://t.me/proxy?server=nont... |      176.49 | Unknown         |
