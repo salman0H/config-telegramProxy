@@ -1,14 +1,22 @@
-# Benchmark Results - 2026-10-18 15:31:02
+# Benchmark Results - 2026-10-19 03:39:40
 
-| Config/Proxy (Truncated)          |   Ping (ms) | Location        |
-|-----------------------------------|-------------|-----------------|
-| https://t.me/proxy?server=208.... |       29.48 | United States   |
-| https://t.me/proxy?server=194.... |      140.87 | The Netherlands |
-| https://t.me/proxy?server=103.... |      141.02 | The Netherlands |
-| https://t.me/proxy?server=194.... |      141.15 | The Netherlands |
-| https://t.me/proxy?server=176.... |      146.91 | The Netherlands |
-| https://t.me/proxy?server=mang... |      180.74 | Unknown         |
-| https://t.me/proxy?server=reco... |      184.42 | Unknown         |
-| https://t.me/proxy?server=zoka... |      194.41 | Unknown         |
-| https://t.me/proxy?server=book... |      197.13 | Unknown         |
-| https://t.me/proxy?server=sarz... |      197.44 | Unknown         |
+| Config/Proxy (Truncated)          |   Ping (ms) | Location      |
+|-----------------------------------|-------------|---------------|
+| https://t.me/proxy?server=208.... |       10.23 | United States |
+| https://t.me/proxy?server=167.... |      151.24 | Germany       |
+| https://t.me/proxy?server=167.... |      151.44 | Germany       |
+| https://t.me/proxy?server=book... |      162.68 | Unknown       |
+| https://t.me/proxy?server=web.... |      165.56 | Unknown       |
+| https://t.me/proxy?server=good... |      166.86 | Unknown       |
+| https://t.me/proxy?server=frui... |      166.95 | Unknown       |
+| https://t.me/proxy?server=coco... |      166.98 | Unknown       |
+| https://t.me/proxy?server=shoe... |      168.27 | Unknown       |
+| https://t.me/proxy?server=91.9... |      168.56 | Germany       |
+| https://t.me/proxy?server=77.4... |      174.62 | Finland       |
+| https://t.me/proxy?server=api.... |      180.79 | Unknown       |
+| https://t.me/proxy?server=iro.... |      182.15 | Unknown       |
+| https://t.me/proxy?server=star... |      184.36 | Unknown       |
+| https://t.me/proxy?server=craf... |      188.31 | Unknown       |
+| https://t.me/proxy?server=web-... |      189.14 | Unknown       |
+| https://t.me/proxy?server=digi... |      194.52 | Unknown       |
+| https://t.me/proxy?server=name... |      199.32 | Unknown       |
