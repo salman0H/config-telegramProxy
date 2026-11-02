@@ -8,12 +8,17 @@ on:
       target:
         description: 'Target to send'
         required: true
-        default: 'proxy'
+        default: 'both'
         type: choice
         options:
           - proxy
           - config
           - both
+
+# All workflows mutate the same encrypted subscriber/offset state.
+concurrency:
+  group: telegram-bot-state
+  cancel-in-progress: false
 
 jobs:
   notify:
@@ -27,6 +32,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -34,7 +41,7 @@ jobs:
           python-version: '3.12'
       
       - name: Install Dependencies
-        run: pip install pyperclip tabulate
+        run: pip install -r requirements.txt
 
       - name: Decrypt Database
         env:
@@ -64,18 +71,22 @@ jobs:
       - name: Run Notify Script
         run: |
           python3 scripts/notify_telegram.py poll
-          TARGET="${{ github.event.inputs.target || 'proxy' }}"
+          TARGET="${{ github.event.inputs.target || 'both' }}"
           python3 scripts/notify_telegram.py $TARGET
 
       - name: Encrypt and Commit Database
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
-          touch subscribers.json
+          if [ ! -f subscribers.json ]; then
+            printf '{}\n' > subscribers.json
+          fi
           mkdir -p scripts
-          touch scripts/telegram_offset.json
+          if [ ! -f scripts/telegram_offset.json ]; then
+            printf '{}\n' > scripts/telegram_offset.json
+          fi
           
-          tar -czf bot_state.tar.gz subscribers.json scripts/telegram_offset.json 2>/dev/null || true
+          tar -czf bot_state.tar.gz subscribers.json scripts/telegram_offset.json
           openssl aes-256-cbc -salt -pbkdf2 -md sha256 -in bot_state.tar.gz -out bot_state.enc -pass env:DB_PASSWORD
           
           git add bot_state.enc

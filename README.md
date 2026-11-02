@@ -1,58 +1,89 @@
-# 🚀 Telegram Proxy & Config Distributor
+# بات توزیع کانفیگ و پروکسی تلگرام
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg?style=for-the-badge&logo=python)
-![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-Automated-2088FF.svg?style=for-the-badge&logo=github-actions)
-![Security](https://img.shields.io/badge/Security-AES--256-success.svg?style=for-the-badge&logo=spring-security)
-![Telegram API](https://img.shields.io/badge/Telegram_Bot-Integrated-2CA5E0.svg?style=for-the-badge&logo=telegram)
+این پروژه کانفیگ‌های V2Ray و پروکسی‌های MTProto را دریافت می‌کند، تأخیر اتصال TCP را می‌سنجد و نتیجه را از طریق بات تلگرام برای مشترکان می‌فرستد. اجرای زمان‌بندی‌شده با GitHub Actions هر ۱۲ ساعت، ساعت ۰۰:۰۰ و ۱۲:۰۰ UTC (۰۳:۳۰ و ۱۵:۳۰ تهران)، انجام می‌شود؛ اجرای Actions ممکن است با تأخیر شروع شود.
 
-A fully serverless, highly secure, and automated Telegram bot system powered by **GitHub Actions**. This project fetches fresh proxies and V2Ray configs, securely manages subscribers, and broadcasts updates directly to users' Telegram chats every 12 hours.
+## منابع و الگوریتم بررسی
 
----
+- **کانفیگ:** [barry-far/V2ray-Config — All_Configs_Sub.txt](https://github.com/barry-far/V2ray-Config/blob/main/All_Configs_Sub.txt)، با دریافت مستقیم از [نسخهٔ Raw](https://raw.githubusercontent.com/barry-far/V2ray-Config/main/All_Configs_Sub.txt).
+- **پروکسی تلگرام:** [SoliSpirit/mtproto](https://raw.githubusercontent.com/SoliSpirit/mtproto/master/all_proxies.txt).
 
-## ✨ Key Features
+ورودی می‌تواند متن ساده یا اشتراک Base64 با padding حذف‌شده باشد. خطوط توضیحی و کانفیگ‌های تکراری با تفاوت صرفاً در برچسب `#` کنار گذاشته می‌شوند. استخراج آدرس برای `vless`، `trojan`، `vmess`، `ss` و `ssr` و همچنین لینک‌های `tg://proxy` و `https://t.me/proxy` انجام می‌شود. IPv6 با براکت و ترتیب‌های مختلف پارامترهای لینک پروکسی پشتیبانی می‌شوند. رکورد خراب، پورت نامعتبر و پروتکل پشتیبانی‌نشده نادیده گرفته می‌شود.
 
-*   **🔄 Fully Automated (Serverless):** No need for a dedicated VPS. Broadcasts and user management are handled entirely by GitHub Actions via Cron Jobs and `push` triggers.
-*   **🔐 Military-Grade Security:** User privacy is our top priority. The subscriber database (`subscribers.json`) is encrypted using **AES-256** directly within the workflow. No plain-text user data is ever exposed in the repository.
-*   **📢 Channel Membership Verification:** Forces users to join a specific community channel (`@sentencedIntoMusic`) before they can receive updates, effectively boosting channel growth.
-*   **👨‍💻 Admin Dashboard & Logging:** Sends real-time system logs (subscriptions, unsubscriptions, and broadcast reports) directly to the Admin's Telegram PV.
-*   **📦 Smart Delivery:** Automatically chunks massive config lists to bypass Telegram's character limits, or sends them neatly as text documents if they exceed limits.
-*   **🎨 Elegant UI:** Messages are beautifully formatted using Telegram's Markdown and HTML parse modes for a premium user experience.
+هر جفت میزبان/پورت تنها یک بار تست می‌شود و نتیجه برای کانفیگ‌های همان مقصد استفاده می‌شود. حداکثر ۱۰۰ worker و اتصال هم‌زمان فعال‌اند؛ زمان انتظار هر اتصال ۳ ثانیه است. خروجی بر اساس تأخیر مرتب می‌شود: کمتر از ۳۰۰ میلی‌ثانیه برای کانفیگ و کمتر از ۲۰۰ میلی‌ثانیه برای MTProto.
 
----
+**این بررسی صرفاً دسترسی TCP از محل اجرای برنامه است.** صحت رمز، UUID، احراز هویت پروتکل، انتقال واقعی ترافیک و دسترسی از اینترنت ایران را تضمین نمی‌کند. پروتکل‌های UDP مانند Hysteria2 و TUIC وارد تست TCP نمی‌شوند. تشخیص کشور اختیاری است (`--locations`) تا قطع سرویس مکان‌یابی، اجرای عادی بات را کند نکند.
 
-## 🏗️ Project Architecture
+دریافت شبکه با timeout و حداکثر سه تلاش با فاصلهٔ افزایشی انجام می‌شود. اگر دریافت شکست بخورد، ورودی قابل‌بررسی نباشد یا نتیجه‌ای زیر آستانه پیدا نشود، برنامه با کد خروج ۱ تمام می‌شود و فایل‌های قبلی حفظ می‌شوند. فایل خروجی با جایگزینی اتمیک نوشته می‌شود؛ پوشهٔ خروجی حذف نمی‌شود و فایل‌های روزهای قبل باقی می‌مانند.
 
-1.  **Local Bash Integration (`run-ping`):** Local scripts fetch and test configs, then push the updated `config/` and `proxy/` directories to GitHub.
-2.  **Workflow Triggers:**
-    *   `broadcast-on-config-update.yml`: Triggers immediately when new configs/proxies are pushed to the repository.
-    *   `notify-telegram.yml`: Runs on a 12-hour schedule to send regular updates to subscribers.
-3.  **Decryption & Execution:** GitHub Actions safely decrypts the user database using a secret key, polls for new `/start` or `/stop` commands, updates the list, sends the messages, and re-encrypts the data before committing it back.
+## راه‌اندازی
 
----
+Python 3.12 یا بالاتر نیاز است. فرمان‌ها را از ریشهٔ مخزن اجرا کنید:
 
-## ⚙️ Setup & Installation
-
-### 1. GitHub Secrets Configuration
-To run this project securely, you must configure the following **Repository Secrets** in your GitHub repository (`Settings > Secrets and variables > Actions`):
-
-| Secret Name | Description |
-| :--- | :--- |
-| `TELEGRAM_BOT_TOKEN` | The API Token provided by [@BotFather](https://t.me/BotFather). |
-| `TELEGRAM_ADMIN_CHAT_ID` | Your personal Telegram User ID (to receive logs and reports). |
-| `DB_PASSWORD` | A strong, random string used as the key for AES-256 database encryption. |
-
-### 2. Bot Commands
-Set up the following commands via `@BotFather` for user convenience:
-*   `/start` - Subscribe to the automatic proxy/config broadcast.
-*   `/stop` - Unsubscribe from the broadcast.
-
-### 3. Local Database Decryption (For Admins)
-If you need to manually view or edit the subscriber list on your local machine, use OpenSSL:
 ```bash
-# To Decrypt:
-openssl aes-256-cbc -d -pbkdf2 -in bot_state.enc -out bot_state.tar.gz
-tar -xzf bot_state.tar.gz
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 
-# To Encrypt & Lock:
-tar -czf bot_state.tar.gz subscribers.json scripts/telegram_offset.json
-openssl aes-256-cbc -salt -pbkdf2 -in bot_state.tar.gz -out bot_state.enc
+# دریافت و بررسی منبع پیش‌فرض کانفیگ
+python main.py --mode 1 --source 3 --export all
+
+# دریافت و بررسی پروکسی تلگرام
+python main.py --mode 2 --source 3 --export all
+
+# بررسی فایل محلی و انتخاب حداکثر ۵۰ نتیجه
+python main.py --mode 1 --source 1 --input ./subscription.txt --export 50
+
+# دریافت کشورها در صورت نیاز
+python main.py --mode 1 --source 3 --export 50 --locations
+```
+
+`--source 1` فایل، `2` کلیپ‌بورد و `3` URL است؛ URL سفارشی را با `--input` بدهید. بدون آرگومان، برنامه تعاملی اجرا می‌شود. کلیپ‌بورد فقط در اجرای تعاملی کپی می‌شود. نتایج در `config/YYYY-MM-DD_config.txt` یا `proxy/YYYY-MM-DD_proxy.txt` و جدول همان پوشه ذخیره می‌شوند. تاریخ فایل‌ها بر اساس تهران است.
+
+### تنظیمات GitHub و تلگرام
+
+در `Settings → Secrets and variables → Actions` این Repository Secretها را تنظیم کنید:
+
+| متغیر | کاربرد |
+| --- | --- |
+| `TELEGRAM_BOT_TOKEN` | توکن بات از BotFather |
+| `TELEGRAM_ADMIN_CHAT_ID` | شناسهٔ مدیر برای گزارش‌ها؛ اختیاری |
+| `TELEGRAM_CHANNEL_ID` | کانال الزامی؛ پیش‌فرض `@sentencedIntoMusic` |
+| `DB_PASSWORD` | رمز قوی برای رمزنگاری وضعیت بات در Actions |
+
+برای بررسی قابل‌اعتماد عضویت کاربران، بات باید مدیر کانال باشد. دستورات `/start` و `/getConfigs` اشتراک را فعال و `/stop` آن را لغو می‌کنند. دستورات در اجرای بعدی polling پردازش می‌شوند؛ این نسخه سرویس polling دائمی ندارد. تلگرام آپدیت‌ها را بیش از ۲۴ ساعت نگه نمی‌دارد؛ وقفهٔ طولانی در اجرای workflow می‌تواند باعث از دست رفتن دستورات شود. مسیر webhook موجود در مخزن سرویس جداگانه‌ای است و راه‌اندازی آن جزو این workflowها نیست؛ polling هم‌زمان با webhook فعال کار نمی‌کند.
+
+### گردش کارها
+
+- `notify-telegram.yml`: هر ۱۲ ساعت هر دو منبع را بررسی می‌کند و به‌صورت پیش‌فرض هر دو نوع را می‌فرستد. در اجرای دستی `config`، `proxy` یا `both` قابل انتخاب است. شکست مرحلهٔ دریافت، ارسال همان اجرای workflow را متوقف می‌کند.
+- `broadcast-on-config-update.yml`: با push تغییرات پوشه‌های `config/` و `proxy/`، نوع مربوط را ارسال می‌کند. در اجرای دستی هر دو نوع ارسال می‌شوند.
+- `dry-run.yml`: عضویت مشترکان را بررسی و فقط گزارش تعدادها را برای مدیر ارسال می‌کند؛ polling این workflow ممکن است پاسخ دستورات کاربران را بفرستد.
+
+تمام workflowها از گروه هم‌زمانی مشترک `telegram-bot-state` استفاده می‌کنند تا وضعیت رمزنگاری‌شده هم‌زمان ویرایش نشود؛ اجرای جاری لغو نمی‌شود. checkout از آخرین `main` انجام می‌شود. در رفتار پیش‌فرض GitHub فقط یک اجرای در انتظار نگه داشته می‌شود و اجرای جدید می‌تواند جای اجرای منتظر قبلی را بگیرد.
+
+وضعیت مشترکان و offset پس از اجرا در `bot_state.enc` با OpenSSL AES-256-CBC و PBKDF2 ذخیره می‌شود. JSONهای محلی، آرشیو بازشده و فایل‌های لاگ در `.gitignore` هستند. فایل وضعیت خراب با دیتابیس خالی جایگزین نمی‌شود و اجرای مربوط متوقف می‌شود. رمز، توکن و فایل‌های رمزگشایی‌شده را commit نکنید.
+
+## ارسال و گزارش‌ها
+
+ارسال کانفیگ به ۵۰ نتیجهٔ اول محدود است؛ پروکسی‌ها محدودیت تعداد ندارند. پیام‌ها حداکثر ۱۰ آیتم و بودجهٔ ۳۶۰۰ واحد UTF-16 برای بدنه دارند. کاراکترهای خاص برای HTML escape می‌شوند. اگر تعداد بخش‌ها از ۱۵ بیشتر شود یا یک آیتم بیش از بودجه باشد، آیتم‌های انتخاب‌شده به‌صورت فایل متنی فرستاده می‌شوند. فایل ارسالی شامل همان انتخاب و برچسب‌های خروجی متنی است.
+
+خطای 429 با `retry_after` و خطای سرور یا شبکه با فاصلهٔ افزایشی، حداکثر چهار تلاش دارند؛ خطاهای دائمی مانند 400 و 403 تکرار نمی‌شوند. شکست ارسال یک گیرنده، ارسال به بقیه را متوقف نمی‌کند. در صورت قطع ارتباط بعد از پذیرش درخواست توسط تلگرام، تلاش مجدد ممکن است پیام تکراری ایجاد کند؛ API تضمین ارسال دقیقاً یک‌بار ندارد.
+
+گزارش مدیر شامل تعداد موفق، ناموفق، عضویت تأییدنشده، تعداد آیتم، نام فایل و زمان تهران است. موفقیت تنها پس از ارسال تمام بخش‌ها یا تأیید ارسال فایل ثبت می‌شود. گزارش‌های عضویت به یک خلاصه در هر polling تبدیل شده‌اند تا حجم پیام مدیر زیاد نشود.
+
+لاگ‌های برنامه زمان UTC، سطح، نام ماژول، تعدادها و مدت اجرا دارند. متن کانفیگ‌ها، نام و شناسهٔ مشترکان و پاسخ خام API در لاگ چاپ نمی‌شوند. توکن بات و رمز دیتابیس تنظیم‌شده در محیط نیز از متن لاگ حذف می‌شوند.
+
+```bash
+# سطح پیش‌فرض INFO؛ امکان DEBUG، WARNING و ERROR
+LOG_LEVEL=DEBUG python main.py --mode 1 --source 3 --export 50
+
+# لاگ کنسول همراه فایل چرخشی: ۲ مگابایت و سه نسخهٔ پشتیبان
+LOG_FILE=bot.log python scripts/notify_telegram.py both
+
+# نیازمند متغیرهای محیطی تلگرام؛ این دستور فقط برای مدیر گزارش می‌فرستد
+python scripts/dry_run.py
+
+# تست‌های آفلاین؛ بدون ارسال واقعی پیام یا تغییر وضعیت مشترکان
+python -m unittest discover -s tests -v
+```
+
+اسکریپت‌های `notify_telegram.py` و `dry_run.py` فقط متغیرهای محیطی را می‌خوانند؛ فایل `.env` به‌صورت خودکار بارگذاری نمی‌شود. مسیر `LOG_FILE` باید پوشهٔ موجود و قابل نوشتن داشته باشد.

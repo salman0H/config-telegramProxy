@@ -6,12 +6,19 @@ on:
 permissions:
   contents: write
 
+# All workflows mutate the same encrypted subscriber/offset state.
+concurrency:
+  group: telegram-bot-state
+  cancel-in-progress: false
+
 jobs:
   check-users:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -45,11 +52,15 @@ jobs:
         env:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
-          touch subscribers.json
+          if [ ! -f subscribers.json ]; then
+            printf '{}\n' > subscribers.json
+          fi
           mkdir -p scripts
-          touch scripts/telegram_offset.json
+          if [ ! -f scripts/telegram_offset.json ]; then
+            printf '{}\n' > scripts/telegram_offset.json
+          fi
           
-          tar -czf bot_state.tar.gz subscribers.json scripts/telegram_offset.json 2>/dev/null || true
+          tar -czf bot_state.tar.gz subscribers.json scripts/telegram_offset.json
           openssl aes-256-cbc -salt -pbkdf2 -md sha256 -in bot_state.tar.gz -out bot_state.enc -pass env:DB_PASSWORD
           
           git config --local user.name "github-actions[bot]"

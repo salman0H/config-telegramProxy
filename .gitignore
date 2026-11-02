@@ -8,3 +8,10 @@ scripts/telegram_offset.json
 config/.env.local
 lib/config.js
 db-password/.env.local
+
+.venv/
+__pycache__/
+*.pyc
+*.log
+*.log.[0-9]*
+bot_state.tar.gz
