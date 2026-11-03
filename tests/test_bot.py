@@ -217,6 +217,7 @@ class DeliveryTests(unittest.TestCase):
             self.run_broadcast(directory, send, document)
             self.assertIn('موفق: 0', send.call_args_list[-1].args[1])
             self.assertIn('ناموفق: 1', send.call_args_list[-1].args[1])
+            self.assertNotIn('ID: 42', send.call_args_list[-1].args[1])
             self.assertIn('#@sentencedIntoMusic', document.call_args.kwargs['content'])
 
     def test_failed_recipient_does_not_stop_broadcast(self):
@@ -229,6 +230,42 @@ class DeliveryTests(unittest.TestCase):
                 bot.notify('Proxy', directory, 'proxy')
             self.assertEqual(send.call_count, 3)
             self.assertIn('ناموفق: 1', send.call_args_list[-1].args[1])
+            self.assertIn('@admin | ID: 42', send.call_args_list[-1].args[1])
+            self.assertNotIn('@user | ID: 1', send.call_args_list[-1].args[1])
+
+
+class AdminReportTests(unittest.TestCase):
+    def test_complete_long_list_goes_only_to_admin_in_bounded_parts(self):
+        recipients = {str(10000 + i): f"user_{i}_😀" for i in range(600)}
+        with patch.object(bot, "TELEGRAM_ADMIN_CHAT_ID", "42"), \
+             patch.object(bot, "send_message", return_value={"ok": True}) as send, patch.object(bot.time, "sleep"):
+            self.assertTrue(bot.send_admin_report("Summary", recipients))
+        self.assertGreater(send.call_count, 1)
+        text = "\n".join(call.args[1] for call in send.call_args_list)
+        for index, (chat_id, name) in enumerate(recipients.items(), 1):
+            self.assertEqual(text.splitlines().count(f"{index}. @{name} | ID: {chat_id}"), 1)
+        for call in send.call_args_list:
+            self.assertEqual(call.args[0], "42")
+            self.assertLessEqual(len(call.args[1].encode("utf-16-le")) // 2, 4096)
+
+    def test_missing_username_still_includes_id(self):
+        with patch.object(bot, "TELEGRAM_ADMIN_CHAT_ID", "42"), \
+             patch.object(bot, "send_message", return_value={"ok": True}) as send:
+            bot.send_admin_report("Summary", {"123": "N/A", "456": None})
+        self.assertIn("بدون نام کاربری | ID: 123", send.call_args.args[1])
+        self.assertIn("بدون نام کاربری | ID: 456", send.call_args.args[1])
+
+    def test_failed_report_is_not_logged_as_delivered(self):
+        with patch.object(bot, "TELEGRAM_ADMIN_CHAT_ID", "42"), \
+             patch.object(bot, "send_message", return_value={"ok": False}), \
+             self.assertLogs(bot.logger, level="ERROR"):
+            self.assertFalse(bot.send_admin_report("Summary", {"123": "user"}))
+
+    def test_split_preserves_every_character_even_for_one_long_line(self):
+        text = "😀" * 5000 + "\n" + "a" * 4000
+        chunks = bot.split_report(text)
+        self.assertEqual("".join(chunks), text)
+        self.assertTrue(all(len(chunk.encode("utf-16-le")) // 2 <= 3500 for chunk in chunks))
 
 
 class ExportTests(unittest.IsolatedAsyncioTestCase):

@@ -188,7 +188,7 @@ The webhook route included in the repository is a separate deployment path and i
 
 ### Logs with useful signal
 
-Console logs include a **UTC timestamp**, severity, module name, counts, and execution duration. Admin messages use **Tehran time** and summarize successful deliveries, failures, unverified memberships, item counts, and the source filename. Subscription changes are grouped into one summary per polling run.
+Console logs include a **UTC timestamp**, severity, module name, counts, and execution duration. Admin messages use **Tehran time** and include successful delivery counts, failures, unverified memberships, item counts, and the source filename. At the end of each broadcast, the admin also receives the **complete list of successful recipients, with their saved usernames and numeric chat IDs**. Long reports are split into numbered messages without dropping entries. A recipient is listed only after all their message parts or their document upload succeeds. Users without a saved username are explicitly marked and still listed with their chat ID. Set `TELEGRAM_ADMIN_CHAT_ID` to receive these reports. Dry-run reports list eligible recipients separately and explicitly state that no broadcast was sent. Subscription changes are grouped into one summary per polling run.
 
 Raw API responses, configuration contents, subscriber names, and subscriber IDs are excluded from application logs. The bot token and database password configured in the environment are redacted from log messages.
 

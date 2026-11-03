@@ -259,6 +259,57 @@ def poll_updates():
     if TELEGRAM_ADMIN_CHAT_ID and (subscribed or denied or unsubscribed):
         send_message(TELEGRAM_ADMIN_CHAT_ID, f"گزارش عضویت\nفعال: {subscribed}\nردشده/تأییدنشده: {denied}\nلغو: {unsubscribed}")
 
+def split_report(text, max_units=3500):
+    """Split plain text without cutting Unicode characters or dropping content."""
+    chunks = []
+    current = []
+    units = 0
+    for line in text.splitlines(keepends=True):
+        line_units = len(line.encode("utf-16-le")) // 2
+        if current and units + line_units > max_units:
+            chunks.append("".join(current))
+            current, units = [], 0
+        for character in line:
+            size = 2 if ord(character) > 0xFFFF else 1
+            if units + size > max_units:
+                chunks.append("".join(current))
+                current, units = [], 0
+            current.append(character)
+            units += size
+    if current:
+        chunks.append("".join(current))
+    return chunks
+
+
+def send_admin_report(summary, recipients, list_title="گیرندگان موفق"):
+    """Send the complete recipient list only to the configured administrator."""
+    if not TELEGRAM_ADMIN_CHAT_ID:
+        logger.warning("Admin report skipped: TELEGRAM_ADMIN_CHAT_ID is not configured")
+        return False
+    entries = []
+    for index, (chat_id, username) in enumerate(recipients.items(), 1):
+        name = " ".join(str(username or "").split())
+        if not name or name == "N/A":
+            name = "بدون نام کاربری"
+        elif name != "Admin":
+            name = "@" + name.lstrip("@")
+        entries.append(f"{index}. {name} | ID: {chat_id}")
+    report = summary + f"\n\n👥 {list_title}:\n" + ("\n".join(entries) or "هیچ‌کس")
+    chunks = split_report(report)
+    delivered = True
+    for index, chunk in enumerate(chunks, 1):
+        text = f"📋 گزارش ادمین — بخش {index}/{len(chunks)}\n\n" + chunk
+        result = send_message(TELEGRAM_ADMIN_CHAT_ID, text)
+        if not result or not result.get("ok"):
+            delivered = False
+            logger.error("Admin report part failed part=%d total=%d", index, len(chunks))
+        if index < len(chunks):
+            time.sleep(SEND_DELAY_SECONDS)
+    if delivered:
+        logger.info("Complete admin report delivered recipients=%d parts=%d", len(recipients), len(chunks))
+    return delivered
+
+
 def notify(kind, folder, suffix, limit=None):
     logger.info(f"[Notify] Starting broadcast for {kind}...")
     if not TELEGRAM_BOT_TOKEN:
@@ -303,7 +354,7 @@ def notify(kind, folder, suffix, limit=None):
     if TELEGRAM_ADMIN_CHAT_ID and str(TELEGRAM_ADMIN_CHAT_ID) not in recipients:
         recipients[str(TELEGRAM_ADMIN_CHAT_ID)] = "Admin"
 
-    active_users = []
+    active_users = {}
     failed = skipped = 0
     started = time.perf_counter()
 
@@ -356,7 +407,7 @@ def notify(kind, folder, suffix, limit=None):
                 time.sleep(SEND_DELAY_SECONDS)
                 
         if success:
-            active_users.append(chat_id)
+            active_users[chat_id] = recipients[chat_id]
         else:
             failed += 1
 
@@ -371,11 +422,7 @@ def notify(kind, folder, suffix, limit=None):
             f"✅ موفق: {len(active_users)} | ❌ ناموفق: {failed} | ⏭ تأییدنشده: {skipped}\n"
             f"📅 {date_str} | ⏰ {time_str}"
         )
-        result = send_message(TELEGRAM_ADMIN_CHAT_ID, report)
-        if result.get("ok"):
-            logger.info("Admin report delivered")
-        else:
-            logger.warning("Admin report failed")
+        send_admin_report(report, active_users)
 
 if __name__ == "__main__":
     from logging_utils import configure_logging
