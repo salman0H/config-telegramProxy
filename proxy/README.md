@@ -1,37 +1,37 @@
-# TCP Benchmark - 2026-11-03T22:42:37+03:30
+# TCP Benchmark - 2026-11-04T08:43:00+03:30
 
 TCP reachability only; protocol authentication is not verified.
 
-| Host                                           |   TCP latency (ms) | Location   |
-|------------------------------------------------|--------------------|------------|
-| silnet.varfootball.co.uk                       |              95.22 | Unknown    |
-| silver.ciaude.co.uk                            |              95.76 | Unknown    |
-| 178.105.201.7                                  |              97.01 | Unknown    |
-| 178.105.127.56                                 |              97.45 | Unknown    |
-| shoes.golgoli2.co.uk                           |              97.48 | Unknown    |
-| 178.105.123.147                                |              97.57 | Unknown    |
-| 178.105.112.21                                 |              97.62 | Unknown    |
-| 128.140.49.115                                 |              97.64 | Unknown    |
-| 49.12.36.40                                    |              97.76 | Unknown    |
-| api.mangoseason5.co.uk                         |             102.58 | Unknown    |
-| fruit.golgoli2.co.uk                           |             107.43 | Unknown    |
-| digi.golgoli2.co.uk                            |             109.67 | Unknown    |
-| iro.varfootball2.co.uk                         |             111.2  | Unknown    |
-| worldmaster.varomax.co.uk.                     |             111.61 | Unknown    |
-| craft.malavanann.co.uk                         |             112.4  | Unknown    |
-| name.golgoli2.co.uk                            |             115.36 | Unknown    |
-| 62.238.62.179                                  |             116.75 | Unknown    |
-| 62.238.63.143                                  |             118.85 | Unknown    |
-| irogallery.golgoli1.co.uk                      |             119.73 | Unknown    |
-| hadaf.golgoli2.co.uk                           |             122.66 | Unknown    |
-| run.golgoli2.co.uk                             |             126.81 | Unknown    |
-| great.cipservice.co.uk                         |             126.93 | Unknown    |
-| star.talebi.co.uk                              |             129.77 | Unknown    |
-| isaco.ir.setado.co.uk                          |             151.4  | Unknown    |
-| vahshianeh.ghodratitarin.info.                 |             166.43 | Unknown    |
-| 93.113.230.145                                 |             167.04 | Unknown    |
-| bookmook.hichibehichi-co.info.                 |             168.16 | Unknown    |
-| 5ti.do.ru7.lq.v.8v.ir.ir.ir.pd.8kmc.co.uk.     |             176.2  | Unknown    |
-| philadelphia.hezarto.info.                     |             179.4  | Unknown    |
-| ulp.tz.9a.xu.cs.ir.jp.ir.ze8.ir.v6.8kmc.co.uk. |             180.41 | Unknown    |
-| ru7.0f.be.l.dyn.ir.xy.n.com.a7.fo.8kmc.co.uk.  |             193.96 | Unknown    |
+| Host                           |   TCP latency (ms) | Location   |
+|--------------------------------|--------------------|------------|
+| shoes.golgoli2.co.uk           |             153.64 | Unknown    |
+| 128.140.49.115                 |             155.87 | Unknown    |
+| 178.105.201.7                  |             157.54 | Unknown    |
+| 49.12.36.40                    |             157.86 | Unknown    |
+| 178.105.112.21                 |             158.58 | Unknown    |
+| 178.105.127.56                 |             158.86 | Unknown    |
+| iro.varfootball2.co.uk         |             162.26 | Unknown    |
+| 178.105.123.147                |             163.09 | Unknown    |
+| api.mangoseason5.co.uk         |             166.1  | Unknown    |
+| digi.golgoli2.co.uk            |             167.8  | Unknown    |
+| silnet.varfootball.co.uk       |             169.59 | Unknown    |
+| 62.238.62.179                  |             170    | Unknown    |
+| silver.ciaude.co.uk            |             170.62 | Unknown    |
+| worldmaster.varomax.co.uk.     |             171.02 | Unknown    |
+| 62.238.63.143                  |             172.14 | Unknown    |
+| 91.98.97.225                   |             173.96 | Unknown    |
+| 135.181.74.183                 |             174.74 | Unknown    |
+| philadelphia.hezarto.info.     |             175.53 | Unknown    |
+| 65.109.106.179                 |             176.1  | Unknown    |
+| craft.malavanann.co.uk         |             176.35 | Unknown    |
+| 65.109.106.132                 |             177.22 | Unknown    |
+| star.talebi.co.uk              |             177.62 | Unknown    |
+| run.golgoli2.co.uk             |             178.86 | Unknown    |
+| bookmook.hichibehichi-co.info. |             179.03 | Unknown    |
+| great.cipservice.co.uk         |             179.89 | Unknown    |
+| ir.mediaad.co.uk               |             182.51 | Unknown    |
+| hadaf.golgoli2.co.uk           |             183.59 | Unknown    |
+| vahshianeh.ghodratitarin.info. |             183.98 | Unknown    |
+| name.golgoli2.co.uk            |             190.56 | Unknown    |
+| org.mediaad.co.uk              |             192.67 | Unknown    |
+| char.anotelinopalk.co.uk       |             197.26 | Unknown    |
