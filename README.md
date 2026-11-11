@@ -112,7 +112,7 @@ Commands are processed during the next polling run. `/getConfigs` activates a su
 
 Open the repository's **Actions** tab, select **Telegram Notifier**, and choose **Run workflow**. Select `config`, `proxy`, or `both`; the default is `both`.
 
-Scheduled runs fetch both sources every **12 hours**, at **00:00 and 12:00 UTC** — **03:30 and 15:30 in Tehran**. GitHub Actions may start scheduled jobs later than the requested time.
+Scheduled runs fetch both sources **once a day**, at **00:00 UTC** — **03:30 in Tehran**. GitHub Actions may start scheduled jobs later than the requested time.
 
 ## How it works
 
@@ -171,7 +171,7 @@ A recipient counts as successfully reached only after every message part, or the
 
 | Workflow | Trigger | Behavior |
 | :--- | :--- | :--- |
-| [Telegram Notifier](.github/workflows/notify-telegram.yml) | Every 12 hours or manual dispatch | Fetch both sources, poll commands, and broadcast the selected content. A collection failure stops that workflow run before delivery. |
+| [Telegram Notifier](.github/workflows/notify-telegram.yml) | Daily or manual dispatch | Fetch both sources, poll commands, and broadcast the selected content. A collection failure stops that workflow run before delivery. |
 | [Broadcast on update](.github/workflows/broadcast-on-config-update.yml) | Pushes changing `config/` or `proxy/`, or manual dispatch | Poll commands and distribute the changed content type. Manual runs distribute both. |
 | [Check subscribers](.github/workflows/dry-run.yml) | Manual dispatch | Poll commands, check membership, and send an admin summary without broadcasting configurations. Command polling can still send replies to users. |
 
