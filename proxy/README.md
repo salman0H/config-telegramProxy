@@ -1,25 +1,74 @@
-# TCP Benchmark - 2026-11-24T11:13:10+03:30
+# TCP Benchmark - 2026-11-25T09:44:01+03:30
 
 TCP reachability only; protocol authentication is not verified.
 
-| Host                            |   TCP latency (ms) | Location   |
-|---------------------------------|--------------------|------------|
-| 172.65.172.190                  |               2.59 | Unknown    |
-| 5.75.252.233                    |             103.21 | Unknown    |
-| 65.108.209.51                   |             106.15 | Unknown    |
-| 37.27.47.145                    |             107.49 | Unknown    |
-| 65.109.255.138                  |             116.37 | Unknown    |
-| 65.109.244.5                    |             118.81 | Unknown    |
-| 88.99.126.37                    |             124.2  | Unknown    |
-| api.mangoseason5.co.uk          |             125.8  | Unknown    |
-| 91.98.109.248                   |             132.19 | Unknown    |
-| professor.hasratepaeiz.website. |             133.65 | Unknown    |
-| silnet.varfootball.co.uk        |             162.63 | Unknown    |
-| vahshianeh.ghodratitarin.info.  |             166.63 | Unknown    |
-| shoes.golgoli2.co.uk            |             168.43 | Unknown    |
-| name.golgoli2.co.uk             |             174    | Unknown    |
-| digi.golgoli2.co.uk             |             174.54 | Unknown    |
-| run.golgoli2.co.uk              |             178.05 | Unknown    |
-| worldmaster.varomax.co.uk.      |             187.24 | Unknown    |
-| bookmook.hichibehichi-co.info.  |             188.67 | Unknown    |
-| philadelphia.hezarto.info.      |             190.49 | Unknown    |
+| Host                         |   TCP latency (ms) | Location   |
+|------------------------------|--------------------|------------|
+| 156.229.167.222              |              30.76 | Unknown    |
+| 156.229.164.62               |              30.91 | Unknown    |
+| 156.229.160.116              |              31.05 | Unknown    |
+| 87.248.144.50                |             145.44 | Unknown    |
+| 85.133.200.50                |             145.56 | Unknown    |
+| 87.248.144.60                |             145.69 | Unknown    |
+| 85.133.200.46                |             145.69 | Unknown    |
+| 85.133.200.48                |             146.02 | Unknown    |
+| 85.133.200.41                |             146.41 | Unknown    |
+| 87.248.144.249               |             146.96 | Unknown    |
+| s2.server-space52.info       |             147.55 | Unknown    |
+| lol-lock.godserver52.info    |             147.75 | Unknown    |
+| 85.133.200.45                |             148.67 | Unknown    |
+| 85.133.200.11                |             148.94 | Unknown    |
+| 87.248.144.253               |             149.32 | Unknown    |
+| 85.133.200.42                |             149.49 | Unknown    |
+| 85.133.200.13                |             149.56 | Unknown    |
+| 83.243.86.176                |             150.61 | Unknown    |
+| 79.137.196.223               |             150.89 | Unknown    |
+| 193.39.143.70                |             151.01 | Unknown    |
+| 85.133.200.44                |             151.67 | Unknown    |
+| 79.137.196.223               |             151.68 | Unknown    |
+| 85.133.200.49                |             151.89 | Unknown    |
+| 79.137.196.223               |             152    | Unknown    |
+| 88.99.30.72                  |             152.51 | Unknown    |
+| 91.107.152.115               |             152.69 | Unknown    |
+| 148.251.77.157               |             152.92 | Unknown    |
+| 128.140.24.48                |             153.49 | Unknown    |
+| 5.9.133.26                   |             153.82 | Unknown    |
+| 188.40.68.147                |             154.04 | Unknown    |
+| 91.107.170.11                |             154.08 | Unknown    |
+| 168.119.142.46               |             154.16 | Unknown    |
+| 85.133.200.47                |             155.23 | Unknown    |
+| 85.133.200.12                |             155.47 | Unknown    |
+| server93.server-space52.info |             155.63 | Unknown    |
+| 79.137.196.223               |             155.71 | Unknown    |
+| star.talebi.co.uk            |             156.11 | Unknown    |
+| 49.13.59.213                 |             156.14 | Unknown    |
+| do.anotelinopalk.co.uk       |             156.19 | Unknown    |
+| 193.33.153.127               |             156.19 | Unknown    |
+| 79.137.196.223               |             156.22 | Unknown    |
+| 88.99.211.15                 |             156.54 | Unknown    |
+| 178.105.141.172              |             156.77 | Unknown    |
+| 91.107.150.42                |             159.74 | Unknown    |
+| 2.26.7.252                   |             165.15 | Unknown    |
+| 46.62.224.5                  |             167.74 | Unknown    |
+| 65.109.212.176               |             168.1  | Unknown    |
+| 65.109.214.109               |             168.52 | Unknown    |
+| 65.108.123.76                |             168.67 | Unknown    |
+| 65.109.211.207               |             168.86 | Unknown    |
+| 88.99.126.37                 |             169.21 | Unknown    |
+| 135.181.74.183               |             170.47 | Unknown    |
+| 65.109.215.167               |             171.25 | Unknown    |
+| 91.98.97.225                 |             171.49 | Unknown    |
+| 95.217.193.214               |             171.64 | Unknown    |
+| 65.109.210.184               |             173.02 | Unknown    |
+| 65.109.215.89                |             173.43 | Unknown    |
+| 95.216.181.157               |             177.7  | Unknown    |
+| hasht.ionox.co.uk            |             180.26 | Unknown    |
+| 65.109.215.104               |             181.26 | Unknown    |
+| server63.server-space52.info |             181.95 | Unknown    |
+| 65.109.250.107               |             182.25 | Unknown    |
+| s3.server-space52.info       |             182.98 | Unknown    |
+| 65.109.244.5                 |             183.42 | Unknown    |
+| char.ionox.co.uk             |             188.62 | Unknown    |
+| se.ionox.co.uk               |             191.99 | Unknown    |
+| dastan.sarnevesht.space      |             193.45 | Unknown    |
+| run.golgoli2.co.uk           |             194.51 | Unknown    |
